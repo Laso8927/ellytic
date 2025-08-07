@@ -16,16 +16,20 @@ interface Post {
   publishedAt: string;
 }
 
-// Sanity config
-const client = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
-  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
-  apiVersion: "2023-01-01",
-  useCdn: true,
-});
-const builder = imageUrlBuilder(client);
+// Sanity config (optional in dev). Avoid crashing if env is missing.
+const SANITY_PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "tjn76wnq";
+const SANITY_DATASET = process.env.NEXT_PUBLIC_SANITY_DATASET || "production";
+const client = SANITY_PROJECT_ID
+  ? createClient({
+      projectId: SANITY_PROJECT_ID,
+      dataset: SANITY_DATASET,
+      apiVersion: "2023-01-01",
+      useCdn: true,
+    })
+  : null;
+const builder = client ? imageUrlBuilder(client) : null;
 function urlFor(source: any) {
-  return builder.image(source);
+  return builder?.image(source);
 }
 
 export default function Landing() {
@@ -35,7 +39,7 @@ export default function Landing() {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    if (!client.config().projectId) return;
+    if (!client) return;
     client
       .fetch(
         `*[_type == "post"] | order(publishedAt desc)[0...3]{title, slug, mainImage, publishedAt}`
@@ -161,10 +165,10 @@ export default function Landing() {
                   className="block group"
                 >
                   <div className="overflow-hidden rounded-xl shadow-sm">
-                    {post.mainImage && (
+                           {post.mainImage && builder && (
                       <img
                         loading="lazy"
-                        src={urlFor(post.mainImage)
+                               src={urlFor(post.mainImage)!
                           .width(600)
                           .height(400)
                           .url()}
@@ -182,7 +186,7 @@ export default function Landing() {
                 </Link>
               ))}
             </div>
-          </div>
+    </div>
         </section>
 
         {/* ...About, Login, Footer etc. bleiben unverändert */}
