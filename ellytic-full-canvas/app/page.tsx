@@ -1,1 +1,0 @@
-// vollständiger Canvas-Code, siehe vorheriger Schritt
