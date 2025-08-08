@@ -1,5 +1,5 @@
 import createMiddleware from 'next-intl/middleware';
-import {locales, defaultLocale} from './i18n';
+import {locales, defaultLocale} from './i18n/request';
 
 export default createMiddleware({
   locales: Array.from(locales),
@@ -7,7 +7,5 @@ export default createMiddleware({
 });
 
 export const config = {
-  matcher: ['/((?!api|_next|.*\\..*).*)']
+  matcher: ['/((?!api|_next|.*\..*).*)']
 };
-
-// Removed custom middleware and duplicate config to prevent Next.js build errors.
