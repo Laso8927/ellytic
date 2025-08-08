@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useTranslations } from "next-intl";
+
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
   form.append("file", file);
@@ -66,7 +67,7 @@ export default function WizardAdvancedPage() {
       <header className="px-6 py-4 border-b sticky top-0 bg-white z-40">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-extrabold text-lg tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</Link>
-          <Link className="text-sm text-gray-600 hover:text-black" href="/">Back to home</Link>
+          <Link className="text-sm text-gray-600 hover:text-black" href="/">{t("wizard.backToHome")}</Link>
         </div>
       </header>
 
@@ -84,7 +85,7 @@ export default function WizardAdvancedPage() {
 
           <div className="mb-8">
             <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
-              <span>Step {step + 1} of {steps.length}</span>
+              <span>{t("wizard.step", { current: step + 1, total: steps.length })}</span>
               <span>{progress}%</span>
             </div>
             <div className="h-2 w-full bg-gray-200 rounded">
@@ -98,16 +99,11 @@ export default function WizardAdvancedPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -30 }}
-              transition={{ duration: 0.28, ease: [0.4, 0.0, 0.2, 1] }}
-              className="bg-white border rounded-2xl shadow-sm p-6 md:p-8"
+              transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
             >
               {renderStep(steps[step].key, answers, { update, setFiles, nextStep, prevStep, gotoCheckout })}
             </motion.div>
           </AnimatePresence>
-
-          <div className="mt-6 text-sm text-gray-500">
-            GDPR compliant. Data processed in Germany, deleted 30 days after fulfilment; only legally required metadata retained. <a className="underline" href="/legal/privacy">Privacy</a>.
-          </div>
         </div>
       </motion.section>
     </main>
@@ -115,24 +111,26 @@ export default function WizardAdvancedPage() {
 }
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
-  return <h2 className="text-xl md:text-2xl font-semibold mb-4">{children}</h2>;
+  return <h2 className="text-2xl font-semibold mb-6">{children}</h2>;
 }
 
 function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <label className="block text-sm font-medium text-gray-700 mb-1">{children}</label>;
+  return <div className="font-medium text-gray-900 mb-2">{children}</div>;
 }
 
 function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
+  const t = useTranslations();
+  
   switch (key) {
     case "audience":
       return (
         <div>
-          <SectionTitle>Who are you?</SectionTitle>
+          <SectionTitle>{t("wizard.audience.title")}</SectionTitle>
           <div className="grid gap-3 md:grid-cols-2">
             {["expat","pensioner","buyer","investor","heir","diaspora"].map((opt) => (
               <button key={opt} onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }} className="text-left rounded-xl border hover:border-blue-600 hover:bg-blue-50/50 transition-colors p-4">
-                <div className="font-medium text-gray-900 capitalize">{opt}</div>
-                <p className="text-sm text-gray-600 mt-1">Tailored flow for your situation.</p>
+                <div className="font-medium text-gray-900 capitalize">{t(`wizard.audience.options.${opt}`)}</div>
+                <p className="text-sm text-gray-600 mt-1">{t("wizard.audience.subtitle")}</p>
               </button>
             ))}
           </div>
@@ -141,19 +139,19 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
     case "bundle":
       return (
         <div>
-          <SectionTitle>Choose your bundle</SectionTitle>
+          <SectionTitle>{t("wizard.bundle.title")}</SectionTitle>
           <div className="grid gap-3 md:grid-cols-2">
             <button onClick={() => { a.update({ bundleType: "starter" }); a.nextStep(); }} className={`text-left rounded-xl border p-4 hover:border-blue-600 hover:bg-blue-50/50 ${answers.bundleType === "starter" ? "border-blue-600 bg-blue-50/50" : ""}`}>
-              <div className="font-medium text-gray-900">Starter Bundle</div>
-              <p className="text-sm text-gray-600 mt-1">AFM (Tax ID) + Mobile number setup</p>
+              <div className="font-medium text-gray-900">{t("wizard.bundle.starter.title")}</div>
+              <p className="text-sm text-gray-600 mt-1">{t("wizard.bundle.starter.description")}</p>
             </button>
             <button onClick={() => { a.update({ bundleType: "full" }); a.nextStep(); }} className={`text-left rounded-xl border p-4 hover:border-blue-600 hover:bg-blue-50/50 ${answers.bundleType === "full" ? "border-blue-600 bg-blue-50/50" : ""}`}>
-              <div className="font-medium text-gray-900">Full Service</div>
-              <p className="text-sm text-gray-600 mt-1">Includes bank account onboarding</p>
+              <div className="font-medium text-gray-900">{t("wizard.bundle.full.title")}</div>
+              <p className="text-sm text-gray-600 mt-1">{t("wizard.bundle.full.description")}</p>
             </button>
           </div>
           <div className="mt-6 flex justify-start">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
           </div>
         </div>
       );
@@ -161,37 +159,37 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       const canContinue = !!(answers.hasValidId && answers.idType && answers.hasBirthCertificate && answers.hasAddressProof && answers.recentDocsConfirmed);
       return (
         <div>
-          <SectionTitle>AFM Requirements</SectionTitle>
+          <SectionTitle>{t("wizard.afm.title")}</SectionTitle>
           <div className="grid gap-4">
             <div>
-              <FieldLabel>Marital status</FieldLabel>
+              <FieldLabel>{t("wizard.afm.maritalStatus")}</FieldLabel>
               <div className="flex items-center gap-4 text-sm">
-                <label className="inline-flex items-center gap-2"><input type="radio" name="married" checked={!answers.isMarried} onChange={() => a.update({ isMarried: false })} /> Single</label>
-                <label className="inline-flex items-center gap-2"><input type="radio" name="married" checked={answers.isMarried} onChange={() => a.update({ isMarried: true })} /> Married</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="married" checked={!answers.isMarried} onChange={() => a.update({ isMarried: false })} /> {t("wizard.afm.single")}</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="married" checked={answers.isMarried} onChange={() => a.update({ isMarried: true })} /> {t("wizard.afm.married")}</label>
               </div>
             </div>
             <div>
-              <FieldLabel>Valid ID available?</FieldLabel>
+              <FieldLabel>{t("wizard.afm.validId")}</FieldLabel>
               <div className="flex items-center gap-4 text-sm">
-                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasValidId} onChange={(e) => a.update({ hasValidId: e.target.checked })} /> Yes</label>
+                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasValidId} onChange={(e) => a.update({ hasValidId: e.target.checked })} /> {t("wizard.afm.yes")}</label>
                 <div className="flex items-center gap-4">
-                  <label className="inline-flex items-center gap-2"><input type="radio" name="idtype" disabled={!answers.hasValidId} checked={answers.idType === "passport"} onChange={() => a.update({ idType: "passport" })} /> Passport</label>
-                  <label className="inline-flex items-center gap-2"><input type="radio" name="idtype" disabled={!answers.hasValidId} checked={answers.idType === "id"} onChange={() => a.update({ idType: "id" })} /> ID card</label>
+                  <label className="inline-flex items-center gap-2"><input type="radio" name="idtype" disabled={!answers.hasValidId} checked={answers.idType === "passport"} onChange={() => a.update({ idType: "passport" })} /> {t("wizard.afm.passport")}</label>
+                  <label className="inline-flex items-center gap-2"><input type="radio" name="idtype" disabled={!answers.hasValidId} checked={answers.idType === "id"} onChange={() => a.update({ idType: "id" })} /> {t("wizard.afm.idCard")}</label>
                 </div>
               </div>
             </div>
             <div>
-              <FieldLabel>Documents available</FieldLabel>
+              <FieldLabel>{t("wizard.afm.documentsAvailable")}</FieldLabel>
               <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> Birth certificate</label>
-                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> Proof of address (registration or utility bill)</label>
+                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> {t("wizard.afm.birthCertificate")}</label>
+                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> {t("wizard.afm.addressProof")}</label>
               </div>
-              <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> Both are not older than 6 months</label>
+              <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> {t("wizard.afm.recentDocs")}</label>
             </div>
           </div>
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -207,16 +205,16 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       ].every(Boolean) && isAdultUser;
       return (
         <div>
-          <SectionTitle>Personal details</SectionTitle>
+          <SectionTitle>{t("wizard.personal.title")}</SectionTitle>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div><FieldLabel>First name</FieldLabel><input className="input" value={p.firstName} onChange={(e)=> a.update({ personal: { ...p, firstName: e.target.value }})} /></div>
-            <div><FieldLabel>Last name</FieldLabel><input className="input" value={p.lastName} onChange={(e)=> a.update({ personal: { ...p, lastName: e.target.value }})} /></div>
-            <div><FieldLabel>Father first name</FieldLabel><input className="input" value={p.fatherFirstName} onChange={(e)=> a.update({ personal: { ...p, fatherFirstName: e.target.value }})} /></div>
-            <div><FieldLabel>Father last name</FieldLabel><input className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
-            <div><FieldLabel>Mother first name</FieldLabel><input className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
-            <div><FieldLabel>Mother last name</FieldLabel><input className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.firstName")}</FieldLabel><input className="input" value={p.firstName} onChange={(e)=> a.update({ personal: { ...p, firstName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.lastName")}</FieldLabel><input className="input" value={p.lastName} onChange={(e)=> a.update({ personal: { ...p, lastName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.fatherFirstName")}</FieldLabel><input className="input" value={p.fatherFirstName} onChange={(e)=> a.update({ personal: { ...p, fatherFirstName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.fatherLastName")}</FieldLabel><input className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.motherFirstName")}</FieldLabel><input className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.motherLastName")}</FieldLabel><input className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
             <div className="sm:col-span-2 grid gap-3">
-              <div><FieldLabel>Place of birth</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
+              <div><FieldLabel>{t("wizard.personal.placeOfBirth")}</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
                 const val = normalizePlace(e.target.value);
                 a.update({ personal: { ...p, placeOfBirth: val }});
                 if (val) {
@@ -228,30 +226,30 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 }
               }} /></div>
               <div className="grid sm:grid-cols-3 gap-3">
-                <div><FieldLabel>Region/State</FieldLabel><input className="input" value={p.birthRegion} onChange={(e)=> a.update({ personal: { ...p, birthRegion: e.target.value }})} /></div>
-                <div><FieldLabel>Zip Code</FieldLabel><input className="input" value={p.birthZipCode} onChange={(e)=> a.update({ personal: { ...p, birthZipCode: e.target.value }})} /></div>
-                <div><FieldLabel>Country</FieldLabel><input className="input" value={p.birthCountry} onChange={(e)=> a.update({ personal: { ...p, birthCountry: e.target.value }})} /></div>
+                <div><FieldLabel>{t("wizard.personal.region")}</FieldLabel><input className="input" value={p.birthRegion} onChange={(e)=> a.update({ personal: { ...p, birthRegion: e.target.value }})} /></div>
+                <div><FieldLabel>{t("wizard.personal.zipCode")}</FieldLabel><input className="input" value={p.birthZipCode} onChange={(e)=> a.update({ personal: { ...p, birthZipCode: e.target.value }})} /></div>
+                <div><FieldLabel>{t("wizard.personal.country")}</FieldLabel><input className="input" value={p.birthCountry} onChange={(e)=> a.update({ personal: { ...p, birthCountry: e.target.value }})} /></div>
               </div>
             </div>
-            <div><FieldLabel>Date of birth</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
+            <div><FieldLabel>{t("wizard.personal.dateOfBirth")}</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
             <div className="sm:col-span-2 grid gap-3">
-              <FieldLabel>Current residence</FieldLabel>
+              <FieldLabel>{t("wizard.personal.currentResidence")}</FieldLabel>
               <div className="grid sm:grid-cols-2 gap-3">
-                <input className="input" placeholder="Street" value={p.currentStreet} onChange={(e)=> a.update({ personal: { ...p, currentStreet: e.target.value }})} />
-                <input className="input" placeholder="City" value={p.currentCity} onChange={(e)=> a.update({ personal: { ...p, currentCity: e.target.value }})} />
+                <input className="input" placeholder={t("wizard.personal.street")} value={p.currentStreet} onChange={(e)=> a.update({ personal: { ...p, currentStreet: e.target.value }})} />
+                <input className="input" placeholder={t("wizard.personal.city")} value={p.currentCity} onChange={(e)=> a.update({ personal: { ...p, currentCity: e.target.value }})} />
               </div>
               <div className="grid sm:grid-cols-2 gap-3">
-                <input className="input" placeholder="Zip Code" value={p.currentZipCode} onChange={(e)=> a.update({ personal: { ...p, currentZipCode: e.target.value }})} />
-                <input className="input" placeholder="Country" value={p.currentCountry} onChange={(e)=> a.update({ personal: { ...p, currentCountry: e.target.value }})} />
+                <input className="input" placeholder={t("wizard.personal.zipCode")} value={p.currentZipCode} onChange={(e)=> a.update({ personal: { ...p, currentZipCode: e.target.value }})} />
+                <input className="input" placeholder={t("wizard.personal.country")} value={p.currentCountry} onChange={(e)=> a.update({ personal: { ...p, currentCountry: e.target.value }})} />
               </div>
             </div>
           </div>
           {!isAdultUser && p.dateOfBirth && (
-            <p className="mt-3 text-sm text-red-600">You must be at least 18 years old to use these services.</p>
+            <p className="mt-3 text-sm text-red-600">{t("wizard.personal.ageError")}</p>
           )}
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -260,19 +258,19 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       if (!answers.isMarried) {
         return (
           <div>
-            <SectionTitle>Marriage</SectionTitle>
-            <p className="text-gray-600">Not applicable. Continue to document uploads.</p>
-          <div className="mt-6 flex justify-between"><button className="text-gray-600" onClick={a.prevStep}>← Back</button><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>Continue</button></div>
+            <SectionTitle>{t("wizard.marriage.title")}</SectionTitle>
+            <p className="text-gray-600">{t("wizard.marriage.notApplicable")}</p>
+          <div className="mt-6 flex justify-between"><button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button></div>
           </div>
         );
       }
       const hasMarriage = (answers.files["marriage_certificate"]?.length || 0) > 0;
       return (
         <div>
-          <SectionTitle>Marriage</SectionTitle>
+          <SectionTitle>{t("wizard.marriage.title")}</SectionTitle>
           <div className="grid gap-4">
             <div>
-              <FieldLabel>Marriage certificate (upload)</FieldLabel>
+              <FieldLabel>{t("wizard.marriage.certificate")}</FieldLabel>
               <input type="file" onChange={async (e)=> {
                 a.setFiles("marriage_certificate", e.target.files);
                 const f = e.target.files?.[0];
@@ -280,16 +278,16 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
               }} />
             </div>
             <div>
-              <FieldLabel>Use couple service?</FieldLabel>
+              <FieldLabel>{t("wizard.marriage.coupleService")}</FieldLabel>
               <div className="flex items-center gap-4 text-sm">
-                <label className="inline-flex items-center gap-2"><input type="radio" name="couple" checked={!answers.isCouple} onChange={()=> a.update({ isCouple: false })} /> Single</label>
-                <label className="inline-flex items-center gap-2"><input type="radio" name="couple" checked={answers.isCouple} onChange={()=> a.update({ isCouple: true })} /> Couple</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="couple" checked={!answers.isCouple} onChange={()=> a.update({ isCouple: false })} /> {t("wizard.marriage.single")}</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="couple" checked={answers.isCouple} onChange={()=> a.update({ isCouple: true })} /> {t("wizard.marriage.couple")}</label>
               </div>
             </div>
           </div>
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!hasMarriage} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!hasMarriage} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -301,25 +299,25 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       const canContinue = hasId && hasBirth && hasAddr;
       return (
         <div>
-          <SectionTitle>Upload documents (AFM)</SectionTitle>
-          <p className="text-sm text-gray-600 mb-4">Provide scanned PDFs/images. Translations will be handled. Documents must be newer than 6 months.</p>
+          <SectionTitle>{t("wizard.uploads.title")}</SectionTitle>
+          <p className="text-sm text-gray-600 mb-4">{t("wizard.uploads.description")}</p>
           <div className="grid gap-5">
             <div>
-              <FieldLabel>ID document ({answers.idType || "passport / id"})</FieldLabel>
+              <FieldLabel>{t("wizard.uploads.idDocument", { type: answers.idType || "passport / id" })}</FieldLabel>
               <input type="file" onChange={async (e)=> { a.setFiles("id_document", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "id_document"); }} />
             </div>
             <div>
-              <FieldLabel>Birth certificate</FieldLabel>
+              <FieldLabel>{t("wizard.uploads.birthCertificate")}</FieldLabel>
               <input type="file" onChange={async (e)=> { a.setFiles("birth_certificate", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "birth_certificate"); }} />
             </div>
             <div>
-              <FieldLabel>Proof of address (registration certificate or utility bill)</FieldLabel>
+              <FieldLabel>{t("wizard.uploads.addressProof")}</FieldLabel>
               <input type="file" onChange={async (e)=> { a.setFiles("address_proof", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "address_proof"); }} />
             </div>
           </div>
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -329,23 +327,23 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       if (!isFull) {
         return (
           <div>
-            <SectionTitle>Bank account onboarding</SectionTitle>
-            <p className="text-gray-600">Not required for Starter Bundle.</p>
-            <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>Continue</button></div>
+            <SectionTitle>{t("wizard.bank.title")}</SectionTitle>
+            <p className="text-gray-600">{t("wizard.bank.notRequired")}</p>
+            <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button></div>
           </div>
         );
       }
       return (
         <div>
-          <SectionTitle>Bank account onboarding</SectionTitle>
+          <SectionTitle>{t("wizard.bank.title")}</SectionTitle>
           <ul className="list-disc pl-5 text-gray-700 space-y-1">
-            <li>Identification: EU Passport or EU ID (valid)</li>
-            <li>Financial details: Tax clearance or annual wage statement</li>
-            <li>Proof of address: Utility bill or registration certificate (if address on ID, optional)</li>
-            <li>Work details: Employer certificate (also if self-employed)</li>
-            <li>Mobile phone: EU number (with matching bill) or Greek number</li>
+            <li>{t("wizard.bank.identification")}</li>
+            <li>{t("wizard.bank.financial")}</li>
+            <li>{t("wizard.bank.address")}</li>
+            <li>{t("wizard.bank.work")}</li>
+            <li>{t("wizard.bank.mobile")}</li>
           </ul>
-          <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>Next</button></div>
+          <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button></div>
         </div>
       );
     }
@@ -358,51 +356,51 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       const canContinue = !!(b.financialDocType && b.employmentLine && hasFin && hasAddr && hasEmp);
       return (
         <div>
-          <SectionTitle>Bank documents</SectionTitle>
+          <SectionTitle>{t("wizard.bankDocs.title")}</SectionTitle>
           <div className="grid gap-4">
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
-                <FieldLabel>Financial document</FieldLabel>
+                <FieldLabel>{t("wizard.bankDocs.financial")}</FieldLabel>
                 <select className="input" value={b.financialDocType} onChange={(e)=> a.update({ bank: { ...b, financialDocType: e.target.value as any } })}>
-                  <option value="">Choose…</option>
-                  <option value="tax_clearance">Tax clearance certificate</option>
-                  <option value="annual_wage_statement">Annual wage statement</option>
+                  <option value="">{t("wizard.bankDocs.choose")}</option>
+                  <option value="tax_clearance">{t("wizard.bankDocs.taxClearance")}</option>
+                  <option value="annual_wage_statement">{t("wizard.bankDocs.annualWage")}</option>
                 </select>
               </div>
               <div>
-                <FieldLabel>Proof of address</FieldLabel>
+                <FieldLabel>{t("wizard.bankDocs.proofOfAddress")}</FieldLabel>
                 <select className="input" value={b.proofOfAddressOption} onChange={(e)=> a.update({ bank: { ...b, proofOfAddressOption: e.target.value as any } })}>
-                  <option value="">Choose…</option>
-                  <option value="utility">Utility bill</option>
-                  <option value="registration">Registration certificate</option>
-                  <option value="id_address">Address is on ID</option>
+                  <option value="">{t("wizard.bankDocs.choose")}</option>
+                  <option value="utility">{t("wizard.bankDocs.utility")}</option>
+                  <option value="registration">{t("wizard.bankDocs.registration")}</option>
+                  <option value="id_address">{t("wizard.bankDocs.idAddress")}</option>
                 </select>
               </div>
             </div>
             <div>
-              <FieldLabel>Employer certificate (one sentence: employed where since when; also for self-employed)</FieldLabel>
+              <FieldLabel>{t("wizard.bankDocs.employer")}</FieldLabel>
               <input className="input" value={b.employmentLine} onChange={(e)=> a.update({ bank: { ...b, employmentLine: e.target.value } })} />
             </div>
             <div className="grid gap-4">
               <div>
-                <FieldLabel>Upload financial document</FieldLabel>
+                <FieldLabel>{t("wizard.bankDocs.uploadFinancial")}</FieldLabel>
                 <input type="file" onChange={async (e)=> { a.setFiles("financial_doc", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "financial_doc"); }} />
               </div>
               {needAddressUpload && (
                 <div>
-                  <FieldLabel>Upload proof of address</FieldLabel>
+                  <FieldLabel>{t("wizard.bankDocs.uploadAddress")}</FieldLabel>
                   <input type="file" onChange={async (e)=> { a.setFiles("address_doc", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "address_doc"); }} />
                 </div>
               )}
               <div>
-                <FieldLabel>Upload employer certificate</FieldLabel>
+                <FieldLabel>{t("wizard.bankDocs.uploadEmployer")}</FieldLabel>
                 <input type="file" onChange={async (e)=> { a.setFiles("employer_certificate", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "employer_certificate"); }} />
               </div>
             </div>
           </div>
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -416,41 +414,41 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       const canContinue = (isEU && hasBill) || (isGR && (!b.hasGreekNumber || (b.hasGreekNumber && hasProviderCert)));
       return (
         <div>
-          <SectionTitle>Mobile phone for banking</SectionTitle>
+          <SectionTitle>{t("wizard.mobile.title")}</SectionTitle>
           <div className="grid gap-4">
             <div className="grid sm:grid-cols-2 gap-3">
               <button className={`rounded-xl border p-4 text-left ${b.mobileOption === "eu_number" ? "border-blue-600 bg-blue-50/50" : ""}`} onClick={()=> a.update({ bank: { ...b, mobileOption: "eu_number" } })}>
-                <div className="font-medium text-gray-900">Use my EU number</div>
-                <p className="text-sm text-gray-600 mt-1">Requires a mobile phone bill with the same address as your utility bill/registration.</p>
+                <div className="font-medium text-gray-900">{t("wizard.mobile.euNumber")}</div>
+                <p className="text-sm text-gray-600 mt-1">{t("wizard.mobile.euDescription")}</p>
               </button>
               <button className={`rounded-xl border p-4 text-left ${b.mobileOption === "greek_number" ? "border-blue-600 bg-blue-50/50" : ""}`} onClick={()=> a.update({ bank: { ...b, mobileOption: "greek_number" } })}>
-                <div className="font-medium text-gray-900">Use a Greek number</div>
-                <p className="text-sm text-gray-600 mt-1">If you already have one, we need a provider certificate bound to your Greek tax ID. If not, we will provide one.</p>
+                <div className="font-medium text-gray-900">{t("wizard.mobile.greekNumber")}</div>
+                <p className="text-sm text-gray-600 mt-1">{t("wizard.mobile.greekDescription")}</p>
               </button>
             </div>
             {isEU && (
               <div>
-                <FieldLabel>Upload mobile phone bill (EU number)</FieldLabel>
+                <FieldLabel>{t("wizard.mobile.uploadBill")}</FieldLabel>
                 <input type="file" onChange={async (e)=> { a.setFiles("mobile_bill", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "mobile_bill"); }} />
               </div>
             )}
             {isGR && (
               <div className="grid gap-3">
-                <label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={b.hasGreekNumber} onChange={(e)=> a.update({ bank: { ...b, hasGreekNumber: e.target.checked } })} /> I already have a Greek number</label>
+                <label className="inline-flex items-center gap-2 text-sm"><input type="checkbox" checked={b.hasGreekNumber} onChange={(e)=> a.update({ bank: { ...b, hasGreekNumber: e.target.checked } })} /> {t("wizard.mobile.hasGreekNumber")}</label>
                 {b.hasGreekNumber ? (
                   <div>
-                    <FieldLabel>Upload provider certificate (ownership tied to Greek tax ID)</FieldLabel>
+                    <FieldLabel>{t("wizard.mobile.uploadProviderCert")}</FieldLabel>
                     <input type="file" onChange={async (e)=> { a.setFiles("provider_cert", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "provider_cert"); }} />
                   </div>
                 ) : (
-                  <p className="text-sm text-gray-600">We will provide a Greek number as part of the service.</p>
+                  <p className="text-sm text-gray-600">{t("wizard.mobile.willProvide")}</p>
                 )}
               </div>
             )}
           </div>
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
           </div>
         </div>
       );
@@ -458,40 +456,40 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
     case "review": {
       const missing: string[] = [];
       const needBank = answers.bundleType === "full";
-      if (!answers.hasValidId || !answers.idType) missing.push("Valid ID");
-      if (!answers.hasBirthCertificate) missing.push("Birth certificate");
-      if (!answers.hasAddressProof) missing.push("Proof of address");
-      if (!answers.recentDocsConfirmed) missing.push("6-months doc freshness confirmation");
-      if (answers.isMarried && !(answers.files["marriage_certificate"]?.length)) missing.push("Marriage certificate");
-      if (!(answers.files["id_document"]?.length)) missing.push("ID document upload");
-      if (!(answers.files["birth_certificate"]?.length)) missing.push("Birth certificate upload");
-      if (!(answers.files["address_proof"]?.length)) missing.push("Address proof upload");
+      if (!answers.hasValidId || !answers.idType) missing.push(t("wizard.review.missingItems.validId"));
+      if (!answers.hasBirthCertificate) missing.push(t("wizard.review.missingItems.birthCertificate"));
+      if (!answers.hasAddressProof) missing.push(t("wizard.review.missingItems.addressProof"));
+      if (!answers.recentDocsConfirmed) missing.push(t("wizard.review.missingItems.recentDocs"));
+      if (answers.isMarried && !(answers.files["marriage_certificate"]?.length)) missing.push(t("wizard.review.missingItems.marriageCertificate"));
+      if (!(answers.files["id_document"]?.length)) missing.push(t("wizard.review.missingItems.idUpload"));
+      if (!(answers.files["birth_certificate"]?.length)) missing.push(t("wizard.review.missingItems.birthUpload"));
+      if (!(answers.files["address_proof"]?.length)) missing.push(t("wizard.review.missingItems.addressUpload"));
       if (needBank) {
-        if (!answers.bank.financialDocType) missing.push("Financial document selection");
-        if (!(answers.files["financial_doc"]?.length)) missing.push("Financial document upload");
-        if (answers.bank.proofOfAddressOption !== "id_address" && !(answers.files["address_doc"]?.length)) missing.push("Bank address document upload");
-        if (!answers.bank.employmentLine) missing.push("Employer certificate text");
-        if (!(answers.files["employer_certificate"]?.length)) missing.push("Employer certificate upload");
-        if (answers.bank.mobileOption === "eu_number" && !(answers.files["mobile_bill"]?.length)) missing.push("Mobile phone bill upload");
-        if (answers.bank.mobileOption === "greek_number" && answers.bank.hasGreekNumber && !(answers.files["provider_cert"]?.length)) missing.push("Provider certificate upload");
+        if (!answers.bank.financialDocType) missing.push(t("wizard.review.missingItems.financialDoc"));
+        if (!(answers.files["financial_doc"]?.length)) missing.push(t("wizard.review.missingItems.financialUpload"));
+        if (answers.bank.proofOfAddressOption !== "id_address" && !(answers.files["address_doc"]?.length)) missing.push(t("wizard.review.missingItems.bankAddressUpload"));
+        if (!answers.bank.employmentLine) missing.push(t("wizard.review.missingItems.employerText"));
+        if (!(answers.files["employer_certificate"]?.length)) missing.push(t("wizard.review.missingItems.employerUpload"));
+        if (answers.bank.mobileOption === "eu_number" && !(answers.files["mobile_bill"]?.length)) missing.push(t("wizard.review.missingItems.mobileBill"));
+        if (answers.bank.mobileOption === "greek_number" && answers.bank.hasGreekNumber && !(answers.files["provider_cert"]?.length)) missing.push(t("wizard.review.missingItems.providerCert"));
       }
       const pass = missing.length === 0;
       return (
         <div>
-          <SectionTitle>Review & Compliance Check</SectionTitle>
+          <SectionTitle>{t("wizard.review.title")}</SectionTitle>
           {pass ? (
-            <p className="text-green-700">All required checks passed. You can proceed to checkout.</p>
+            <p className="text-green-700">{t("wizard.review.passed")}</p>
           ) : (
             <div>
-              <p className="text-red-700 mb-2">Please complete the following:</p>
+              <p className="text-red-700 mb-2">{t("wizard.review.missing")}</p>
               <ul className="list-disc pl-5 text-red-700">
                 {missing.map((m) => <li key={m}>{m}</li>)}
               </ul>
             </div>
           )}
           <div className="mt-6 flex justify-between">
-            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
-            <button className="rounded-md bg-green-600 text-white px-4 py-2 disabled:opacity-50" disabled={!pass} onClick={a.gotoCheckout}>Proceed to checkout</button>
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-green-600 text-white px-4 py-2 disabled:opacity-50" disabled={!pass} onClick={a.gotoCheckout}>{t("wizard.review.proceedToCheckout")}</button>
           </div>
         </div>
       );
