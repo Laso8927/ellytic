@@ -47,6 +47,8 @@ export default async function RootLayout({
   const cookieStore = cookies();
   const lang = cookieStore.get("lang")?.value || "en";
   const messages = await loadMessages(lang);
+  const imprintLabel = (messages as any)["footer.imprint"] ?? "Imprint";
+  const privacyLabel = (messages as any)["footer.privacy"] ?? "Privacy";
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -60,8 +62,8 @@ export default async function RootLayout({
                 <span className="font-extrabold text-lg tracking-tight text-black leading-none">ELLYTIC</span>
               </div>
               <nav className="flex items-center gap-6 text-sm">
-                <Link className="hover:underline" href="/legal/imprint">Imprint</Link>
-                <Link className="hover:underline" href="/legal/privacy">Privacy</Link>
+                <Link className="hover:underline" href="/legal/imprint">{imprintLabel}</Link>
+                <Link className="hover:underline" href="/legal/privacy">{privacyLabel}</Link>
                 <form action="/lang" method="post" className="inline-flex items-center gap-2">
                   <select name="lang" defaultValue={lang} className="text-sm border rounded px-2 py-1">
                     <option value="en">EN</option>
