@@ -36,7 +36,14 @@ export default defineType({
       type: 'array',
       of: [
         {type: 'block'},
-        {type: 'image', options: {hotspot: true}},
+        {
+          type: 'image',
+          options: {hotspot: true},
+          fields: [
+            { name: 'alt', title: 'Alt text', type: 'string' },
+            { name: 'caption', title: 'Caption', type: 'string' },
+          ],
+        },
         {type: 'code'},
       ],
     }),
