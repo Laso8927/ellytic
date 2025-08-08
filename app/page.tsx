@@ -63,24 +63,14 @@ export default function Landing() {
   className="sticky top-0 z-50 bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between md:px-6 relative"
 >
         <Link href="/">
-          <span className="font-bold text-lg tracking-tight">ELLYTIC</span>
+          <span className="font-extrabold text-xl tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</span>
         </Link>
         <nav className="hidden md:flex space-x-6 text-sm">
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-            <Link href="/wizard">Get Started</Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-            <Link href="/#blog">Blog</Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-            <Link href="/studio">Studio</Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-            <Link href="/dashboard">Dashboard</Link>
-          </motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-            <Link href="/login">Login</Link>
-          </motion.div>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/#blog">Blog</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">Login</Link>
         </nav>
         <div className="md:hidden">
           <button
@@ -99,7 +89,7 @@ export default function Landing() {
                 animate={{ opacity: 0.5 }}
                 exit={{ opacity: 0 }}
                 transition={{ duration: 0.2 }}
-                className="fixed inset-0 bg-black backdrop-blur-sm z-30"
+                className="fixed inset-0 bg-black/40 z-30"
                 onClick={() => setMobileMenuOpen(false)}
               />
               <motion.nav
@@ -110,21 +100,11 @@ export default function Landing() {
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                    <Link href="/wizard">Get Started</Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                    <Link href="/#blog">Blog</Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                    <Link href="/studio">Studio</Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                    <Link href="/dashboard">Dashboard</Link>
-                  </motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
-                    <Link href="/login">Login</Link>
-                  </motion.div>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/#blog">Blog</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">Login</Link>
                 </div>
               </motion.nav>
             </>
