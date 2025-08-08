@@ -19,3 +19,18 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans), system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
 }
+
+/* Glassmorphism utility */
+.glass {
+  @apply bg-white/60 backdrop-blur-md border border-white/40 shadow-sm;
+}
+
+/* Wizard input base */
+.input {
+  @apply w-full rounded-md border border-gray-300/80 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500/30 focus:border-blue-600 transition;
+}
+
+/* Subtle field group hint */
+.field-group {
+  @apply rounded-lg border border-gray-200/70 bg-gray-50/60 p-3;
+}

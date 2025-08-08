@@ -128,12 +128,21 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       return (
         <div>
           <SectionTitle>{t("wizard.audience.title")}</SectionTitle>
-          <div className="grid gap-3 md:grid-cols-2">
+          <div className="grid gap-4 md:grid-cols-2">
             {["expat","pensioner","buyer","investor","heir","diaspora"].map((opt) => (
-              <button key={opt} onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }} className="text-left rounded-xl border hover:border-blue-600 hover:bg-blue-50/50 transition-colors p-4">
-                <div className="font-medium text-gray-900 capitalize">{t(`wizard.audience.options.${opt}`)}</div>
-                <p className="text-sm text-gray-600 mt-1">{t("wizard.audience.subtitle")}</p>
-              </button>
+              <motion.button
+                key={opt}
+                onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                className="text-left rounded-2xl glass p-4 transition-all"
+              >
+                <div className="font-medium text-gray-900 capitalize flex items-center justify-between">
+                  <span>{t(`wizard.audience.options.${opt}`)}</span>
+                  <span className="text-xs text-gray-500">{t("wizard.audience.subtitle")}</span>
+                </div>
+              </motion.button>
             ))}
           </div>
         </div>
@@ -142,15 +151,20 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       return (
         <div>
           <SectionTitle>{t("wizard.bundle.title")}</SectionTitle>
-          <div className="grid gap-3 md:grid-cols-2">
-            <button onClick={() => { a.update({ bundleType: "starter" }); a.nextStep(); }} className={`text-left rounded-xl border p-4 hover:border-blue-600 hover:bg-blue-50/50 ${answers.bundleType === "starter" ? "border-blue-600 bg-blue-50/50" : ""}`}>
-              <div className="font-medium text-gray-900">{t("wizard.bundle.starter.title")}</div>
-              <p className="text-sm text-gray-600 mt-1">{t("wizard.bundle.starter.description")}</p>
-            </button>
-            <button onClick={() => { a.update({ bundleType: "full" }); a.nextStep(); }} className={`text-left rounded-xl border p-4 hover:border-blue-600 hover:bg-blue-50/50 ${answers.bundleType === "full" ? "border-blue-600 bg-blue-50/50" : ""}`}>
-              <div className="font-medium text-gray-900">{t("wizard.bundle.full.title")}</div>
-              <p className="text-sm text-gray-600 mt-1">{t("wizard.bundle.full.description")}</p>
-            </button>
+          <div className="grid gap-4 md:grid-cols-2">
+            {[{key:"starter", title:t("wizard.bundle.starter.title"), desc:t("wizard.bundle.starter.description")}, {key:"full", title:t("wizard.bundle.full.title"), desc:t("wizard.bundle.full.description")}].map((b)=> (
+              <motion.button
+                key={b.key}
+                onClick={() => { a.update({ bundleType: b.key as any }); a.nextStep(); }}
+                initial={{ scale: 1 }}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.99 }}
+                className={`text-left rounded-2xl glass p-4 transition-all ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
+              >
+                <div className="font-medium text-gray-900">{b.title}</div>
+                <p className="text-sm text-gray-600 mt-1">{b.desc}</p>
+              </motion.button>
+            ))}
           </div>
           <div className="mt-6 flex justify-start">
             <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
@@ -209,14 +223,14 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
         <div>
           <SectionTitle>{t("wizard.personal.title")}</SectionTitle>
           <div className="grid gap-4 sm:grid-cols-2">
-            <div><FieldLabel>{t("wizard.personal.firstName")}</FieldLabel><input className="input" value={p.firstName} onChange={(e)=> a.update({ personal: { ...p, firstName: e.target.value }})} /></div>
-            <div><FieldLabel>{t("wizard.personal.lastName")}</FieldLabel><input className="input" value={p.lastName} onChange={(e)=> a.update({ personal: { ...p, lastName: e.target.value }})} /></div>
-            <div><FieldLabel>{t("wizard.personal.fatherFirstName")}</FieldLabel><input className="input" value={p.fatherFirstName} onChange={(e)=> a.update({ personal: { ...p, fatherFirstName: e.target.value }})} /></div>
-            <div><FieldLabel>{t("wizard.personal.fatherLastName")}</FieldLabel><input className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
-            <div><FieldLabel>{t("wizard.personal.motherFirstName")}</FieldLabel><input className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
-            <div><FieldLabel>{t("wizard.personal.motherLastName")}</FieldLabel><input className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.firstName")}</FieldLabel><input placeholder={t("wizard.personal.firstName")} className="input" value={p.firstName} onChange={(e)=> a.update({ personal: { ...p, firstName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.lastName")}</FieldLabel><input placeholder={t("wizard.personal.lastName")} className="input" value={p.lastName} onChange={(e)=> a.update({ personal: { ...p, lastName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.fatherFirstName")}</FieldLabel><input placeholder={t("wizard.personal.fatherFirstName")} className="input" value={p.fatherFirstName} onChange={(e)=> a.update({ personal: { ...p, fatherFirstName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.fatherLastName")}</FieldLabel><input placeholder={t("wizard.personal.fatherLastName")} className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.motherFirstName")}</FieldLabel><input placeholder={t("wizard.personal.motherFirstName")} className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.motherLastName")}</FieldLabel><input placeholder={t("wizard.personal.motherLastName")} className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
             <div className="sm:col-span-2 grid gap-3">
-              <div><FieldLabel>{t("wizard.personal.placeOfBirth")}</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
+              <div className="field-group"><FieldLabel>{t("wizard.personal.placeOfBirth")}</FieldLabel><input placeholder={t("wizard.personal.placeOfBirth")} className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
                 const val = normalizePlace(e.target.value);
                 a.update({ personal: { ...p, placeOfBirth: val }});
                 if (val) {
@@ -228,21 +242,21 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 }
               }} /></div>
               <div className="grid sm:grid-cols-3 gap-3">
-                <div><FieldLabel>{t("wizard.personal.region")}</FieldLabel><input className="input" value={p.birthRegion} onChange={(e)=> a.update({ personal: { ...p, birthRegion: e.target.value }})} /></div>
-                <div><FieldLabel>{t("wizard.personal.zipCode")}</FieldLabel><input className="input" value={p.birthZipCode} onChange={(e)=> a.update({ personal: { ...p, birthZipCode: e.target.value }})} /></div>
-                <div><FieldLabel>{t("wizard.personal.country")}</FieldLabel><input className="input" value={p.birthCountry} onChange={(e)=> a.update({ personal: { ...p, birthCountry: e.target.value }})} /></div>
+                <div className="field-group"><FieldLabel>{t("wizard.personal.region")}</FieldLabel><input placeholder={t("wizard.personal.region")} className="input" value={p.birthRegion} onChange={(e)=> a.update({ personal: { ...p, birthRegion: e.target.value }})} /></div>
+                <div className="field-group"><FieldLabel>{t("wizard.personal.zipCode")}</FieldLabel><input placeholder={t("wizard.personal.zipCode")} className="input" value={p.birthZipCode} onChange={(e)=> a.update({ personal: { ...p, birthZipCode: e.target.value }})} /></div>
+                <div className="field-group"><FieldLabel>{t("wizard.personal.country")}</FieldLabel><input placeholder={t("wizard.personal.country")} className="input" value={p.birthCountry} onChange={(e)=> a.update({ personal: { ...p, birthCountry: e.target.value }})} /></div>
               </div>
             </div>
-            <div><FieldLabel>{t("wizard.personal.dateOfBirth")}</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.dateOfBirth")}</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
             <div className="sm:col-span-2 grid gap-3">
               <FieldLabel>{t("wizard.personal.currentResidence")}</FieldLabel>
               <div className="grid sm:grid-cols-2 gap-3">
-                <input className="input" placeholder={t("wizard.personal.street")} value={p.currentStreet} onChange={(e)=> a.update({ personal: { ...p, currentStreet: e.target.value }})} />
-                <input className="input" placeholder={t("wizard.personal.city")} value={p.currentCity} onChange={(e)=> a.update({ personal: { ...p, currentCity: e.target.value }})} />
+                <div className="field-group"><input className="input" placeholder={t("wizard.personal.street")} value={p.currentStreet} onChange={(e)=> a.update({ personal: { ...p, currentStreet: e.target.value }})} /></div>
+                <div className="field-group"><input className="input" placeholder={t("wizard.personal.city")} value={p.currentCity} onChange={(e)=> a.update({ personal: { ...p, currentCity: e.target.value }})} /></div>
               </div>
               <div className="grid sm:grid-cols-2 gap-3">
-                <input className="input" placeholder={t("wizard.personal.zipCode")} value={p.currentZipCode} onChange={(e)=> a.update({ personal: { ...p, currentZipCode: e.target.value }})} />
-                <input className="input" placeholder={t("wizard.personal.country")} value={p.currentCountry} onChange={(e)=> a.update({ personal: { ...p, currentCountry: e.target.value }})} />
+                <div className="field-group"><input className="input" placeholder={t("wizard.personal.zipCode")} value={p.currentZipCode} onChange={(e)=> a.update({ personal: { ...p, currentZipCode: e.target.value }})} /></div>
+                <div className="field-group"><input className="input" placeholder={t("wizard.personal.country")} value={p.currentCountry} onChange={(e)=> a.update({ personal: { ...p, currentCountry: e.target.value }})} /></div>
               </div>
             </div>
           </div>
