@@ -69,7 +69,7 @@ export default function Landing() {
           <span className="font-extrabold text-xl tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</span>
         </Link>
         <nav className="hidden md:flex space-x-6 text-sm">
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard2">Get Started</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">About</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
@@ -104,7 +104,7 @@ export default function Landing() {
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard2">Get Started</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">About</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
@@ -147,7 +147,7 @@ export default function Landing() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
           >
-  <Link href="/wizard">
+  <Link href="/wizard2">
         <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
           <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
             <Button size="lg">Start Now</Button>
