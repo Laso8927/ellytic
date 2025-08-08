@@ -149,6 +149,9 @@ export default function CheckoutPage() {
               <span>Total</span>
               <span>{formatEUR(total)}</span>
             </div>
+            <p className="mt-4 text-xs text-gray-500">
+              We are a professional, GDPR-compliant team. Data is processed and stored securely within Germany (EU law). Personal data is deleted 30 days after fulfilment; we retain only legally mandated metadata (name, contact details, payment records). See <a className="underline" href="/legal/privacy">Privacy</a>.
+            </p>
             <button
               className="mt-6 w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
               onClick={(e) => {

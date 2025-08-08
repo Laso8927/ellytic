@@ -38,6 +38,7 @@ export default function Landing() {
   const [selectedBundle, setSelectedBundle] = useState<"single" | "couple">("single");
   const [addBankAccount, setAddBankAccount] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
+  const EASE: number[] = [0.16, 1, 0.3, 1];
 
   useEffect(() => {
     if (!client) return;
@@ -60,7 +61,7 @@ export default function Landing() {
       <motion.header
   initial={{ opacity: 0, y: -10 }}
   animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5 }}
+  transition={{ duration: 0.5, ease: EASE, type: "tween" }}
   className="sticky top-0 z-50 bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between md:px-6 relative"
 >
         <Link href="/">
@@ -68,7 +69,7 @@ export default function Landing() {
         </Link>
         <nav className="hidden md:flex space-x-6 text-sm">
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/#blog">Blog</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">Login</Link>
@@ -89,7 +90,7 @@ export default function Landing() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.5 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
+                transition={{ duration: 0.25, ease: EASE, type: "tween" }}
                 className="fixed inset-0 bg-black/40 z-30"
                 onClick={() => setMobileMenuOpen(false)}
               />
@@ -97,12 +98,12 @@ export default function Landing() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25, ease: "easeOut" }}
+                transition={{ duration: 0.25, ease: EASE, type: "tween" }}
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/#blog">Blog</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">Login</Link>
@@ -119,13 +120,13 @@ export default function Landing() {
           className="px-6 py-24 text-center max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 0.6, ease: EASE, type: "tween" }}
         >
           <motion.h1
             className="text-5xl font-bold tracking-tight"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
+            transition={{ duration: 0.7, ease: EASE, type: "tween" }}
           >
             You plan. We handle Greece.
           </motion.h1>
@@ -133,7 +134,7 @@ export default function Landing() {
             className="mt-6 text-lg text-gray-600"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE, type: "tween" }}
           >
             ELLYTIC transforms your Greek journey with TransLytic – our AI-driven solution for home buyers, freelancers, Greeks abroad and professionals. From translations to tax and enterprise services – we make Greece yours.
           </motion.p>
@@ -141,14 +142,14 @@ export default function Landing() {
   className="mt-10"
   initial={{ opacity: 0 }}
   animate={{ opacity: 1 }}
-  transition={{ duration: 0.8, delay: 0.6 }}
+  transition={{ duration: 0.8, delay: 0.6, ease: EASE, type: "tween" }}
 >
   <Link href="/wizard">
     <motion.div
       whileHover={{ scale: 1.03, y: -2 }}
-      transition={{ duration: 0.25, ease: "easeOut" }}
+      transition={{ duration: 0.25, ease: EASE, type: "tween" }}
     >
-      <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Button size="lg">Start Now</Button></motion.div>
+      <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: EASE, type: "tween" }}><Button size="lg">Start Now</Button></motion.div>
     </motion.div>
   </Link>
 </motion.div>

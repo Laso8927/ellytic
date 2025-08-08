@@ -129,7 +129,9 @@ export default function WizardPage() {
                     </Button>
                   )}
                 </div>
-                <div className="text-sm text-gray-500">We never share your answers.</div>
+                <div className="text-sm text-gray-500">
+                  GDPR compliant. Data processed in Germany, deleted 30 days after fulfilment; only legally required metadata retained. <a className="underline" href="/legal/privacy">Privacy</a>.
+                </div>
               </div>
             </motion.div>
           </AnimatePresence>
