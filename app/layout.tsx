@@ -3,6 +3,7 @@ import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import Link from "next/link";
+import Header from "@/components/Header";
 import { cookies } from "next/headers";
 import { NextIntlClientProvider } from "next-intl";
 
@@ -69,6 +70,7 @@ export default async function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
           <NextIntlClientProvider locale={lang} messages={messages}>
+            <Header />
             {children}
           </NextIntlClientProvider>
           <footer className="border-t bg-gray-50 text-gray-700 mt-12">

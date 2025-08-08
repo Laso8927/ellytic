@@ -61,63 +61,7 @@ export default function Landing() {
   return (
     <>
 
-      <motion.header
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: EASE }}
-        className="sticky top-0 z-50 bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between md:px-6 relative"
-      >
-        <Link href="/">
-          <span className="font-extrabold text-xl tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</span>
-        </Link>
-        <nav className="hidden md:flex space-x-6 text-sm">
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard2">{t("nav.getStarted")}</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">{t("nav.about")}</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">{t("nav.blog")}</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">{t("nav.studio")}</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">{t("nav.dashboard")}</Link>
-          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">{t("nav.login")}</Link>
-        </nav>
-        <div className="md:hidden">
-          <button
-            className="text-gray-700 focus:outline-none"
-            aria-label="Toggle Menu"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          >
-            ☰
-          </button>
-        </div>
-        <AnimatePresence initial={false} mode="wait">
-          {mobileMenuOpen && (
-            <>
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 0.5 }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, ease: EASE }}
-                className="fixed inset-0 bg-black/40 z-30"
-                onClick={() => setMobileMenuOpen(false)}
-              />
-              <motion.nav
-                initial={{ opacity: 0, y: -10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25, ease: EASE }}
-                className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
-              >
-                <div className="flex flex-col space-y-4 p-4 text-sm">
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard2">{t("nav.getStarted")}</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">{t("nav.about")}</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">{t("nav.blog")}</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">{t("nav.studio")}</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">{t("nav.dashboard")}</Link>
-                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/login">{t("nav.login")}</Link>
-                </div>
-              </motion.nav>
-            </>
-          )}
-        </AnimatePresence>
-      </motion.header>
+      {/* Global header moved to RootLayout */}
 
       <main className="min-h-screen bg-white text-gray-900">
         <motion.section
@@ -198,59 +142,45 @@ export default function Landing() {
     </div>
         </section>
 
-        {/* About (condensed) */}
+        {/* About (split) */}
         <section id="about" className="py-20 px-4 sm:px-6 bg-gray-50 border-t">
-          <div className="max-w-5xl mx-auto">
-            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-12">
-              <h2 className="text-3xl font-semibold tracking-tight">About ELLYTIC</h2>
-              <div className="mt-6 space-y-8 text-gray-700">
-                <div>
-                  <h3 className="text-xl font-semibold">Our Mission</h3>
-                  <p className="mt-2 leading-relaxed">
-                    We simplify and digitize Greek administrative processes for EU citizens, Greek nationals, investors,
-                    expats, pensioners, and the Greek diaspora. Using AI and automation, we eliminate bureaucracy,
-                    reduce costs, and ensure transparency.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">About Us</h3>
-                  <p className="mt-2 leading-relaxed">
-                    We are a product-first team building a modern service network for Greece. We combine legal know-how
-                    with automation to make processes reliable, fast, and affordable.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Our Vision</h3>
-                  <p className="mt-2 leading-relaxed">
-                    A digital Greece—where administrative processes are fast, affordable, and easy for everyone. Despite
-                    economic growth, Greece’s markets are still dominated by outdated, inefficient, and costly service
-                    providers (e.g., lawyers, notaries, accountants). Citizens often pay high fees for low-complexity
-                    services like opening bank accounts or obtaining an AFM tax number. Outdated regulations frustrate
-                    homebuyers, investors, and especially the Greek diaspora—particularly in countries like Germany.
-                  </p>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Solutions</h3>
-                  <ul className="mt-2 list-disc pl-5 space-y-1">
-                    <li>Automate processes like E1 & recurring E9 tax declarations (also for Greek citizens)</li>
-                    <li>AI-powered translations and document processing</li>
-                    <li>Streamline services without the need for lawyers or accountants</li>
-                    <li>Data-driven insights for investors, agents, and stakeholders</li>
-                    <li>Collaborate with or act as real estate agents and legal partners</li>
-                  </ul>
-                </div>
-                <div>
-                  <h3 className="text-xl font-semibold">Our Goal</h3>
-                  <p className="mt-2 leading-relaxed">
-                    To create a zero-bureaucracy, fully digital environment—while building a transparent, low-cost
-                    service network for Greece and its international community.
-                  </p>
-                </div>
-              </div>
-              <div className="mt-8">
-                <Link href="/about" className="inline-flex items-center text-blue-600 hover:underline">Learn more →</Link>
-              </div>
+          <div className="max-w-5xl mx-auto grid md:grid-cols-2 gap-6">
+            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-10">
+              <h3 className="text-2xl font-semibold">Our Mission</h3>
+              <p className="mt-3 text-gray-700 leading-relaxed">
+                We simplify and digitize Greek administrative processes for EU citizens, Greek nationals, investors,
+                expats, pensioners, and the Greek diaspora. Using AI and automation, we eliminate bureaucracy,
+                reduce costs, and ensure transparency.
+              </p>
             </div>
+            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-10">
+              <h3 className="text-2xl font-semibold">About Us</h3>
+              <p className="mt-3 text-gray-700 leading-relaxed">
+                We are a product-first team building a modern service network for Greece. We combine legal know-how
+                with automation to make processes reliable, fast, and affordable.
+              </p>
+            </div>
+            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-10">
+              <h3 className="text-2xl font-semibold">Our Vision</h3>
+              <p className="mt-3 text-gray-700 leading-relaxed">
+                A digital Greece—where administrative processes are fast, affordable, and easy for everyone. Despite
+                economic growth, Greece’s markets are still dominated by outdated, inefficient, and costly providers. We
+                aim to change that.
+              </p>
+            </div>
+            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-10">
+              <h3 className="text-2xl font-semibold">Solutions</h3>
+              <ul className="mt-3 list-disc pl-5 space-y-1 text-gray-700">
+                <li>Automate processes like E1 & recurring E9 tax declarations</li>
+                <li>AI-powered translations and document processing</li>
+                <li>Streamlined services without unnecessary intermediaries</li>
+                <li>Data-driven insights for investors and stakeholders</li>
+                <li>Partner with real estate and legal experts</li>
+              </ul>
+            </div>
+          </div>
+          <div className="mt-8 text-center">
+            <Link href="/about" className="inline-flex items-center text-blue-600 hover:underline">Learn more →</Link>
           </div>
         </section>
 
