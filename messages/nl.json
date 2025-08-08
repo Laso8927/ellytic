@@ -143,5 +143,7 @@
   "wizard.review.missingItems.employerUpload": "Werkgeversverklaring upload",
   "wizard.review.missingItems.mobileBill": "Mobiele telefoonrekening upload",
   "wizard.review.missingItems.providerCert": "Providercertificaat upload"
+  ,
+  "legal.disclaimer.euOnly": "Belangrijk: Onze diensten zijn uitsluitend beschikbaar voor EU-burgers en voor personen die burger zijn of permanent woonachtig zijn binnen de Europese Unie."
 }
 

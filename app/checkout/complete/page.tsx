@@ -1,6 +1,7 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
+import { Disclaimer } from "@/components/Disclaimer";
 
 type BundleKey =
   | "starter_single"
@@ -49,6 +50,7 @@ export default function PostPurchasePage() {
     <main className="min-h-screen bg-white text-gray-900 p-6">
       <div className="max-w-3xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Thank you for your purchase!</h1>
+        <Disclaimer className="mb-4" />
 
         {step === 1 && (
           <section className="bg-white border rounded-2xl shadow-sm p-6">

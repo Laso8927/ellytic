@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { Disclaimer } from "@/components/Disclaimer";
 import { useTranslations } from "next-intl";
 
 async function uploadToServer(file: File, category: string) {
@@ -78,6 +79,7 @@ export default function WizardAdvancedPage() {
         transition={{ duration: 0.45, ease: [0.4, 0.0, 0.2, 1] }}
       >
         <div className="max-w-4xl mx-auto">
+          <Disclaimer className="mb-4" />
           <div className="mb-6">
             <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{t("wizard.title")}</h1>
             <p className="mt-2 text-gray-600">{t("wizard.subtitle")}</p>

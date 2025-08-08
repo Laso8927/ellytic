@@ -143,5 +143,7 @@
   "wizard.review.missingItems.employerUpload": "Αποστολή βεβαίωσης εργοδότη",
   "wizard.review.missingItems.mobileBill": "Αποστολή λογαριασμού κινητού",
   "wizard.review.missingItems.providerCert": "Αποστολή πιστοποιητικού παρόχου"
+  ,
+  "legal.disclaimer.euOnly": "Σημαντικό: Οι υπηρεσίες μας διατίθενται αποκλειστικά σε πολίτες της ΕΕ και σε άτομα που είναι πολίτες ή έχουν μόνιμη κατοικία εντός της Ευρωπαϊκής Ένωσης."
 }
 

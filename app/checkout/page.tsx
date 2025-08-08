@@ -1,6 +1,8 @@
 "use client";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
+import { Disclaimer } from "@/components/Disclaimer";
+import { useTranslations } from "next-intl";
 
 type BundleKey =
   | "starter_single"
@@ -35,6 +37,7 @@ export default function CheckoutPage() {
   const params = useSearchParams();
   const bundle = (params.get("bundle") || "starter_single") as BundleKey;
   const router = useRouter();
+  const t = useTranslations();
   const [withGovE1, setWithGovE1] = useState(false);
   const [withBank, setWithBank] = useState(false);
   const [translationDocs, setTranslationDocs] = useState(1);
@@ -85,6 +88,7 @@ export default function CheckoutPage() {
     <main className="min-h-screen bg-white text-gray-900 p-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">Checkout</h1>
+        <Disclaimer className="mb-4" />
         <div className="grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2 bg-white border rounded-2xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-2">Selected: {labelize(bundle)}</h2>
@@ -171,7 +175,7 @@ export default function CheckoutPage() {
       </div>
     </main>
   );
-}
+} 
 
 function labelize(key: string): string {
   const map: Record<string, string> = {
