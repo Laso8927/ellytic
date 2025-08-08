@@ -189,8 +189,113 @@ export default function Landing() {
     </div>
         </section>
 
+        {/* About Us section */}
+        <section id="about" className="py-20 px-4 sm:px-6 bg-gray-50 border-t">
+          <div className="max-w-5xl mx-auto">
+            <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-12">
+              <h2 className="text-3xl font-semibold tracking-tight">About Us</h2>
+              <p className="mt-4 text-gray-700 leading-relaxed">
+                We’re a tech-driven team transforming relocation and business in Greece.
+                ELLYTIC delivers AI-powered translations and streamlined, automated solutions for
+                home buyers, expats, Greeks abroad and professionals. Our mission is to make complex processes
+                effortless, secure and transparent – so you can focus on what truly matters. Stay tuned and let us
+                elevate your Greek success.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* Contact section */}
+        <section id="contact" className="py-20 px-4 sm:px-6 bg-white border-t">
+          <div className="max-w-5xl mx-auto grid gap-10 md:grid-cols-2 items-start">
+            <div>
+              <h2 className="text-3xl font-semibold tracking-tight">Contact</h2>
+              <p className="mt-3 text-gray-600">Tell us briefly how we can help. We’ll get back to you.</p>
+            </div>
+            <ContactForm />
+          </div>
+        </section>
+
         {/* ...About, Login, Footer etc. bleiben unverändert */}
       </main>
     </>
+  );
+}
+
+function ContactForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "success" | "error">("idle");
+  const [errorText, setErrorText] = useState<string>("");
+
+  async function onSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setErrorText("");
+    if (!name.trim()) return setErrorText("Please enter your name.");
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return setErrorText("Please enter a valid email.");
+    if (message.trim().length < 10) return setErrorText("Message should be at least 10 characters.");
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ name, email, message }),
+      });
+      if (!res.ok) throw new Error();
+      setStatus("success");
+      setName(""); setEmail(""); setMessage("");
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <form onSubmit={onSubmit} className="bg-gray-50 border rounded-2xl p-6 md:p-8 shadow-sm w-full">
+      <div className="grid gap-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Name</label>
+          <input
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            className="w-full rounded-md border-gray-300 focus:border-blue-600 focus:ring-blue-600"
+            placeholder="Your name"
+            autoComplete="name"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">E-Mail</label>
+          <input
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            className="w-full rounded-md border-gray-300 focus:border-blue-600 focus:ring-blue-600"
+            placeholder="you@example.com"
+            type="email"
+            autoComplete="email"
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">Nachricht</label>
+          <textarea
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+            className="w-full rounded-md border-gray-300 focus:border-blue-600 focus:ring-blue-600 min-h-[120px]"
+            placeholder="How can we help?"
+          />
+        </div>
+        {errorText && <p className="text-sm text-red-600">{errorText}</p>}
+        <div className="flex items-center gap-3">
+          <button
+            type="submit"
+            disabled={status === "sending"}
+            className="inline-flex items-center justify-center rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700 disabled:opacity-50"
+          >
+            {status === "sending" ? "Sending…" : "Send Message"}
+          </button>
+          {status === "success" && <span className="text-sm text-green-700">Thanks! We will get back to you.</span>}
+          {status === "error" && <span className="text-sm text-red-600">Something went wrong. Please try again.</span>}
+        </div>
+      </div>
+    </form>
   );
 }

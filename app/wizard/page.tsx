@@ -6,8 +6,31 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 
 const steps = [
-  { id: 0, label: "target_group", question: "Who are you?", options: ["expat", "pensioner", "buyer", "diaspora", "professional"] },
-  { id: 1, label: "service", question: "What do you want to do?", options: ["afm", "bank", "translation", "full_service"] },
+  {
+    id: 0,
+    label: "target_group",
+    question: "Who are you?",
+    options: [
+      "expat",
+      "pensioner",
+      "buyer",
+      "investor",
+      "heir",
+      "diaspora", // Greeks abroad
+    ],
+  },
+  {
+    id: 1,
+    label: "bundle",
+    question: "Choose your service",
+    options: [
+      "starter_single",
+      "starter_couple",
+      "full_single",
+      "full_couple",
+      "translation",
+    ],
+  },
 ];
 
 export default function WizardPage() {
@@ -77,7 +100,7 @@ export default function WizardPage() {
                   >
                     <div className="flex items-center justify-between">
                       <div className="font-medium text-gray-900">
-                        {opt.charAt(0).toUpperCase() + opt.slice(1)}
+                        {labelize(opt)}
                       </div>
                       <span className="text-gray-400 group-hover:text-blue-600 transition-colors">→</span>
                     </div>
@@ -85,12 +108,14 @@ export default function WizardPage() {
                       {opt === "expat" && "Living or moving to Greece"}
                       {opt === "pensioner" && "Retired and settling administrative needs"}
                       {opt === "buyer" && "Buying property and related services"}
+                      {opt === "investor" && "Investment, property and compliance"}
+                      {opt === "heir" && "Inheritance, notaries and public services"}
                       {opt === "diaspora" && "Greek abroad handling matters remotely"}
-                      {opt === "professional" && "Business, tax or enterprise services"}
-                      {opt === "afm" && "Get your AFM (Tax Number) fast"}
-                      {opt === "bank" && "Open a bank account with guidance"}
-                      {opt === "translation" && "Certified translations done right"}
-                      {opt === "full_service" && "End-to-end concierge across services"}
+                      {opt === "starter_single" && "Starter Bundle for Singles – 325€"}
+                      {opt === "starter_couple" && "Starter Bundle for Couples – 575€"}
+                      {opt === "full_single" && "Full-Service Bundle for Singles – 475€"}
+                      {opt === "full_couple" && "Full-Service Bundle for Couples – 875€"}
+                      {opt === "translation" && "Certified Translation Packs (1–10 docs)"}
                     </p>
                   </motion.button>
                 ))}
@@ -112,4 +137,21 @@ export default function WizardPage() {
       </motion.section>
     </main>
   );
+}
+
+function labelize(key: string): string {
+  const map: Record<string, string> = {
+    expat: "Expat",
+    pensioner: "Pensioner",
+    buyer: "Buyer",
+    investor: "Investor",
+    heir: "Heir",
+    diaspora: "Greeks Abroad",
+    starter_single: "Starter Bundle – Single",
+    starter_couple: "Starter Bundle – Couple",
+    full_single: "Full-Service – Single",
+    full_couple: "Full-Service – Couple",
+    translation: "Certified Translation Pack",
+  };
+  return map[key] || key;
 }
