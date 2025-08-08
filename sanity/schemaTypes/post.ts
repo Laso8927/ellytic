@@ -30,6 +30,12 @@ export default defineType({
       type: 'datetime',
       validation: (rule) => rule.required(),
     }),
+    defineField({
+      name: 'body',
+      title: 'Body',
+      type: 'array',
+      of: [{type: 'block'}],
+    }),
   ],
 })
 

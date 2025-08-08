@@ -38,7 +38,8 @@ export default function Landing() {
   const [selectedBundle, setSelectedBundle] = useState<"single" | "couple">("single");
   const [addBankAccount, setAddBankAccount] = useState(false);
   const [posts, setPosts] = useState<Post[]>([]);
-  const EASE: number[] = [0.16, 1, 0.3, 1];
+  // Restore previous simpler easing (default easeInOut)
+  const EASE: number[] = [0.4, 0.0, 0.2, 1];
 
   useEffect(() => {
     if (!client) return;
@@ -59,11 +60,11 @@ export default function Landing() {
     <>
 
       <motion.header
-  initial={{ opacity: 0, y: -10 }}
-  animate={{ opacity: 1, y: 0 }}
-  transition={{ duration: 0.5, ease: EASE, type: "tween" }}
-  className="sticky top-0 z-50 bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between md:px-6 relative"
->
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: EASE }}
+        className="sticky top-0 z-50 bg-white shadow-sm border-b px-4 py-3 flex items-center justify-between md:px-6 relative"
+      >
         <Link href="/">
           <span className="font-extrabold text-xl tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</span>
         </Link>
@@ -90,7 +91,7 @@ export default function Landing() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.5 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.25, ease: EASE, type: "tween" }}
+                transition={{ duration: 0.25, ease: EASE }}
                 className="fixed inset-0 bg-black/40 z-30"
                 onClick={() => setMobileMenuOpen(false)}
               />
@@ -98,7 +99,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25, ease: EASE, type: "tween" }}
+                transition={{ duration: 0.25, ease: EASE }}
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
@@ -120,13 +121,13 @@ export default function Landing() {
           className="px-6 py-24 text-center max-w-4xl mx-auto"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: EASE, type: "tween" }}
+          transition={{ duration: 0.6, ease: EASE }}
         >
           <motion.h1
             className="text-5xl font-bold tracking-tight"
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7, ease: EASE, type: "tween" }}
+            transition={{ duration: 0.7, ease: EASE }}
           >
             You plan. We handle Greece.
           </motion.h1>
@@ -134,23 +135,22 @@ export default function Landing() {
             className="mt-6 text-lg text-gray-600"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.3, ease: EASE, type: "tween" }}
+            transition={{ duration: 0.8, delay: 0.3, ease: EASE }}
           >
             ELLYTIC transforms your Greek journey with TransLytic – our AI-driven solution for home buyers, freelancers, Greeks abroad and professionals. From translations to tax and enterprise services – we make Greece yours.
           </motion.p>
           <motion.div
-  className="mt-10"
-  initial={{ opacity: 0 }}
-  animate={{ opacity: 1 }}
-  transition={{ duration: 0.8, delay: 0.6, ease: EASE, type: "tween" }}
->
+            className="mt-10"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.6, ease: EASE }}
+          >
   <Link href="/wizard">
-    <motion.div
-      whileHover={{ scale: 1.03, y: -2 }}
-      transition={{ duration: 0.25, ease: EASE, type: "tween" }}
-    >
-      <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: EASE, type: "tween" }}><Button size="lg">Start Now</Button></motion.div>
-    </motion.div>
+        <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
+            <Button size="lg">Start Now</Button>
+          </motion.div>
+        </motion.div>
   </Link>
 </motion.div>
         </motion.section>
