@@ -7,6 +7,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
+import Image from "next/image";
 
 // Types
 interface Post {
@@ -81,14 +82,14 @@ export default function Landing() {
             ☰
           </button>
         </div>
-        <AnimatePresence>
+        <AnimatePresence initial={false} mode="wait">
           {mobileMenuOpen && (
             <>
               <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.5 }}
                 exit={{ opacity: 0 }}
-                transition={{ duration: 0.2 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
                 className="fixed inset-0 bg-black/40 z-30"
                 onClick={() => setMobileMenuOpen(false)}
               />
@@ -96,7 +97,7 @@ export default function Landing() {
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
+                transition={{ duration: 0.25, ease: "easeOut" }}
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
@@ -166,13 +167,16 @@ export default function Landing() {
                 >
                   <div className="overflow-hidden rounded-xl shadow-sm">
                            {post.mainImage && builder && (
-                      <img
+                      <Image
                         loading="lazy"
-                               src={urlFor(post.mainImage)!
+                        sizes="(min-width: 1024px) 33vw, (min-width: 640px) 50vw, 100vw"
+                        src={urlFor(post.mainImage)!
                           .width(600)
                           .height(400)
                           .url()}
                         alt={post.title}
+                        width={600}
+                        height={400}
                         className="w-full h-48 object-cover group-hover:scale-105 transition-transform"
                       />
                     )}
