@@ -1,5 +1,5 @@
 "use client";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 
 type BundleKey =
@@ -34,6 +34,7 @@ function formatEUR(n: number) {
 export default function CheckoutPage() {
   const params = useSearchParams();
   const bundle = (params.get("bundle") || "starter_single") as BundleKey;
+  const router = useRouter();
   const [withGovE1, setWithGovE1] = useState(false);
   const [withBank, setWithBank] = useState(false);
   const [translationDocs, setTranslationDocs] = useState(1);
@@ -148,7 +149,20 @@ export default function CheckoutPage() {
               <span>Total</span>
               <span>{formatEUR(total)}</span>
             </div>
-            <button className="mt-6 w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700">Proceed to Payment</button>
+            <button
+              className="mt-6 w-full bg-green-600 text-white px-4 py-2 rounded-md hover:bg-green-700"
+              onClick={(e) => {
+                e.preventDefault();
+                const qs = new URLSearchParams({
+                  bundle,
+                  gov: String(withGovE1 ? 1 : 0),
+                  bank: String(withBank ? 1 : 0),
+                });
+                router.push(`/checkout/complete?${qs.toString()}`);
+              }}
+            >
+              Proceed to Payment
+            </button>
           </div>
         </div>
       </div>
