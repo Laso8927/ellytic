@@ -208,6 +208,7 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
               <div className="grid sm:grid-cols-2 gap-3 text-sm items-start">
                 <div className="space-y-3">
                   <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> {t("wizard.afm.birthCertificate")}</label>
+                  <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> {t("wizard.afm.recentDocs")}</label>
                 </div>
                 <div className="space-y-3">
                   <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> {t("wizard.afm.addressProof")}</label>
@@ -227,7 +228,6 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                   </AnimatePresence>
                 </div>
               </div>
-              <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> {t("wizard.afm.recentDocs")}</label>
             </div>
           </div>
           <div className="mt-6 flex justify-between">
