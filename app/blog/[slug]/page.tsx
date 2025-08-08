@@ -1,5 +1,40 @@
 import { client } from "@/sanity/lib/client";
-import { PortableText } from "@portabletext/react";
+import { PortableText, type PortableTextComponents } from "@portabletext/react";
+import Image from "next/image";
+import imageUrlBuilder from "@sanity/image-url";
+import type { Image as SanityImage } from "sanity";
+
+const builder = imageUrlBuilder({ projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID!, dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production" });
+
+const components: PortableTextComponents = {
+  types: {
+    image: ({ value }) => {
+      const img = value as SanityImage;
+      const url = builder.image(img).width(1200).height(675).fit("max").url();
+      if (!url) return null;
+      return (
+        <figure>
+          <Image src={url} alt={value?.alt || ""} width={1200} height={675} className="rounded-lg" />
+          {value?.caption && <figcaption className="text-sm text-gray-500">{value.caption}</figcaption>}
+        </figure>
+      );
+    },
+    code: ({ value }) => (
+      <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-auto"><code>{value?.code}</code></pre>
+    ),
+  },
+  marks: {
+    link: ({ children, value }) => {
+      const href = value?.href || "#";
+      const isExternal = /^https?:\/\//i.test(href);
+      return (
+        <a href={href} target={isExternal ? "_blank" : undefined} rel={isExternal ? "noopener noreferrer" : undefined} className="underline">
+          {children}
+        </a>
+      );
+    },
+  },
+};
 
 export default async function BlogPost({ params }: { params: { slug: string } }) {
   const { slug } = params;
@@ -14,7 +49,7 @@ export default async function BlogPost({ params }: { params: { slug: string } })
         <h1>{post.title}</h1>
         <p className="text-sm text-gray-500">{new Date(post.publishedAt).toLocaleDateString()}</p>
         <div className="mt-6">
-          <PortableText value={post.body || []} />
+          <PortableText value={post.body || []} components={components} />
         </div>
       </article>
     </main>
