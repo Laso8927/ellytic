@@ -174,7 +174,14 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
         </div>
       );
     case "afm_requirements": {
-      const canContinue = !!(answers.hasValidId && answers.idType && answers.hasBirthCertificate && answers.hasAddressProof && answers.recentDocsConfirmed);
+      const canContinue = !!(
+        answers.hasValidId &&
+        answers.idType &&
+        answers.hasBirthCertificate &&
+        answers.hasAddressProof &&
+        answers.recentDocsConfirmed &&
+        (!answers.isMarried || answers.hasMarriageCertificate)
+      );
       return (
         <div>
           <SectionTitle>{t("wizard.afm.title")}</SectionTitle>
@@ -198,13 +205,28 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             </div>
             <div>
               <FieldLabel>{t("wizard.afm.documentsAvailable")}</FieldLabel>
-              <div className="grid sm:grid-cols-2 gap-3 text-sm">
-                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> {t("wizard.afm.birthCertificate")}</label>
-                <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> {t("wizard.afm.addressProof")}</label>
+              <div className="grid sm:grid-cols-2 gap-3 text-sm items-start">
+                <div className="space-y-3">
+                  <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> {t("wizard.afm.birthCertificate")}</label>
+                </div>
+                <div className="space-y-3">
+                  <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> {t("wizard.afm.addressProof")}</label>
+                  <AnimatePresence initial={false}>
+                    {answers.isMarried && (
+                      <motion.label
+                        key="marriage-cert"
+                        initial={{opacity: 0, height: 0}}
+                        animate={{opacity: 1, height: "auto"}}
+                        exit={{opacity: 0, height: 0}}
+                        transition={{duration: 0.2, ease: [0.2, 0, 0.2, 1]}}
+                        className="inline-flex items-center gap-2 text-sm"
+                      >
+                        <input type="checkbox" checked={answers.hasMarriageCertificate} onChange={(e)=> a.update({ hasMarriageCertificate: e.target.checked })} /> {t("wizard.afm.marriageCertificate")}
+                      </motion.label>
+                    )}
+                  </AnimatePresence>
+                </div>
               </div>
-              {answers.isMarried && (
-                <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.hasMarriageCertificate} onChange={(e)=> a.update({ hasMarriageCertificate: e.target.checked })} /> {t("wizard.afm.marriageCertificate")}</label>
-              )}
               <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> {t("wizard.afm.recentDocs")}</label>
             </div>
           </div>
