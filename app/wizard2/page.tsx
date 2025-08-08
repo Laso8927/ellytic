@@ -134,9 +134,9 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 key={opt}
                 onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }}
                 initial={{ scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
-                className="text-left rounded-2xl glass p-4 transition-all"
+                whileHover={{ scale: 1.14 }}
+                whileTap={{ scale: 0.98 }}
+                className="relative z-0 text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10"
               >
                 <div className="font-medium text-gray-900 capitalize flex items-center justify-between">
                   <span>{t(`wizard.audience.options.${opt}`)}</span>
@@ -157,9 +157,9 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 key={b.key}
                 onClick={() => { a.update({ bundleType: b.key as any }); a.nextStep(); }}
                 initial={{ scale: 1 }}
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.99 }}
-                className={`text-left rounded-2xl glass p-4 transition-all ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
+                whileHover={{ scale: 1.14 }}
+                whileTap={{ scale: 0.98 }}
+                className={`relative z-0 text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10 ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
               >
                 <div className="font-medium text-gray-900">{b.title}</div>
                 <p className="text-sm text-gray-600 mt-1">{b.desc}</p>
