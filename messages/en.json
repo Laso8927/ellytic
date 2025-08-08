@@ -1,0 +1,17 @@
+{
+  "nav.getStarted": "Get Started",
+  "nav.about": "About",
+  "nav.blog": "Blog",
+  "nav.studio": "Studio",
+  "nav.dashboard": "Dashboard",
+  "nav.login": "Login",
+  "footer.imprint": "Imprint",
+  "footer.privacy": "Privacy",
+  "hero.headline": "You plan. We handle Greece.",
+  "hero.cta": "Start Now",
+  "wizard.title": "Get Started",
+  "wizard.subtitle": "We collect only what’s necessary to start. You can pause and return anytime.",
+  "wizard.next": "Next",
+  "wizard.back": "Back"
+}
+

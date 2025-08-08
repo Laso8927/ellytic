@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
   form.append("file", file);
@@ -50,6 +51,7 @@ export default function WizardAdvancedPage() {
   const { step, nextStep, prevStep, update, setFiles, answers } = useWizardStore();
   const router = useRouter();
   const progress = Math.round(((step + 1) / steps.length) * 100);
+  const t = useTranslations();
 
   const gotoCheckout = () => {
     const isFull = answers.bundleType === "full";
@@ -76,8 +78,8 @@ export default function WizardAdvancedPage() {
       >
         <div className="max-w-4xl mx-auto">
           <div className="mb-6">
-            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">Get Started</h1>
-            <p className="mt-2 text-gray-600">We collect only what’s necessary to start. You can pause and return anytime.</p>
+            <h1 className="text-3xl md:text-4xl font-bold tracking-tight">{t("wizard.title")}</h1>
+            <p className="mt-2 text-gray-600">{t("wizard.subtitle")}</p>
           </div>
 
           <div className="mb-8">

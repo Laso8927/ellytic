@@ -4,6 +4,7 @@
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 import { useState, useEffect } from "react";
 import { createClient } from "@sanity/client";
 import imageUrlBuilder from "@sanity/image-url";
@@ -34,6 +35,7 @@ function urlFor(source: any) {
 }
 
 export default function Landing() {
+  const t = useTranslations();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedBundle, setSelectedBundle] = useState<"single" | "couple">("single");
   const [addBankAccount, setAddBankAccount] = useState(false);
@@ -131,7 +133,7 @@ export default function Landing() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: EASE }}
           >
-            You plan. We handle Greece.
+            {t("hero.headline")}
           </motion.h1>
           <motion.p
             className="mt-6 text-lg text-gray-600"
@@ -150,7 +152,7 @@ export default function Landing() {
   <Link href="/wizard2">
         <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
           <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.2, ease: EASE }}>
-            <Button size="lg">Start Now</Button>
+            <Button size="lg">{t("hero.cta")}</Button>
           </motion.div>
         </motion.div>
   </Link>
