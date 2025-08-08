@@ -52,6 +52,7 @@ interface Actions {
   nextStep: () => void;
   prevStep: () => void;
   gotoCheckout: () => void;
+  skipToStep: (stepIndex: number) => void;
 }
 
 export default function WizardAdvancedPage() {
@@ -456,7 +457,10 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
           <div>
             <SectionTitle>{t("wizard.bank.title")}</SectionTitle>
             <p className="text-gray-600">{t("wizard.bank.notRequired")}</p>
-            <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button></div>
+            <div className="mt-6 flex justify-between">
+              <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+              <button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button>
+            </div>
           </div>
         );
       }
@@ -478,6 +482,12 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       );
     }
     case "bank_docs": {
+      const isFull = answers.bundleType === "full";
+      if (!isFull) {
+        // This should not happen due to skip logic, but just in case
+        a.nextStep();
+        return null;
+      }
       const b = answers.bank;
       const needAddressUpload = b.proofOfAddressOption !== "id_address";
       const hasFin = (answers.files["financial_doc"]?.length || 0) > 0;
@@ -564,6 +574,12 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       );
     }
     case "bank_mobile": {
+      const isFull = answers.bundleType === "full";
+      if (!isFull) {
+        // This should not happen due to skip logic, but just in case
+        a.nextStep();
+        return null;
+      }
       const b = answers.bank;
       const isEU = b.mobileOption === "eu_number";
       const isGR = b.mobileOption === "greek_number";

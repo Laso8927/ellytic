@@ -105,11 +105,33 @@ const initialAnswers: WizardAnswers = {
   },
 };
 
-export const useWizardStore = create<WizardState>((set) => ({
+export const useWizardStore = create<WizardState>((set, get) => ({
   step: 0,
   answers: initialAnswers,
-  nextStep: () => set((state) => ({ step: state.step + 1 })),
-  prevStep: () => set((state) => ({ step: Math.max(state.step - 1, 0) })),
+  nextStep: () => set((state) => {
+    const isStarter = state.answers.bundleType === "starter";
+    const currentStep = state.step;
+    let nextStep = currentStep + 1;
+    
+    // Skip bank steps for starter bundle
+    if (isStarter) {
+      if (currentStep === 6) nextStep = 10; // Skip bank_overview, bank_docs, bank_mobile (steps 7,8,9)
+    }
+    
+    return { step: nextStep };
+  }),
+  prevStep: () => set((state) => {
+    const isStarter = state.answers.bundleType === "starter";
+    const currentStep = state.step;
+    let prevStep = Math.max(currentStep - 1, 0);
+    
+    // Skip bank steps for starter bundle when going back
+    if (isStarter) {
+      if (currentStep === 10) prevStep = 6; // Skip bank steps when going back from review
+    }
+    
+    return { step: prevStep };
+  }),
   update: (partial) =>
     set((state) => ({ answers: { ...state.answers, ...partial } })),
   setFiles: (key, files) =>
