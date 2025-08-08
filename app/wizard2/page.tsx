@@ -102,13 +102,7 @@ export default function WizardAdvancedPage() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="mt-6 flex items-center justify-between">
-            <button className="text-gray-600" onClick={prevStep} disabled={step === 0}>← Back</button>
-            <div className="text-sm text-gray-500">You can navigate back at any time.</div>
-            <button className="text-gray-600" onClick={nextStep} disabled={step >= steps.length - 1}>Next →</button>
-          </div>
-
-          <div className="mt-4 text-sm text-gray-500">
+          <div className="mt-6 text-sm text-gray-500">
             GDPR compliant. Data processed in Germany, deleted 30 days after fulfilment; only legally required metadata retained. <a className="underline" href="/legal/privacy">Privacy</a>.
           </div>
         </div>
