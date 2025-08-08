@@ -67,7 +67,7 @@
   "wizard.afm.birthCertificate": "Geburtsurkunde",
   "wizard.afm.addressProof": "Adressnachweis (Meldebescheinigung oder Rechnung)",
   "wizard.afm.marriageCertificate": "Eheurkunde",
-  "wizard.afm.recentDocs": "Beide nicht älter als 6 Monate",
+  "wizard.afm.recentDocs": "Alle beizufügenden Dokumente sind nicht älter als 6 Monate",
   "wizard.personal.title": "Persönliche Daten",
   "wizard.personal.firstName": "Vorname",
   "wizard.personal.lastName": "Nachname",
