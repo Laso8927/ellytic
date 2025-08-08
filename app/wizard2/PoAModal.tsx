@@ -14,7 +14,6 @@ export function PoAModal({ open, onClose, onAccepted }: { open: boolean; onClose
     onMyBehalf: true,
     onBehalfOf: false,
     toReceive: true,
-    notToReceive: false,
   });
   const [isLoading, setIsLoading] = useState(false);
 
@@ -30,8 +29,8 @@ export function PoAModal({ open, onClose, onAccepted }: { open: boolean; onClose
         identityNumber: "PLACEHOLDER_ID", // From uploaded documents
         identityType: answers.idType as "passport" | "id",
         dateAuthority: "PLACEHOLDER_DATE",
-        email: "user@example.com", // From user session
-        mobilePhone: "PLACEHOLDER_MOBILE",
+        email: answers.personal.email,
+        mobilePhone: answers.personal.mobilePhone,
         ...formData,
       } as PoAData;
 
@@ -78,8 +77,8 @@ export function PoAModal({ open, onClose, onAccepted }: { open: boolean; onClose
               <div></div>
               <div><strong>Identity Card or Passport Number:</strong> [Aus hochgeladenen Dokumenten]</div>
               <div><strong>TIN:</strong> [Wird beantragt]</div>
-              <div className="col-span-2"><strong>Email Address:</strong> [Aus Ihrem Account]</div>
-              <div className="col-span-2"><strong>Mobile phone number:</strong> [Aus Ihrem Account]</div>
+              <div className="col-span-2"><strong>Email Address:</strong> {answers.personal.email}</div>
+              <div className="col-span-2"><strong>Mobile phone number:</strong> {answers.personal.mobilePhone}</div>
             </div>
 
             <div className="border-t pt-4">
@@ -94,12 +93,8 @@ export function PoAModal({ open, onClose, onAccepted }: { open: boolean; onClose
                   on my behalf
                 </label>
                 <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={formData.toReceive} onChange={(e) => setFormData({...formData, toReceive: e.target.checked, notToReceive: !e.target.checked})} />
-                  to receive the Authentication Key and access codes
-                </label>
-                <label className="flex items-center gap-2">
-                  <input type="checkbox" checked={formData.notToReceive} onChange={(e) => setFormData({...formData, notToReceive: e.target.checked, toReceive: !e.target.checked})} />
-                  not to receive the Authentication Key and access codes
+                  <input type="checkbox" checked={formData.toReceive} onChange={(e) => setFormData({...formData, toReceive: e.target.checked})} />
+                  to submit a request for the simultaneous issuance of a TIN and an Authentication Key
                 </label>
               </div>
             </div>

@@ -98,6 +98,8 @@
   "wizard.personal.currentResidence": "Huidige verblijfplaats",
   "wizard.personal.street": "Straat",
   "wizard.personal.city": "Stad",
+  "wizard.personal.email": "E-mailadres",
+  "wizard.personal.mobilePhone": "Mobiel telefoonnummer",
   "wizard.personal.ageError": "Je moet minimaal 18 jaar oud zijn om deze diensten te gebruiken.",
   "wizard.marriage.title": "Huwelijk",
   "wizard.marriage.notApplicable": "Niet van toepassing. Ga door naar document uploads.",

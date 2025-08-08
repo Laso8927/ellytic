@@ -293,7 +293,7 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
         p.firstName,p.lastName,p.fatherFirstName,p.fatherLastName,p.motherFirstName,p.motherLastName,
         p.placeOfBirth,p.birthRegion,p.birthZipCode,p.birthCountry,
         p.currentStreet,p.currentCity,p.currentZipCode,p.currentCountry,
-        p.dateOfBirth
+        p.dateOfBirth,p.email,p.mobilePhone
       ].every(Boolean) && isAdultUser;
       return (
         <div>
@@ -332,6 +332,8 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
               </div>
             </div>
             <div className="field-group"><FieldLabel>{t("wizard.personal.dateOfBirth")}</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.email")}</FieldLabel><input type="email" placeholder={t("wizard.personal.email")} className="input" value={p.email} onChange={(e)=> a.update({ personal: { ...p, email: e.target.value }})} /></div>
+            <div className="field-group"><FieldLabel>{t("wizard.personal.mobilePhone")}</FieldLabel><input type="tel" placeholder={t("wizard.personal.mobilePhone")} className="input" value={p.mobilePhone} onChange={(e)=> a.update({ personal: { ...p, mobilePhone: e.target.value }})} /></div>
             <div className="sm:col-span-2 grid gap-3">
               <FieldLabel>{t("wizard.personal.currentResidence")}</FieldLabel>
               <div className="grid sm:grid-cols-2 gap-3">

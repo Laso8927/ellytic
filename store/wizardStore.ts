@@ -19,6 +19,8 @@ export interface PersonalInfo {
   currentCity: string;
   currentZipCode: string;
   currentCountry: string;
+  email: string;
+  mobilePhone: string;
 }
 
 export interface BankOptions {
@@ -73,10 +75,12 @@ const emptyPersonal: PersonalInfo = {
   birthZipCode: "",
   birthCountry: "",
   dateOfBirth: "",
-  currentStreet: "",
-  currentCity: "",
-  currentZipCode: "",
-  currentCountry: "",
+      currentStreet: "",
+    currentCity: "",
+    currentZipCode: "",
+    currentCountry: "",
+    email: "",
+    mobilePhone: "",
 };
 
 const initialAnswers: WizardAnswers = {

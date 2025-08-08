@@ -98,6 +98,8 @@
   "wizard.personal.currentResidence": "Τρέχουσα κατοικία",
   "wizard.personal.street": "Οδός",
   "wizard.personal.city": "Πόλη",
+  "wizard.personal.email": "Διεύθυνση email",
+  "wizard.personal.mobilePhone": "Αριθμός κινητού τηλεφώνου",
   "wizard.personal.ageError": "Πρέπει να είστε τουλάχιστον 18 ετών για να χρησιμοποιήσετε αυτές τις υπηρεσίες.",
   "wizard.marriage.title": "Γάμος",
   "wizard.marriage.notApplicable": "Δεν ισχύει. Συνεχίστε με τα έγγραφα.",

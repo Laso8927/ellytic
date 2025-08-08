@@ -39,7 +39,6 @@ export interface PoAData {
   onMyBehalf: boolean;
   onBehalfOf: boolean;
   toReceive: boolean;
-  notToReceive: boolean;
 }
 
 export interface SignatureDocument {

@@ -98,6 +98,8 @@
   "wizard.personal.currentResidence": "Current residence",
   "wizard.personal.street": "Street",
   "wizard.personal.city": "City",
+  "wizard.personal.email": "Email address",
+  "wizard.personal.mobilePhone": "Mobile phone number",
   "wizard.personal.ageError": "You must be at least 18 years old to use these services.",
   "wizard.marriage.title": "Marriage",
   "wizard.marriage.notApplicable": "Not applicable. Continue to document uploads.",
