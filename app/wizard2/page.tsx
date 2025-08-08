@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { Disclaimer } from "@/components/Disclaimer";
 import { useTranslations } from "next-intl";
+import { PoAModal } from "./PoAModal";
 
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
@@ -20,6 +21,7 @@ type StepKey =
   | "afm_requirements"
   | "personal"
   | "marriage"
+  | "consents"
   | "uploads_afm"
   | "bank_overview"
   | "bank_docs"
@@ -34,11 +36,12 @@ const steps: StepDef[] = [
   { id: 2, key: "afm_requirements" },
   { id: 3, key: "personal" },
   { id: 4, key: "marriage" },
-  { id: 5, key: "uploads_afm" },
-  { id: 6, key: "bank_overview" },
-  { id: 7, key: "bank_docs" },
-  { id: 8, key: "bank_mobile" },
-  { id: 9, key: "review" },
+  { id: 5, key: "consents" },
+  { id: 6, key: "uploads_afm" },
+  { id: 7, key: "bank_overview" },
+  { id: 8, key: "bank_docs" },
+  { id: 9, key: "bank_mobile" },
+  { id: 10, key: "review" },
 ];
 
 interface Actions {
@@ -55,12 +58,18 @@ export default function WizardAdvancedPage() {
   const progress = Math.round(((step + 1) / steps.length) * 100);
   const t = useTranslations();
 
+  const [poaOpen, setPoaOpen] = useState(false);
   const gotoCheckout = () => {
     const isFull = answers.bundleType === "full";
     const bundle = isFull
       ? (answers.isCouple ? "full_couple" : "full_single")
       : (answers.isCouple ? "starter_couple" : "starter_single");
-    router.push(`/checkout?bundle=${bundle}`);
+    // Require POA acceptance before redirect
+    if (!answers.poaAccepted) {
+      setPoaOpen(true);
+      return;
+    }
+    router.push(`/checkout?bundle=${bundle}&consents=1`);
   };
 
   return (
@@ -71,6 +80,19 @@ export default function WizardAdvancedPage() {
           <Link className="text-sm text-gray-600 hover:text-black" href="/">{t("wizard.backToHome")}</Link>
         </div>
       </header>
+
+      <PoAModal
+        open={poaOpen}
+        onClose={() => setPoaOpen(false)}
+        onAccepted={() => {
+          // In production, call DocuSign envelope creation first
+          // fetch('/api/poa/docusign', { method: 'POST', body: JSON.stringify({...}) })
+          //   .then(() => ...)
+          update({ poaAccepted: true });
+          setPoaOpen(false);
+          gotoCheckout();
+        }}
+      />
 
       <motion.section
         className="px-6 py-10 md:py-16"
@@ -124,6 +146,34 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
   const t = useTranslations();
   
   switch (key) {
+    case "consents": {
+      const canContinue = !!(
+        answers.consentSelf && answers.consentNoCoercion && answers.consentGenuineDocs
+      );
+      return (
+        <div>
+          <SectionTitle>{t("wizard.consents.title")}</SectionTitle>
+          <div className="grid gap-3 text-sm">
+            <label className="inline-flex items-start gap-2">
+              <input type="checkbox" checked={answers.consentSelf} onChange={(e)=> a.update({ consentSelf: e.target.checked })} />
+              <span>{t("wizard.consents.self")}</span>
+            </label>
+            <label className="inline-flex items-start gap-2">
+              <input type="checkbox" checked={answers.consentNoCoercion} onChange={(e)=> a.update({ consentNoCoercion: e.target.checked })} />
+              <span>{t("wizard.consents.noCoercion")}</span>
+            </label>
+            <label className="inline-flex items-start gap-2">
+              <input type="checkbox" checked={answers.consentGenuineDocs} onChange={(e)=> a.update({ consentGenuineDocs: e.target.checked })} />
+              <span>{t("wizard.consents.genuineDocs")}</span>
+            </label>
+          </div>
+          <div className="mt-6 flex justify-between">
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>{t("wizard.next")}</button>
+          </div>
+        </div>
+      );
+    }
     case "audience":
       return (
         <div>
@@ -520,7 +570,7 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
         if (answers.bank.mobileOption === "eu_number" && !(answers.files["mobile_bill"]?.length)) missing.push(t("wizard.review.missingItems.mobileBill"));
         if (answers.bank.mobileOption === "greek_number" && answers.bank.hasGreekNumber && !(answers.files["provider_cert"]?.length)) missing.push(t("wizard.review.missingItems.providerCert"));
       }
-      const pass = missing.length === 0;
+      const pass = missing.length === 0 && answers.consentSelf && answers.consentNoCoercion && answers.consentGenuineDocs;
       return (
         <div>
           <SectionTitle>{t("wizard.review.title")}</SectionTitle>

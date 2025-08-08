@@ -40,6 +40,11 @@ export interface WizardAnswers {
   hasAddressProof: boolean;
   recentDocsConfirmed: boolean;
   hasMarriageCertificate: boolean;
+  // Consents & POA
+  consentSelf: boolean; // confirms acting only for self
+  consentNoCoercion: boolean; // confirms not coerced
+  consentGenuineDocs: boolean; // confirms genuine documents belonging to the user
+  poaAccepted: boolean; // confirms POA reviewed & signed
   personal: PersonalInfo;
   files: Record<string, File[]>; // keys: id_document, birth_certificate, address_proof, marriage_certificate, financial_doc, address_doc, employer_certificate, mobile_bill, provider_cert
   bank: BankOptions;
@@ -85,6 +90,10 @@ const initialAnswers: WizardAnswers = {
   hasAddressProof: false,
   recentDocsConfirmed: false,
   hasMarriageCertificate: false,
+  consentSelf: false,
+  consentNoCoercion: false,
+  consentGenuineDocs: false,
+  poaAccepted: false,
   personal: emptyPersonal,
   files: {},
   bank: {

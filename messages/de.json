@@ -158,8 +158,11 @@
   "wizard.review.missingItems.employerText": "Arbeitgeberbescheinigung-Text",
   "wizard.review.missingItems.employerUpload": "Arbeitgeberbescheinigung-Upload",
   "wizard.review.missingItems.mobileBill": "Mobilfunkrechnung-Upload",
-  "wizard.review.missingItems.providerCert": "Anbieterbescheinigung-Upload"
-  ,
+  "wizard.review.missingItems.providerCert": "Anbieterbescheinigung-Upload",
+  "wizard.consents.title": "Bestätigungen",
+  "wizard.consents.self": "Ich bestätige, dass ich nur für mich selbst handle und nicht im Namen einer anderen Person.",
+  "wizard.consents.noCoercion": "Ich bestätige, dass ich freiwillig handle und nicht dazu gezwungen wurde.",
+  "wizard.consents.genuineDocs": "Ich bestätige, dass ich nur echte, mir gehörende Dokumente hochgeladen habe.",
   "legal.disclaimer.euOnly": "Wichtig: Unsere Dienstleistungen gelten ausschließlich für EU-Bürger sowie für Personen, die Bürger sind oder ihren dauerhaften Wohnsitz innerhalb der Europäischen Union haben – und nur für Personen ab 18 Jahren."
 }
 

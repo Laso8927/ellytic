@@ -84,11 +84,17 @@ export default function CheckoutPage() {
     return basePrice + addonsPrice;
   }, [bundle, basePrice, addonsPrice, translationPerDoc, translationDocs, translationExtraPagesCost]);
 
+  const consentsOk = params.get("consents") === "1";
   return (
     <main className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-4">Checkout</h1>
         <Disclaimer className="mb-4" />
+        {!consentsOk && (
+          <div className="mb-6 rounded-md border border-amber-300 bg-amber-50 text-amber-900 p-4">
+            Please review the consents in the previous step before proceeding.
+          </div>
+        )}
         <div className="grid gap-6 md:grid-cols-3">
           <div className="md:col-span-2 bg-white border rounded-2xl shadow-sm p-6">
             <h2 className="text-xl font-semibold mb-2">Selected: {labelize(bundle)}</h2>

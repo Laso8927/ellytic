@@ -158,8 +158,11 @@
   "wizard.review.missingItems.employerText": "Employer certificate text",
   "wizard.review.missingItems.employerUpload": "Employer certificate upload",
   "wizard.review.missingItems.mobileBill": "Mobile phone bill upload",
-  "wizard.review.missingItems.providerCert": "Provider certificate upload"
-  ,
+  "wizard.review.missingItems.providerCert": "Provider certificate upload",
+  "wizard.consents.title": "Confirmations",
+  "wizard.consents.self": "I confirm that I am acting only for myself and not on behalf of someone else.",
+  "wizard.consents.noCoercion": "I confirm that I am acting voluntarily and have not been coerced.",
+  "wizard.consents.genuineDocs": "I confirm that I uploaded only authentic documents that belong to me.",
   "legal.disclaimer.euOnly": "Important: Our services are available exclusively to EU citizens and to individuals who are citizens of or permanently residing within the European Union, and only to persons aged 18 years or older."
 }
 

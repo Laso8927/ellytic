@@ -158,8 +158,11 @@
   "wizard.review.missingItems.employerText": "Werkgeversverklaring tekst",
   "wizard.review.missingItems.employerUpload": "Werkgeversverklaring upload",
   "wizard.review.missingItems.mobileBill": "Mobiele telefoonrekening upload",
-  "wizard.review.missingItems.providerCert": "Providercertificaat upload"
-  ,
+  "wizard.review.missingItems.providerCert": "Providercertificaat upload",
+  "wizard.consents.title": "Bevestigingen",
+  "wizard.consents.self": "Ik bevestig dat ik uitsluitend voor mezelf handel en niet namens iemand anders.",
+  "wizard.consents.noCoercion": "Ik bevestig dat ik vrijwillig handel en niet gedwongen ben.",
+  "wizard.consents.genuineDocs": "Ik bevestig dat ik alleen authentieke documenten heb geüpload die van mij zijn.",
   "legal.disclaimer.euOnly": "Belangrijk: Onze diensten zijn uitsluitend beschikbaar voor EU-burgers en voor personen die burger zijn of permanent woonachtig zijn binnen de Europese Unie, en alleen voor personen van 18 jaar en ouder."
 }
 
