@@ -9,6 +9,7 @@ export interface PersonalInfo {
   fatherLastName: string;
   motherFirstName: string;
   motherLastName: string;
+  sex: "male" | "female" | "non_binary" | "";
   placeOfBirth: string;
   birthRegion: string;
   birthZipCode: string;
@@ -61,6 +62,7 @@ const emptyPersonal: PersonalInfo = {
   fatherLastName: "",
   motherFirstName: "",
   motherLastName: "",
+  sex: "",
   placeOfBirth: "",
   birthRegion: "",
   birthZipCode: "",

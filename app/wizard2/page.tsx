@@ -229,6 +229,14 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             <div className="field-group"><FieldLabel>{t("wizard.personal.fatherLastName")}</FieldLabel><input placeholder={t("wizard.personal.fatherLastName")} className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
             <div className="field-group"><FieldLabel>{t("wizard.personal.motherFirstName")}</FieldLabel><input placeholder={t("wizard.personal.motherFirstName")} className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
             <div className="field-group"><FieldLabel>{t("wizard.personal.motherLastName")}</FieldLabel><input placeholder={t("wizard.personal.motherLastName")} className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
+            <div className="field-group sm:col-span-2">
+              <FieldLabel>{t("wizard.personal.sex")}</FieldLabel>
+              <div className="flex items-center gap-6 text-sm">
+                <label className="inline-flex items-center gap-2"><input type="radio" name="sex" checked={p.sex === "male"} onChange={()=> a.update({ personal: { ...p, sex: "male" }})} /> {t("wizard.personal.sexMale")}</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="sex" checked={p.sex === "female"} onChange={()=> a.update({ personal: { ...p, sex: "female" }})} /> {t("wizard.personal.sexFemale")}</label>
+                <label className="inline-flex items-center gap-2"><input type="radio" name="sex" checked={p.sex === "non_binary"} onChange={()=> a.update({ personal: { ...p, sex: "non_binary" }})} /> {t("wizard.personal.sexNonBinary")}</label>
+              </div>
+            </div>
             <div className="sm:col-span-2 grid gap-3">
               <div className="field-group"><FieldLabel>{t("wizard.personal.placeOfBirth")}</FieldLabel><input placeholder={t("wizard.personal.placeOfBirth")} className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
                 const val = normalizePlace(e.target.value);
