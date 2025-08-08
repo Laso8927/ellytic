@@ -7,6 +7,8 @@ import { useState } from "react";
 import { Disclaimer } from "@/components/Disclaimer";
 import { useTranslations } from "next-intl";
 import { PoAModal } from "./PoAModal";
+import { Select } from "@/components/ui/Select";
+import { FileUpload } from "@/components/ui/FileUpload";
 
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
@@ -368,11 +370,15 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
           <div className="grid gap-4">
             <div>
               <FieldLabel>{t("wizard.marriage.certificate")}</FieldLabel>
-              <input type="file" onChange={async (e)=> {
-                a.setFiles("marriage_certificate", e.target.files);
-                const f = e.target.files?.[0];
-                if (f) await uploadToServer(f, "marriage_certificate");
-              }} />
+              <FileUpload 
+                accept=".pdf,.jpg,.jpeg,.png"
+                label="Upload marriage certificate"
+                onChange={async (files) => {
+                  a.setFiles("marriage_certificate", files);
+                  const f = files?.[0];
+                  if (f) await uploadToServer(f, "marriage_certificate");
+                }} 
+              />
             </div>
             <div>
               <FieldLabel>{t("wizard.marriage.coupleService")}</FieldLabel>
@@ -401,15 +407,39 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
           <div className="grid gap-5">
             <div>
               <FieldLabel>{t("wizard.uploads.idDocument", { type: answers.idType || "passport / id" })}</FieldLabel>
-              <input type="file" onChange={async (e)=> { a.setFiles("id_document", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "id_document"); }} />
+              <FileUpload 
+                accept=".pdf,.jpg,.jpeg,.png"
+                label="Upload ID document"
+                onChange={async (files) => { 
+                  a.setFiles("id_document", files); 
+                  const f = files?.[0]; 
+                  if (f) await uploadToServer(f, "id_document"); 
+                }} 
+              />
             </div>
             <div>
               <FieldLabel>{t("wizard.uploads.birthCertificate")}</FieldLabel>
-              <input type="file" onChange={async (e)=> { a.setFiles("birth_certificate", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "birth_certificate"); }} />
+              <FileUpload 
+                accept=".pdf,.jpg,.jpeg,.png"
+                label="Upload birth certificate"
+                onChange={async (files) => { 
+                  a.setFiles("birth_certificate", files); 
+                  const f = files?.[0]; 
+                  if (f) await uploadToServer(f, "birth_certificate"); 
+                }} 
+              />
             </div>
             <div>
               <FieldLabel>{t("wizard.uploads.addressProof")}</FieldLabel>
-              <input type="file" onChange={async (e)=> { a.setFiles("address_proof", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "address_proof"); }} />
+              <FileUpload 
+                accept=".pdf,.jpg,.jpeg,.png"
+                label="Upload address proof"
+                onChange={async (files) => { 
+                  a.setFiles("address_proof", files); 
+                  const f = files?.[0]; 
+                  if (f) await uploadToServer(f, "address_proof"); 
+                }} 
+              />
             </div>
           </div>
           <div className="mt-6 flex justify-between">
@@ -440,7 +470,10 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             <li>{t("wizard.bank.work")}</li>
             <li>{t("wizard.bank.mobile")}</li>
           </ul>
-          <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button></div>
+          <div className="mt-6 flex justify-between">
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>{t("wizard.next")}</button>
+          </div>
         </div>
       );
     }
@@ -458,40 +491,68 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             <div className="grid sm:grid-cols-2 gap-4">
               <div>
                 <FieldLabel>{t("wizard.bankDocs.financial")}</FieldLabel>
-                <select className="input" value={b.financialDocType} onChange={(e)=> a.update({ bank: { ...b, financialDocType: e.target.value as any } })}>
-                  <option value="">{t("wizard.bankDocs.choose")}</option>
-                  <option value="tax_clearance">{t("wizard.bankDocs.taxClearance")}</option>
-                  <option value="annual_wage_statement">{t("wizard.bankDocs.annualWage")}</option>
-                </select>
+                <Select
+                  value={b.financialDocType}
+                  onChange={(value) => a.update({ bank: { ...b, financialDocType: value as any } })}
+                  placeholder={t("wizard.bankDocs.choose")}
+                  options={[
+                    { value: "tax_clearance", label: t("wizard.bankDocs.taxClearance") },
+                    { value: "annual_wage_statement", label: t("wizard.bankDocs.annualWage") }
+                  ]}
+                />
               </div>
               <div>
                 <FieldLabel>{t("wizard.bankDocs.proofOfAddress")}</FieldLabel>
-                <select className="input" value={b.proofOfAddressOption} onChange={(e)=> a.update({ bank: { ...b, proofOfAddressOption: e.target.value as any } })}>
-                  <option value="">{t("wizard.bankDocs.choose")}</option>
-                  <option value="utility">{t("wizard.bankDocs.utility")}</option>
-                  <option value="registration">{t("wizard.bankDocs.registration")}</option>
-                  <option value="id_address">{t("wizard.bankDocs.idAddress")}</option>
-                </select>
+                <Select
+                  value={b.proofOfAddressOption}
+                  onChange={(value) => a.update({ bank: { ...b, proofOfAddressOption: value as any } })}
+                  placeholder={t("wizard.bankDocs.choose")}
+                  options={[
+                    { value: "utility", label: t("wizard.bankDocs.utility") },
+                    { value: "registration", label: t("wizard.bankDocs.registration") },
+                    { value: "id_address", label: t("wizard.bankDocs.idAddress") }
+                  ]}
+                />
               </div>
-            </div>
-            <div>
-              <FieldLabel>{t("wizard.bankDocs.employer")}</FieldLabel>
-              <input className="input" value={b.employmentLine} onChange={(e)=> a.update({ bank: { ...b, employmentLine: e.target.value } })} />
             </div>
             <div className="grid gap-4">
               <div>
                 <FieldLabel>{t("wizard.bankDocs.uploadFinancial")}</FieldLabel>
-                <input type="file" onChange={async (e)=> { a.setFiles("financial_doc", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "financial_doc"); }} />
+                <FileUpload 
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  label="Upload financial document"
+                  onChange={async (files) => { 
+                    a.setFiles("financial_doc", files); 
+                    const f = files?.[0]; 
+                    if (f) await uploadToServer(f, "financial_doc"); 
+                  }} 
+                />
               </div>
               {needAddressUpload && (
                 <div>
                   <FieldLabel>{t("wizard.bankDocs.uploadAddress")}</FieldLabel>
-                  <input type="file" onChange={async (e)=> { a.setFiles("address_doc", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "address_doc"); }} />
+                  <FileUpload 
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    label="Upload address document"
+                    onChange={async (files) => { 
+                      a.setFiles("address_doc", files); 
+                      const f = files?.[0]; 
+                      if (f) await uploadToServer(f, "address_doc"); 
+                    }} 
+                  />
                 </div>
               )}
               <div>
                 <FieldLabel>{t("wizard.bankDocs.uploadEmployer")}</FieldLabel>
-                <input type="file" onChange={async (e)=> { a.setFiles("employer_certificate", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "employer_certificate"); }} />
+                <FileUpload 
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  label="Upload employer certificate"
+                  onChange={async (files) => { 
+                    a.setFiles("employer_certificate", files); 
+                    const f = files?.[0]; 
+                    if (f) await uploadToServer(f, "employer_certificate"); 
+                  }} 
+                />
               </div>
             </div>
           </div>
@@ -526,7 +587,15 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             {isEU && (
               <div>
                 <FieldLabel>{t("wizard.mobile.uploadBill")}</FieldLabel>
-                <input type="file" onChange={async (e)=> { a.setFiles("mobile_bill", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "mobile_bill"); }} />
+                <FileUpload 
+                  accept=".pdf,.jpg,.jpeg,.png"
+                  label="Upload mobile phone bill"
+                  onChange={async (files) => { 
+                    a.setFiles("mobile_bill", files); 
+                    const f = files?.[0]; 
+                    if (f) await uploadToServer(f, "mobile_bill"); 
+                  }} 
+                />
               </div>
             )}
             {isGR && (
@@ -535,7 +604,15 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 {b.hasGreekNumber ? (
                   <div>
                     <FieldLabel>{t("wizard.mobile.uploadProviderCert")}</FieldLabel>
-                    <input type="file" onChange={async (e)=> { a.setFiles("provider_cert", e.target.files); const f=e.target.files?.[0]; if (f) await uploadToServer(f, "provider_cert"); }} />
+                    <FileUpload 
+                      accept=".pdf,.jpg,.jpeg,.png"
+                      label="Upload provider certificate"
+                      onChange={async (files) => { 
+                        a.setFiles("provider_cert", files); 
+                        const f = files?.[0]; 
+                        if (f) await uploadToServer(f, "provider_cert"); 
+                      }} 
+                    />
                   </div>
                 ) : (
                   <p className="text-sm text-gray-600">{t("wizard.mobile.willProvide")}</p>
