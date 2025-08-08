@@ -11,6 +11,7 @@ export interface PersonalInfo {
   motherLastName: string;
   placeOfBirth: string;
   dateOfBirth: string; // ISO yyyy-mm-dd
+  currentResidence: string;
 }
 
 export interface BankOptions {
@@ -56,6 +57,7 @@ const emptyPersonal: PersonalInfo = {
   motherLastName: "",
   placeOfBirth: "",
   dateOfBirth: "",
+  currentResidence: "",
 };
 
 const initialAnswers: WizardAnswers = {

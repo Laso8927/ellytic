@@ -102,7 +102,13 @@ export default function WizardAdvancedPage() {
             </motion.div>
           </AnimatePresence>
 
-          <div className="mt-6 text-sm text-gray-500">
+          <div className="mt-6 flex items-center justify-between">
+            <button className="text-gray-600" onClick={prevStep} disabled={step === 0}>← Back</button>
+            <div className="text-sm text-gray-500">You can navigate back at any time.</div>
+            <button className="text-gray-600" onClick={nextStep} disabled={step >= steps.length - 1}>Next →</button>
+          </div>
+
+          <div className="mt-4 text-sm text-gray-500">
             GDPR compliant. Data processed in Germany, deleted 30 days after fulfilment; only legally required metadata retained. <a className="underline" href="/legal/privacy">Privacy</a>.
           </div>
         </div>
@@ -149,6 +155,9 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
               <p className="text-sm text-gray-600 mt-1">Includes bank account onboarding</p>
             </button>
           </div>
+          <div className="mt-6 flex justify-start">
+            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
+          </div>
         </div>
       );
     case "afm_requirements": {
@@ -183,7 +192,8 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
               <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> Both are not older than 6 months</label>
             </div>
           </div>
-          <div className="mt-6 flex justify-end">
+          <div className="mt-6 flex justify-between">
+            <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
             <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
           </div>
         </div>
@@ -191,7 +201,8 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
     }
     case "personal": {
       const p = answers.personal;
-      const canContinue = [p.firstName,p.lastName,p.fatherFirstName,p.fatherLastName,p.motherFirstName,p.motherLastName,p.placeOfBirth,p.dateOfBirth].every(Boolean);
+      const isAdultUser = isAdult(p.dateOfBirth);
+      const canContinue = [p.firstName,p.lastName,p.fatherFirstName,p.fatherLastName,p.motherFirstName,p.motherLastName,p.placeOfBirth,p.dateOfBirth,p.currentResidence].every(Boolean) && isAdultUser;
       return (
         <div>
           <SectionTitle>Personal details</SectionTitle>
@@ -202,9 +213,13 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             <div><FieldLabel>Father last name</FieldLabel><input className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
             <div><FieldLabel>Mother first name</FieldLabel><input className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
             <div><FieldLabel>Mother last name</FieldLabel><input className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
-            <div><FieldLabel>Place of birth</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} /></div>
+            <div><FieldLabel>Place of birth</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={(e)=> a.update({ personal: { ...p, placeOfBirth: normalizePlace(e.target.value) }})} /></div>
             <div><FieldLabel>Date of birth</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
+            <div className="sm:col-span-2"><FieldLabel>Current residence</FieldLabel><input className="input" placeholder="City, Country" value={p.currentResidence} onChange={(e)=> a.update({ personal: { ...p, currentResidence: e.target.value }})} /></div>
           </div>
+          {!isAdultUser && p.dateOfBirth && (
+            <p className="mt-3 text-sm text-red-600">You must be at least 18 years old to use these services.</p>
+          )}
           <div className="mt-6 flex justify-between">
             <button className="text-gray-600" onClick={a.prevStep}>← Back</button>
             <button className="rounded-md bg-blue-600 text-white px-4 py-2 disabled:opacity-50" disabled={!canContinue} onClick={a.nextStep}>Next</button>
@@ -218,7 +233,7 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
           <div>
             <SectionTitle>Marriage</SectionTitle>
             <p className="text-gray-600">Not applicable. Continue to document uploads.</p>
-            <div className="mt-6 flex justify-end"><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>Continue</button></div>
+          <div className="mt-6 flex justify-between"><button className="text-gray-600" onClick={a.prevStep}>← Back</button><button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>Continue</button></div>
           </div>
         );
       }
@@ -462,5 +477,23 @@ declare global {
   interface JSX {
     IntrinsicElements: any;
   }
+}
+
+function isAdult(isoDate: string): boolean {
+  if (!isoDate) return false;
+  const dob = new Date(isoDate);
+  const now = new Date();
+  const age = now.getFullYear() - dob.getFullYear() - ((now.getMonth() < dob.getMonth() || (now.getMonth() === dob.getMonth() && now.getDate() < dob.getDate())) ? 1 : 0);
+  return age >= 18;
+}
+
+function normalizePlace(input: string): string {
+  const trimmed = (input || "").trim();
+  if (!trimmed) return "";
+  return trimmed
+    .toLowerCase()
+    .split(/\s+/)
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(" ");
 }
 
