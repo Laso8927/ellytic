@@ -70,6 +70,7 @@ export default function Landing() {
         </Link>
         <nav className="hidden md:flex space-x-6 text-sm">
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+          <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">About</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
           <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
@@ -104,6 +105,7 @@ export default function Landing() {
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/wizard">Get Started</Link>
+                  <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/about">About</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/blog">Blog</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/studio">Studio</Link>
                   <Link className="text-gray-900 font-medium hover:text-black hover:underline" href="/dashboard">Dashboard</Link>
@@ -194,18 +196,58 @@ export default function Landing() {
     </div>
         </section>
 
-        {/* About Us section */}
+        {/* About (condensed) */}
         <section id="about" className="py-20 px-4 sm:px-6 bg-gray-50 border-t">
           <div className="max-w-5xl mx-auto">
             <div className="bg-white border rounded-2xl shadow-sm p-8 md:p-12">
-              <h2 className="text-3xl font-semibold tracking-tight">About Us</h2>
-              <p className="mt-4 text-gray-700 leading-relaxed">
-                We’re a tech-driven team transforming relocation and business in Greece.
-                ELLYTIC delivers AI-powered translations and streamlined, automated solutions for
-                home buyers, expats, Greeks abroad and professionals. Our mission is to make complex processes
-                effortless, secure and transparent – so you can focus on what truly matters. Stay tuned and let us
-                elevate your Greek success.
-              </p>
+              <h2 className="text-3xl font-semibold tracking-tight">About ELLYTIC</h2>
+              <div className="mt-6 space-y-8 text-gray-700">
+                <div>
+                  <h3 className="text-xl font-semibold">Our Mission</h3>
+                  <p className="mt-2 leading-relaxed">
+                    We simplify and digitize Greek administrative processes for EU citizens, Greek nationals, investors,
+                    expats, pensioners, and the Greek diaspora. Using AI and automation, we eliminate bureaucracy,
+                    reduce costs, and ensure transparency.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">About Us</h3>
+                  <p className="mt-2 leading-relaxed">
+                    We are a product-first team building a modern service network for Greece. We combine legal know-how
+                    with automation to make processes reliable, fast, and affordable.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Our Vision</h3>
+                  <p className="mt-2 leading-relaxed">
+                    A digital Greece—where administrative processes are fast, affordable, and easy for everyone. Despite
+                    economic growth, Greece’s markets are still dominated by outdated, inefficient, and costly service
+                    providers (e.g., lawyers, notaries, accountants). Citizens often pay high fees for low-complexity
+                    services like opening bank accounts or obtaining an AFM tax number. Outdated regulations frustrate
+                    homebuyers, investors, and especially the Greek diaspora—particularly in countries like Germany.
+                  </p>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Solutions</h3>
+                  <ul className="mt-2 list-disc pl-5 space-y-1">
+                    <li>Automate processes like E1 & recurring E9 tax declarations (also for Greek citizens)</li>
+                    <li>AI-powered translations and document processing</li>
+                    <li>Streamline services without the need for lawyers or accountants</li>
+                    <li>Data-driven insights for investors, agents, and stakeholders</li>
+                    <li>Collaborate with or act as real estate agents and legal partners</li>
+                  </ul>
+                </div>
+                <div>
+                  <h3 className="text-xl font-semibold">Our Goal</h3>
+                  <p className="mt-2 leading-relaxed">
+                    To create a zero-bureaucracy, fully digital environment—while building a transparent, low-cost
+                    service network for Greece and its international community.
+                  </p>
+                </div>
+              </div>
+              <div className="mt-8">
+                <Link href="/about" className="inline-flex items-center text-blue-600 hover:underline">Learn more →</Link>
+              </div>
             </div>
           </div>
         </section>
