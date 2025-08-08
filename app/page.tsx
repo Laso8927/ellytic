@@ -66,11 +66,21 @@ export default function Landing() {
           <span className="font-bold text-lg tracking-tight">ELLYTIC</span>
         </Link>
         <nav className="hidden md:flex space-x-6 text-sm">
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            <Link href="/wizard">Get Started</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            <Link href="/#blog">Blog</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            <Link href="/studio">Studio</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            <Link href="/dashboard">Dashboard</Link>
+          </motion.div>
+          <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+            <Link href="/login">Login</Link>
+          </motion.div>
         </nav>
         <div className="md:hidden">
           <button
@@ -100,11 +110,21 @@ export default function Landing() {
                 className="absolute top-full left-0 w-full bg-white border-t shadow-md md:hidden z-40"
               >
                 <div className="flex flex-col space-y-4 p-4 text-sm">
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
-                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}><Link href="#">Link</Link></motion.div>
+                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+                    <Link href="/wizard">Get Started</Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+                    <Link href="/#blog">Blog</Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+                    <Link href="/studio">Studio</Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+                    <Link href="/dashboard">Dashboard</Link>
+                  </motion.div>
+                  <motion.div whileHover={{ scale: 1.03, y: -2 }} transition={{ duration: 0.25, ease: 'easeOut' }}>
+                    <Link href="/login">Login</Link>
+                  </motion.div>
                 </div>
               </motion.nav>
             </>
@@ -142,7 +162,7 @@ export default function Landing() {
   animate={{ opacity: 1 }}
   transition={{ duration: 0.8, delay: 0.6 }}
 >
-  <Link href="#services">
+  <Link href="/wizard">
     <motion.div
       whileHover={{ scale: 1.03, y: -2 }}
       transition={{ duration: 0.25, ease: "easeOut" }}
