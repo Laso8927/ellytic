@@ -10,8 +10,14 @@ export interface PersonalInfo {
   motherFirstName: string;
   motherLastName: string;
   placeOfBirth: string;
+  birthRegion: string;
+  birthZipCode: string;
+  birthCountry: string;
   dateOfBirth: string; // ISO yyyy-mm-dd
-  currentResidence: string;
+  currentStreet: string;
+  currentCity: string;
+  currentZipCode: string;
+  currentCountry: string;
 }
 
 export interface BankOptions {
@@ -56,8 +62,14 @@ const emptyPersonal: PersonalInfo = {
   motherFirstName: "",
   motherLastName: "",
   placeOfBirth: "",
+  birthRegion: "",
+  birthZipCode: "",
+  birthCountry: "",
   dateOfBirth: "",
-  currentResidence: "",
+  currentStreet: "",
+  currentCity: "",
+  currentZipCode: "",
+  currentCountry: "",
 };
 
 const initialAnswers: WizardAnswers = {

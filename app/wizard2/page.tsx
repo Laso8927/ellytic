@@ -3,6 +3,7 @@ import { useWizardStore, type WizardAnswers } from "@/store/wizardStore";
 import { motion, AnimatePresence } from "framer-motion";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
   form.append("file", file);
@@ -196,7 +197,12 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
     case "personal": {
       const p = answers.personal;
       const isAdultUser = isAdult(p.dateOfBirth);
-      const canContinue = [p.firstName,p.lastName,p.fatherFirstName,p.fatherLastName,p.motherFirstName,p.motherLastName,p.placeOfBirth,p.dateOfBirth,p.currentResidence].every(Boolean) && isAdultUser;
+      const canContinue = [
+        p.firstName,p.lastName,p.fatherFirstName,p.fatherLastName,p.motherFirstName,p.motherLastName,
+        p.placeOfBirth,p.birthRegion,p.birthZipCode,p.birthCountry,
+        p.currentStreet,p.currentCity,p.currentZipCode,p.currentCountry,
+        p.dateOfBirth
+      ].every(Boolean) && isAdultUser;
       return (
         <div>
           <SectionTitle>Personal details</SectionTitle>
@@ -207,9 +213,36 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             <div><FieldLabel>Father last name</FieldLabel><input className="input" value={p.fatherLastName} onChange={(e)=> a.update({ personal: { ...p, fatherLastName: e.target.value }})} /></div>
             <div><FieldLabel>Mother first name</FieldLabel><input className="input" value={p.motherFirstName} onChange={(e)=> a.update({ personal: { ...p, motherFirstName: e.target.value }})} /></div>
             <div><FieldLabel>Mother last name</FieldLabel><input className="input" value={p.motherLastName} onChange={(e)=> a.update({ personal: { ...p, motherLastName: e.target.value }})} /></div>
-            <div><FieldLabel>Place of birth</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={(e)=> a.update({ personal: { ...p, placeOfBirth: normalizePlace(e.target.value) }})} /></div>
+            <div className="sm:col-span-2 grid gap-3">
+              <div><FieldLabel>Place of birth</FieldLabel><input className="input" value={p.placeOfBirth} onChange={(e)=> a.update({ personal: { ...p, placeOfBirth: e.target.value }})} onBlur={async (e)=> {
+                const val = normalizePlace(e.target.value);
+                a.update({ personal: { ...p, placeOfBirth: val }});
+                if (val) {
+                  const res = await fetch(`/api/geocode?q=${encodeURIComponent(val)}`);
+                  const j = await res.json();
+                  if (j?.found) {
+                    a.update({ personal: { ...p, placeOfBirth: j.city || val, birthRegion: j.region || p.birthRegion, birthZipCode: j.postcode || p.birthZipCode, birthCountry: j.country || p.birthCountry } });
+                  }
+                }
+              }} /></div>
+              <div className="grid sm:grid-cols-3 gap-3">
+                <div><FieldLabel>Region/State</FieldLabel><input className="input" value={p.birthRegion} onChange={(e)=> a.update({ personal: { ...p, birthRegion: e.target.value }})} /></div>
+                <div><FieldLabel>Zip Code</FieldLabel><input className="input" value={p.birthZipCode} onChange={(e)=> a.update({ personal: { ...p, birthZipCode: e.target.value }})} /></div>
+                <div><FieldLabel>Country</FieldLabel><input className="input" value={p.birthCountry} onChange={(e)=> a.update({ personal: { ...p, birthCountry: e.target.value }})} /></div>
+              </div>
+            </div>
             <div><FieldLabel>Date of birth</FieldLabel><input type="date" className="input" value={p.dateOfBirth} onChange={(e)=> a.update({ personal: { ...p, dateOfBirth: e.target.value }})} /></div>
-            <div className="sm:col-span-2"><FieldLabel>Current residence</FieldLabel><input className="input" placeholder="City, Country" value={p.currentResidence} onChange={(e)=> a.update({ personal: { ...p, currentResidence: e.target.value }})} /></div>
+            <div className="sm:col-span-2 grid gap-3">
+              <FieldLabel>Current residence</FieldLabel>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input className="input" placeholder="Street" value={p.currentStreet} onChange={(e)=> a.update({ personal: { ...p, currentStreet: e.target.value }})} />
+                <input className="input" placeholder="City" value={p.currentCity} onChange={(e)=> a.update({ personal: { ...p, currentCity: e.target.value }})} />
+              </div>
+              <div className="grid sm:grid-cols-2 gap-3">
+                <input className="input" placeholder="Zip Code" value={p.currentZipCode} onChange={(e)=> a.update({ personal: { ...p, currentZipCode: e.target.value }})} />
+                <input className="input" placeholder="Country" value={p.currentCountry} onChange={(e)=> a.update({ personal: { ...p, currentCountry: e.target.value }})} />
+              </div>
+            </div>
           </div>
           {!isAdultUser && p.dateOfBirth && (
             <p className="mt-3 text-sm text-red-600">You must be at least 18 years old to use these services.</p>

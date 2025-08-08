@@ -3,6 +3,7 @@ import { Inter, Roboto_Mono } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/components/providers/AuthProvider";
 import Link from "next/link";
+import { cookies } from "next/headers";
 
 const geistSans = Inter({
   variable: "--font-geist-sans",
@@ -25,8 +26,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const cookieStore = cookies();
+  const lang = cookieStore.get("lang")?.value || "en";
   return (
-    <html lang="en">
+    <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <AuthProvider>
           {children}
@@ -38,6 +41,15 @@ export default function RootLayout({
               <nav className="flex items-center gap-6 text-sm">
                 <Link className="hover:underline" href="/legal/imprint">Imprint</Link>
                 <Link className="hover:underline" href="/legal/privacy">Privacy</Link>
+                <form action="/lang" method="post" className="inline-flex items-center gap-2">
+                  <select name="lang" defaultValue={lang} className="text-sm border rounded px-2 py-1">
+                    <option value="en">EN</option>
+                    <option value="de">DE</option>
+                    <option value="el">EL</option>
+                    <option value="nl">NL</option>
+                  </select>
+                  <button className="text-sm underline" type="submit">Apply</button>
+                </form>
               </nav>
               <div className="text-sm text-gray-500">© {new Date().getFullYear()} ELLYTIC</div>
             </div>
