@@ -66,6 +66,7 @@
   "wizard.afm.documentsAvailable": "Documents available",
   "wizard.afm.birthCertificate": "Birth certificate",
   "wizard.afm.addressProof": "Proof of address (registration or utility bill)",
+  "wizard.afm.marriageCertificate": "Marriage certificate",
   "wizard.afm.recentDocs": "Both are not older than 6 months",
   "wizard.personal.title": "Personal details",
   "wizard.personal.firstName": "First name",

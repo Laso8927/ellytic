@@ -128,15 +128,16 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       return (
         <div>
           <SectionTitle>{t("wizard.audience.title")}</SectionTitle>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {["expat","pensioner","buyer","investor","heir","diaspora"].map((opt) => (
               <motion.button
                 key={opt}
                 onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }}
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.14 }}
+                layout
+                transition={{ layout: {duration: 0.28, ease: [0.2, 0, 0.2, 1]}, duration: 0.2 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.98 }}
-                className="relative z-0 text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10"
+                className="relative z-0 origin-center will-change-transform text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10"
               >
                 <div className="font-medium text-gray-900 capitalize flex items-center justify-between">
                   <span>{t(`wizard.audience.options.${opt}`)}</span>
@@ -151,15 +152,16 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
       return (
         <div>
           <SectionTitle>{t("wizard.bundle.title")}</SectionTitle>
-          <div className="grid gap-4 md:grid-cols-2">
+          <div className="grid gap-8 md:grid-cols-2">
             {[{key:"starter", title:t("wizard.bundle.starter.title"), desc:t("wizard.bundle.starter.description")}, {key:"full", title:t("wizard.bundle.full.title"), desc:t("wizard.bundle.full.description")}].map((b)=> (
               <motion.button
                 key={b.key}
                 onClick={() => { a.update({ bundleType: b.key as any }); a.nextStep(); }}
-                initial={{ scale: 1 }}
-                whileHover={{ scale: 1.14 }}
+                layout
+                transition={{ layout: {duration: 0.28, ease: [0.2, 0, 0.2, 1]}, duration: 0.2 }}
+                whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.98 }}
-                className={`relative z-0 text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10 ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
+                className={`relative z-0 origin-center will-change-transform text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10 ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
               >
                 <div className="font-medium text-gray-900">{b.title}</div>
                 <p className="text-sm text-gray-600 mt-1">{b.desc}</p>
@@ -200,6 +202,9 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                 <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasBirthCertificate} onChange={(e)=> a.update({ hasBirthCertificate: e.target.checked })} /> {t("wizard.afm.birthCertificate")}</label>
                 <label className="inline-flex items-center gap-2"><input type="checkbox" checked={answers.hasAddressProof} onChange={(e)=> a.update({ hasAddressProof: e.target.checked })} /> {t("wizard.afm.addressProof")}</label>
               </div>
+              {answers.isMarried && (
+                <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.hasMarriageCertificate} onChange={(e)=> a.update({ hasMarriageCertificate: e.target.checked })} /> {t("wizard.afm.marriageCertificate")}</label>
+              )}
               <label className="inline-flex items-center gap-2 mt-3 text-sm"><input type="checkbox" checked={answers.recentDocsConfirmed} onChange={(e)=> a.update({ recentDocsConfirmed: e.target.checked })} /> {t("wizard.afm.recentDocs")}</label>
             </div>
           </div>

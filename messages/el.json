@@ -66,6 +66,7 @@
   "wizard.afm.documentsAvailable": "Διαθέσιμα έγγραφα",
   "wizard.afm.birthCertificate": "Πιστοποιητικό γέννησης",
   "wizard.afm.addressProof": "Απόδειξη διεύθυνσης (πιστοποιητικό εγγραφής ή λογαριασμός)",
+  "wizard.afm.marriageCertificate": "Πιστοποιητικό γάμου",
   "wizard.afm.recentDocs": "Και τα δύο όχι παλαιότερα από 6 μήνες",
   "wizard.personal.title": "Προσωπικά στοιχεία",
   "wizard.personal.firstName": "Όνομα",
