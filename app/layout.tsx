@@ -67,7 +67,7 @@ export default async function RootLayout({
   const privacyLabel = (messages as any)?.footer?.privacy ?? "Privacy";
   return (
     <html lang={lang}>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-900`}>
         <AuthProvider>
           <NextIntlClientProvider locale={lang} messages={messages}>
             <Header />

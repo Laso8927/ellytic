@@ -4,7 +4,7 @@ import Link from "next/link";
 export default function AboutPage() {
   const t = useTranslations();
   return (
-    <main className="min-h-screen bg-gradient-to-b from-blue-50 to-white text-gray-900">
+    <main className="min-h-screen">
       {/* Hero */}
       <section className="px-6 pt-12 pb-8">
         <div className="max-w-5xl mx-auto">

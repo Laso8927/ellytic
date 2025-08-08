@@ -64,8 +64,8 @@ export default function WizardAdvancedPage() {
   };
 
   return (
-    <main className="min-h-screen bg-white text-gray-900">
-      <header className="px-6 py-4 border-b sticky top-0 bg-white z-40">
+    <main className="min-h-screen">
+      <header className="px-6 py-4 border-b sticky top-0 bg-white/70 backdrop-blur z-40">
         <div className="max-w-4xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-extrabold text-lg tracking-tight text-black subpixel-antialiased leading-none">ELLYTIC</Link>
           <Link className="text-sm text-gray-600 hover:text-black" href="/">{t("wizard.backToHome")}</Link>

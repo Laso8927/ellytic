@@ -4,7 +4,7 @@ import { client } from "@/sanity/lib/client";
 export default async function BlogIndex() {
   const posts = await client.fetch(`*[_type == "post"] | order(publishedAt desc){ _id, title, slug, publishedAt }[0...20]`);
   return (
-    <main className="min-h-screen bg-white text-gray-900 p-6">
+    <main className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-6">Blog</h1>
         <ul className="space-y-3">

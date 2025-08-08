@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 export default function PrivacyPage() {
   const t = useTranslations();
   return (
-    <main className="min-h-screen bg-white text-gray-900 p-6">
+    <main className="min-h-screen p-6">
       <div className="max-w-4xl mx-auto prose prose-gray">
         <h1>{t("privacy.title")}</h1>
         <p>{t("privacy.intro")}</p>

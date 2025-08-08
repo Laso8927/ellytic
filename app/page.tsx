@@ -63,7 +63,7 @@ export default function Landing() {
 
       {/* Global header moved to RootLayout */}
 
-      <main className="min-h-screen bg-white text-gray-900">
+      <main className="min-h-screen text-gray-900">
         <motion.section
           id="hero"
           className="px-6 py-24 text-center max-w-4xl mx-auto"
@@ -102,7 +102,7 @@ export default function Landing() {
   </Link>
 </motion.div>
         </motion.section>
-        <section id="blog" className="bg-white py-20 px-4 sm:px-6 border-t">
+        <section id="blog" className="py-20 px-4 sm:px-6 border-t">
           <div className="max-w-6xl mx-auto">
             <h2 className="text-3xl font-semibold mb-10 text-center">
               Insights & Articles
@@ -185,7 +185,7 @@ export default function Landing() {
         </section>
 
         {/* Contact section */}
-        <section id="contact" className="py-20 px-4 sm:px-6 bg-white border-t">
+        <section id="contact" className="py-20 px-4 sm:px-6 border-t">
           <div className="max-w-5xl mx-auto grid gap-10 md:grid-cols-2 items-start">
             <div>
               <h2 className="text-3xl font-semibold tracking-tight">Contact</h2>
