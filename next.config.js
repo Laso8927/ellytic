@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
+const withNextIntl = require('next-intl/plugin')('./i18n/request.ts');
+
 const nextConfig = {
-  i18n: {
-    locales: ["en", "de", "el", "nl"],
-    defaultLocale: "en",
-  },
   async redirects() {
     return [
       {
@@ -14,4 +12,5 @@ const nextConfig = {
     ];
   },
 };
-module.exports = nextConfig;
+
+module.exports = withNextIntl(nextConfig);
