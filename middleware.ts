@@ -1,3 +1,15 @@
+import createMiddleware from 'next-intl/middleware';
+import {locales, defaultLocale} from './i18n';
+
+export default createMiddleware({
+  locales: Array.from(locales),
+  defaultLocale
+});
+
+export const config = {
+  matcher: ['/((?!api|_next|.*\\..*).*)']
+};
+
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

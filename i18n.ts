@@ -1,3 +1,7 @@
+export const locales = ["en", "de", "el", "nl"] as const;
+export type Locale = typeof locales[number];
+export const defaultLocale: Locale = "en";
+
 import { createInstance } from 'i18next';
 import { initReactI18next } from 'react-i18next';
 

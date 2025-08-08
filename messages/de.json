@@ -12,6 +12,7 @@
   "wizard.title": "Loslegen",
   "wizard.subtitle": "Wir erheben nur, was nötig ist. Du kannst jederzeit pausieren und zurückkehren.",
   "wizard.next": "Weiter",
-  "wizard.back": "Zurück"
+  "wizard.back": "Zurück",
+  "footer.langApply": "Anwenden"
 }
 

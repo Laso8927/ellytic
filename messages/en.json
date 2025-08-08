@@ -12,6 +12,7 @@
   "wizard.title": "Get Started",
   "wizard.subtitle": "We collect only what’s necessary to start. You can pause and return anytime.",
   "wizard.next": "Next",
-  "wizard.back": "Back"
+  "wizard.back": "Back",
+  "footer.langApply": "Apply"
 }
 

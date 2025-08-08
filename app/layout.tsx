@@ -71,7 +71,7 @@ export default async function RootLayout({
                     <option value="el">EL</option>
                     <option value="nl">NL</option>
                   </select>
-                  <button className="text-sm underline" type="submit">Apply</button>
+                  <button className="text-sm underline" type="submit">{(messages as any)["footer.langApply"] ?? "Apply"}</button>
                 </form>
               </nav>
               <div className="text-sm text-gray-500">© {new Date().getFullYear()} ELLYTIC</div>
