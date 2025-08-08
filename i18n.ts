@@ -1,38 +1,9 @@
+import { getRequestConfig } from 'next-intl/server';
+
 export const locales = ["en", "de", "el", "nl"] as const;
 export type Locale = typeof locales[number];
 export const defaultLocale: Locale = "en";
 
-import { createInstance } from 'i18next';
-import { initReactI18next } from 'react-i18next';
-
-const initI18next = async (locale: string, ns: string) => {
-  const i18nInstance = createInstance();
-  await i18nInstance
-    .use(initReactI18next)
-    .init({
-      lng: locale,
-      fallbackLng: 'en',
-      ns: [ns],
-      defaultNS: ns,
-      resources: {
-        en: {
-          common: require('./i18n/locales/en/common.json'),
-        },
-        de: {
-          common: require('./i18n/locales/de/common.json'),
-        },
-        el: {
-          common: require('./i18n/locales/el/common.json'),
-        },
-        nl: {
-          common: require('./i18n/locales/nl/common.json'),
-        },
-      },
-      interpolation: {
-        escapeValue: false,
-      },
-    });
-  return i18nInstance;
-};
-
-export default initI18next; 
+export default getRequestConfig(async ({ locale }) => ({
+  messages: (await import(`./messages/${locale}.json`)).default
+})); 
