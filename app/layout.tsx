@@ -22,20 +22,35 @@ export const metadata: Metadata = {
     "AI-powered services for AFM registration, translations, tax and more. Fully GDPR-compliant and based in Germany.",
 };
 
+function nestMessages(flat: Record<string, any>): Record<string, any> {
+  const nested: Record<string, any> = {};
+  for (const [key, value] of Object.entries(flat || {})) {
+    const parts = key.split(".");
+    let cursor = nested;
+    for (let i = 0; i < parts.length - 1; i++) {
+      const part = parts[i];
+      if (!cursor[part] || typeof cursor[part] !== "object") cursor[part] = {};
+      cursor = cursor[part];
+    }
+    cursor[parts[parts.length - 1]] = value;
+  }
+  return nested;
+}
+
 async function loadMessages(locale: string) {
   try {
     switch (locale) {
       case "de":
-        return (await import("@/messages/de.json")).default;
+        return nestMessages((await import("@/messages/de.json")).default as any);
       case "el":
-        return (await import("@/messages/el.json")).default;
+        return nestMessages((await import("@/messages/el.json")).default as any);
       case "nl":
-        return (await import("@/messages/nl.json")).default;
+        return nestMessages((await import("@/messages/nl.json")).default as any);
       default:
-        return (await import("@/messages/en.json")).default;
+        return nestMessages((await import("@/messages/en.json")).default as any);
     }
   } catch {
-    return (await import("@/messages/en.json")).default;
+    return nestMessages((await import("@/messages/en.json")).default as any);
   }
 }
 
@@ -47,8 +62,8 @@ export default async function RootLayout({
   const cookieStore = cookies();
   const lang = cookieStore.get("lang")?.value || "en";
   const messages = await loadMessages(lang);
-  const imprintLabel = (messages as any)["footer.imprint"] ?? "Imprint";
-  const privacyLabel = (messages as any)["footer.privacy"] ?? "Privacy";
+  const imprintLabel = (messages as any)?.footer?.imprint ?? "Imprint";
+  const privacyLabel = (messages as any)?.footer?.privacy ?? "Privacy";
   return (
     <html lang={lang}>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -71,7 +86,7 @@ export default async function RootLayout({
                     <option value="el">EL</option>
                     <option value="nl">NL</option>
                   </select>
-                  <button className="text-sm underline" type="submit">{(messages as any)["footer.langApply"] ?? "Apply"}</button>
+                  <button className="text-sm underline" type="submit">{(messages as any)?.footer?.langApply ?? "Apply"}</button>
                 </form>
               </nav>
               <div className="text-sm text-gray-500">© {new Date().getFullYear()} ELLYTIC</div>
