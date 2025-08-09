@@ -40,10 +40,15 @@ export type Audience =
   | "investors"
   | "professionals";
 
+export interface ProfessionalsInfo {
+  interests: string[]; // api, bulk, referral
+}
+
 export interface WizardAnswers {
   audience?: Audience;
   bundleType: BundleType | null;
   selectedProducts: ProductId[]; // products selected in Step 2
+  professionals: ProfessionalsInfo; // professional interests for B2B
   isMarried: boolean;
   isCouple: boolean; // purchase couple variant
   idType: "passport" | "id" | "";
@@ -101,6 +106,9 @@ const initialAnswers: WizardAnswers = {
   audience: undefined,
   bundleType: null,
   selectedProducts: [],
+  professionals: {
+    interests: [],
+  },
   isMarried: false,
   isCouple: false,
   idType: "",

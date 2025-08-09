@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { motion } from "framer-motion";
+import { useRouter } from "next/navigation";
 import { useWizardStore } from "@/store/wizardStore";
 import { 
   ProductCategory, 
@@ -148,10 +149,105 @@ function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCa
   );
 }
 
+function ProfessionalsGate() {
+  const t = useTranslations();
+  const router = useRouter();
+  const { answers, update } = useWizardStore();
+
+  const professionalOptions = [
+    { id: "api", key: "wizard.step2.professionals.api" },
+    { id: "bulk", key: "wizard.step2.professionals.bulk" },
+    { id: "referral", key: "wizard.step2.professionals.referral" }
+  ];
+
+  const handleInterestToggle = (interestId: string) => {
+    const currentInterests = answers.professionals.interests;
+    const newInterests = currentInterests.includes(interestId)
+      ? currentInterests.filter(id => id !== interestId)
+      : [...currentInterests, interestId];
+    
+    update({
+      professionals: {
+        interests: newInterests
+      }
+    });
+  };
+
+  const handleContactSales = () => {
+    const interests = answers.professionals.interests.join(",");
+    router.push(`/contact-sales?audience=professionals&interests=${interests}`);
+  };
+
+  return (
+    <div className="space-y-6">
+      {/* Header */}
+      <div>
+        <h2 className="text-2xl font-semibold mb-2">{t("wizard.step2.professionals.title")}</h2>
+        <p className="text-gray-600">{t("wizard.step2.professionals.subtitle")}</p>
+      </div>
+
+      {/* Professional Options */}
+      <div className="space-y-4">
+        {professionalOptions.map((option, index) => (
+          <motion.div
+            key={option.id}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: index * 0.1 }}
+            className={`
+              p-6 rounded-xl border-2 cursor-pointer transition-all duration-200
+              hover:shadow-lg hover:scale-[1.02] 
+              ${answers.professionals.interests.includes(option.id)
+                ? 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200'
+                : 'border-gray-200 bg-white hover:border-gray-300'
+              }
+            `}
+            onClick={() => handleInterestToggle(option.id)}
+          >
+            <div className="flex items-start gap-4">
+              <input
+                type="checkbox"
+                checked={answers.professionals.interests.includes(option.id)}
+                onChange={() => handleInterestToggle(option.id)}
+                className="mt-1 w-4 h-4 text-blue-600 rounded focus:ring-blue-500"
+              />
+              <div className="flex-1">
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  {t(`${option.key}.title`)}
+                </h3>
+                <p className="text-sm text-gray-600 leading-relaxed">
+                  {t(`${option.key}.description`)}
+                </p>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Contact Sales CTA */}
+      <div className="flex justify-end pt-4">
+        <button
+          disabled={answers.professionals.interests.length === 0}
+          onClick={handleContactSales}
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+        >
+          {t("wizard.step2.professionals.contactSales")}
+        </button>
+      </div>
+    </div>
+  );
+}
+
 export function Step2Products({ onContinue }: Step2ProductsProps) {
   const t = useTranslations();
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<ProductCategory>("translytic");
-  const { answers, toggleProduct } = useWizardStore();
+  const { answers, toggleProduct, update } = useWizardStore();
+
+  // Check if audience is professionals - show gate instead of products
+  if (answers.audience === "professionals") {
+    return <ProfessionalsGate />;
+  }
 
   // Get products for the current tab and sort with recommended first
   const allTabProducts = getProductsByCategory(activeTab);
