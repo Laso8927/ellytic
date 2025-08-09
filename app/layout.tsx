@@ -21,6 +21,19 @@ export const metadata: Metadata = {
   title: "Ellytic – We handle Greece",
   description:
     "AI-powered services for AFM registration, translations, tax and more. Fully GDPR-compliant and based in Germany.",
+  icons: {
+    icon: [
+      { url: '/favicon.svg', type: 'image/svg+xml' },
+      { url: '/favicon.ico', sizes: '16x16', type: 'image/x-icon' },
+    ],
+    apple: [
+      { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
+    ],
+    other: [
+      { rel: 'mask-icon', url: '/safari-pinned-tab.svg', color: '#3B82F6' },
+    ],
+  },
+  manifest: '/site.webmanifest',
 };
 
 function nestMessages(flat: Record<string, any>): Record<string, any> {

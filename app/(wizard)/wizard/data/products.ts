@@ -159,7 +159,7 @@ export const products: Product[] = [
     titleKey: "wizard.step2.taxlytic.due_diligence.title",
     subtitleKey: "wizard.step2.taxlytic.due_diligence.subtitle", 
     price: {
-      display: "Price TBD"
+      display: "€499"
     },
     flags: { standalone: true },
     role: "Standalone",
@@ -173,7 +173,7 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.property_portfolio.title",
     subtitleKey: "wizard.step2.homelytic.property_portfolio.subtitle",
     price: {
-      display: "Price TBD"
+      display: "€39/month or €399/year"
     },
     flags: { standalone: true },
     role: "Standalone",
@@ -197,7 +197,7 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.investment_analysis.title",
     subtitleKey: "wizard.step2.homelytic.investment_analysis.subtitle", 
     price: {
-      display: "Price TBD"
+      display: "€899"
     },
     flags: { standalone: true },
     role: "Standalone",
