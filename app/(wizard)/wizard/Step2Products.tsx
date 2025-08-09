@@ -13,6 +13,7 @@ import {
   getProductsByCategory 
 } from "./data/products";
 import { isProductRecommended } from "./data/recommendations";
+import { wizardAnalytics } from "@/lib/analytics";
 
 interface Step2ProductsProps {
   onContinue: () => void;
@@ -174,8 +175,10 @@ function ProfessionalsGate() {
   };
 
   const handleContactSales = () => {
-    const interests = answers.professionals.interests.join(",");
-    router.push(`/contact-sales?audience=professionals&interests=${interests}`);
+    const interests = answers.professionals.interests;
+    wizardAnalytics.proContactStarted(interests, 'professionals');
+    const interestsParam = interests.join(",");
+    router.push(`/contact-sales?audience=professionals&interests=${interestsParam}`);
   };
 
   return (
@@ -264,6 +267,32 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
   });
 
   const hasSelectedProducts = answers.selectedProducts.length > 0;
+  const [showValidationHint, setShowValidationHint] = useState(false);
+
+  const handleContinue = () => {
+    if (!hasSelectedProducts) {
+      setShowValidationHint(true);
+      wizardAnalytics.validationFailed(2, 'no_products_selected');
+      // Hide hint after 3 seconds
+      setTimeout(() => setShowValidationHint(false), 3000);
+      return;
+    }
+    wizardAnalytics.stepCompleted(2, answers.audience);
+    onContinue();
+  };
+
+  const handleProductToggle = (productId: ProductId) => {
+    const wasSelected = answers.selectedProducts.includes(productId);
+    
+    if (wasSelected) {
+      wizardAnalytics.productRemoved(productId, answers.audience || 'unknown');
+    } else {
+      const isRecommended = isProductRecommended(productId, answers.audience);
+      wizardAnalytics.productAdded(productId, answers.audience || 'unknown', isRecommended);
+    }
+    
+    toggleProduct(productId);
+  };
 
   return (
     <div className="space-y-6">
@@ -314,7 +343,7 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
               product={product}
               isSelected={answers.selectedProducts.includes(product.id)}
               isRecommended={isProductRecommended(product.id, answers.audience)}
-              onToggle={toggleProduct}
+              onToggle={handleProductToggle}
             />
           </motion.div>
         ))}
@@ -343,12 +372,25 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
         </motion.div>
       )}
 
+      {/* Validation Hint */}
+      {showValidationHint && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          className="bg-red-50 border border-red-200 rounded-lg p-4 text-center"
+        >
+          <p className="text-red-800 text-sm font-medium">
+            {t("wizard.validation.selectProduct")}
+          </p>
+        </motion.div>
+      )}
+
       {/* Continue Button */}
       <div className="flex justify-end pt-4">
         <button
-          disabled={!hasSelectedProducts}
-          onClick={onContinue}
-          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+          onClick={handleContinue}
+          className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
         >
           {t("wizard.continue")}
         </button>

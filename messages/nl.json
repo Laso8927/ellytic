@@ -113,6 +113,7 @@
   "wizard.pro.gate.options.api": "B2B API Licentie",
   "wizard.pro.gate.options.bulk": "Bulk B2B Transacties",
   "wizard.pro.gate.options.referral": "Verwijzingsprogramma (B2B Lite)",
+  "wizard.validation.selectProduct": "Selecteer ten minste één product om door te gaan.",
   "wizard.step2.translytic.starter_single.title": "Starter Pakket (Alleen)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobiel + 3 gecertificeerde vertalingen",
   "wizard.step2.translytic.starter_couple.title": "Starter Pakket (Koppel)",

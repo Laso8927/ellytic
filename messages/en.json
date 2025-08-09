@@ -113,6 +113,7 @@
   "wizard.pro.gate.options.api": "B2B API License",
   "wizard.pro.gate.options.bulk": "Bulk B2B Transactions",
   "wizard.pro.gate.options.referral": "Referral Program (B2B Lite)",
+  "wizard.validation.selectProduct": "Please select at least one product to continue.",
   "wizard.step2.translytic.starter_single.title": "Starter Bundle (Single)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobile + 3 certified translations",
   "wizard.step2.translytic.starter_couple.title": "Starter Bundle (Couple)",

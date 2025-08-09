@@ -113,6 +113,7 @@
   "wizard.pro.gate.options.api": "B2B API Άδεια",
   "wizard.pro.gate.options.bulk": "Bulk B2B Συναλλαγές",
   "wizard.pro.gate.options.referral": "Πρόγραμμα Παραπομπών (B2B Lite)",
+  "wizard.validation.selectProduct": "Παρακαλώ επιλέξτε τουλάχιστον ένα προϊόν για να συνεχίσετε.",
   "wizard.step2.translytic.starter_single.title": "Πακέτο Starter (Μόνος)",
   "wizard.step2.translytic.starter_single.subtitle": "ΑΦΜ + Κινητό + 3 επικυρωμένες μεταφράσεις",
   "wizard.step2.translytic.starter_couple.title": "Πακέτο Starter (Ζευγάρι)",

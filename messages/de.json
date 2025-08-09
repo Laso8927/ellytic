@@ -113,6 +113,7 @@
   "wizard.pro.gate.options.api": "B2B API-Lizenz",
   "wizard.pro.gate.options.bulk": "Bulk B2B-Transaktionen",
   "wizard.pro.gate.options.referral": "Empfehlungsprogramm (B2B Lite)",
+  "wizard.validation.selectProduct": "Bitte wählen Sie mindestens ein Produkt aus, um fortzufahren.",
   "wizard.step2.translytic.starter_single.title": "Starter-Paket (Einzelperson)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobilfunk + 3 beglaubigte Übersetzungen",
   "wizard.step2.translytic.starter_couple.title": "Starter-Paket (Paar)",
