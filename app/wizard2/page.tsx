@@ -56,7 +56,7 @@ interface Actions {
 }
 
 export default function WizardAdvancedPage() {
-  const { step, nextStep, prevStep, update, setFiles, answers } = useWizardStore();
+  const { step, nextStep, prevStep, skipToStep, update, setFiles, answers } = useWizardStore();
   const router = useRouter();
   const progress = Math.round(((step + 1) / steps.length) * 100);
   const t = useTranslations();
@@ -128,7 +128,7 @@ export default function WizardAdvancedPage() {
               exit={{ opacity: 0, y: -30 }}
               transition={{ duration: 0.3, ease: [0.4, 0.0, 0.2, 1] }}
             >
-              {renderStep(steps[step].key, answers, { update, setFiles, nextStep, prevStep, gotoCheckout })}
+              {renderStep(steps[step].key, answers, { update, setFiles, nextStep, prevStep, skipToStep, gotoCheckout })}
             </motion.div>
           </AnimatePresence>
         </div>
@@ -177,30 +177,85 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
         </div>
       );
     }
-    case "audience":
+    case "audience": {
       return (
         <div>
-          <SectionTitle>{t("wizard.audience.title")}</SectionTitle>
-          <div className="grid gap-8 md:grid-cols-2">
-            {["expat","pensioner","buyer","investor","heir","diaspora"].map((opt) => (
-              <motion.button
-                key={opt}
-                onClick={() => { a.update({ audience: opt as any }); a.nextStep(); }}
-                layout
-                transition={{ layout: {duration: 0.28, ease: [0.2, 0, 0.2, 1]}, duration: 0.2 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.98 }}
-                className="relative z-0 origin-center will-change-transform text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10"
-              >
-                <div className="font-medium text-gray-900 capitalize flex items-center justify-between">
-                  <span>{t(`wizard.audience.options.${opt}`)}</span>
-                  <span className="text-xs text-gray-500">{t("wizard.audience.subtitle")}</span>
-                </div>
-              </motion.button>
-            ))}
+          <SectionTitle>{t("wizard.step1.title")}</SectionTitle>
+          <p className="text-gray-600 mb-6">{t("wizard.step1.subtitle")}</p>
+          
+          {/* Grid: 2 columns × 3 rows on md+, stack on mobile */}
+          <div className="grid gap-4 md:grid-cols-2">
+            {(["homeBuyers", "diasporaHeirs", "expats", "homeOwners", "investors", "professionals"] as const).map((audience, index) => {
+              const isSelected = answers.audience === audience;
+              const gridPositions = [
+                "md:order-1", // homeBuyers - Top Left
+                "md:order-2", // diasporaHeirs - Top Right  
+                "md:order-3", // expats - Middle Left
+                "md:order-4", // homeOwners - Middle Right
+                "md:order-5", // investors - Bottom Left
+                "md:order-6"  // professionals - Bottom Right
+              ];
+              
+              return (
+                <motion.div
+                  key={audience}
+                  className={`${gridPositions[index]} relative`}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <button
+                    role="radio"
+                    aria-checked={isSelected}
+                    data-audience={audience}
+                    onClick={() => a.update({ audience })}
+                    className={`
+                      w-full text-left p-6 rounded-2xl border-2 transition-all duration-200
+                      hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
+                      ${isSelected 
+                        ? 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200' 
+                        : 'border-gray-200 bg-white hover:border-gray-300'
+                      }
+                    `}
+                  >
+                    <div className="space-y-3">
+                      <h3 className="text-lg font-semibold text-gray-900">
+                        {t(`wizard.step1.cards.${audience}.title`)}
+                      </h3>
+                      <p className="text-sm text-gray-600 leading-relaxed">
+                        {t(`wizard.step1.cards.${audience}.description`)}
+                      </p>
+                      <div className="flex justify-end">
+                        <span className={`
+                          px-3 py-1 text-xs font-medium rounded-full transition-colors
+                          ${isSelected 
+                            ? 'bg-blue-100 text-blue-700' 
+                            : 'bg-gray-100 text-gray-600'
+                          }
+                        `}>
+                          {isSelected ? t("wizard.step1.selected") : t("wizard.step1.select")}
+                        </span>
+                      </div>
+                    </div>
+                  </button>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          {/* Continue Button */}
+          <div className="mt-6 flex justify-end">
+            <button
+              disabled={!answers.audience}
+              onClick={a.nextStep}
+              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
+            >
+              {t("wizard.continue")}
+            </button>
           </div>
         </div>
       );
+    }
     case "bundle":
       return (
         <div>

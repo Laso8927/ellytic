@@ -31,8 +31,16 @@ export interface BankOptions {
   hasGreekNumber: boolean;
 }
 
+export type Audience =
+  | "homeBuyers"
+  | "diasporaHeirs" 
+  | "expats"
+  | "homeOwners"
+  | "investors"
+  | "professionals";
+
 export interface WizardAnswers {
-  audience?: "expat" | "pensioner" | "buyer" | "investor" | "heir" | "diaspora";
+  audience?: Audience;
   bundleType: BundleType | null;
   isMarried: boolean;
   isCouple: boolean; // purchase couple variant
@@ -57,6 +65,7 @@ interface WizardState {
   answers: WizardAnswers;
   nextStep: () => void;
   prevStep: () => void;
+  skipToStep: (stepIndex: number) => void;
   update: (partial: Partial<WizardAnswers>) => void;
   setFiles: (key: string, files: FileList | null) => void;
   reset: () => void;
@@ -136,6 +145,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
     
     return { step: prevStep };
   }),
+  skipToStep: (stepIndex: number) => set(() => ({ step: stepIndex })),
   update: (partial) =>
     set((state) => ({ answers: { ...state.answers, ...partial } })),
   setFiles: (key, files) =>
