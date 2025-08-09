@@ -271,6 +271,14 @@
   "contactSales.success.message": "Η ομάδα πωλήσεών μας θα επικοινωνήσει μαζί σας εντός 24 ωρών.",
   "contactSales.success.backHome": "Επιστροφή στην Αρχική",
   "wizard.products.standalone_translation.title": "Υπηρεσία Επικυρωμένων Μεταφράσεων",
-  "wizard.products.standalone_translation.subtitle": "Επαγγελματικές μεταφράσεις εγγράφων με εκπτώσεις όγκου"
+  "wizard.products.standalone_translation.subtitle": "Επαγγελματικές μεταφράσεις εγγράφων με εκπτώσεις όγκου",
+  "wizard.step2.translytic.starter_bundle.title": "Πακέτο Starter",
+  "wizard.step2.translytic.starter_bundle.subtitle": "ΑΦΜ + Κινητό + 3 επικυρωμένες μεταφράσεις",
+  "wizard.step2.translytic.full_service_bundle.title": "Πλήρες Πακέτο Υπηρεσιών",
+  "wizard.step2.translytic.full_service_bundle.subtitle": "Πακέτο Starter + Ανοιγμα Τραπεζικού Λογαριασμού",
+  "wizard.postsale.additional_documents.title": "Επιπλέον Έγγραφα",
+  "wizard.postsale.additional_documents.subtitle": "Επιπλέον μεταφράσεις εγγράφων όπως απαιτείται",
+  "wizard.postsale.govgr_concierge.title": "Gov.gr & E1 Concierge",
+  "wizard.postsale.govgr_concierge.subtitle": "Υποστηριζόμενη με video ρύθμιση gov.gr + KYC + E1 υποστήριξη"
 }
 

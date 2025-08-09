@@ -271,6 +271,14 @@
   "contactSales.success.message": "Our sales team will get back to you within 24 hours.",
   "contactSales.success.backHome": "Back to Home",
   "wizard.products.standalone_translation.title": "Certified Translation Service",
-  "wizard.products.standalone_translation.subtitle": "Professional document translations with volume discounts"
+  "wizard.products.standalone_translation.subtitle": "Professional document translations with volume discounts",
+  "wizard.step2.translytic.starter_bundle.title": "Starter Bundle",
+  "wizard.step2.translytic.starter_bundle.subtitle": "AFM + Mobile + 3 certified translations",
+  "wizard.step2.translytic.full_service_bundle.title": "Full‑Service Bundle",
+  "wizard.step2.translytic.full_service_bundle.subtitle": "Starter Bundle + Bank Account Onboarding",
+  "wizard.postsale.additional_documents.title": "Additional Documents",
+  "wizard.postsale.additional_documents.subtitle": "Extra document translations as needed",
+  "wizard.postsale.govgr_concierge.title": "Gov.gr & E1 Concierge",
+  "wizard.postsale.govgr_concierge.subtitle": "Video-supported gov.gr setup + KYC + E1 assistance"
 }
 

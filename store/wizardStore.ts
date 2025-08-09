@@ -136,7 +136,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
   step: 0,
   answers: initialAnswers,
   nextStep: () => set((state) => {
-    const isStarter = state.answers.bundleType === "starter";
+    const isStarter = state.answers.selectedProducts.includes("starter_bundle");
     const currentStep = state.step;
     let nextStep = currentStep + 1;
     
@@ -148,7 +148,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
     return { step: nextStep };
   }),
   prevStep: () => set((state) => {
-    const isStarter = state.answers.bundleType === "starter";
+    const isStarter = state.answers.selectedProducts.includes("starter_bundle");
     const currentStep = state.step;
     let prevStep = Math.max(currentStep - 1, 0);
     

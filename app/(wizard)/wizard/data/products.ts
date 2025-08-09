@@ -1,17 +1,12 @@
 export type ProductCategory = "translytic" | "taxlytic" | "homelytic";
 
 export type ProductId = 
-  // Translytic
-  | "starter_single" 
-  | "starter_couple"
-  | "full_single"
-  | "full_couple"
-  | "addon_bank_single"
-  | "addon_bank_couple"
-  | "addon_govgr_single"
-  | "addon_govgr_couple"
-  | "addon_translations_single"
-  | "addon_translations_couple"
+  // Translytic - Core Bundles
+  | "starter_bundle"
+  | "full_service_bundle"
+  // Post-Purchase Add-ons
+  | "additional_documents"
+  | "govgr_concierge"
   // Taxlytic
   | "annual_e9_single"
   | "annual_e9_couple"
@@ -53,86 +48,47 @@ export interface Product {
 }
 
 export const products: Product[] = [
-  // Translytic Products
+  // Core Bundles - Main Selection in Step 2
   {
-    id: "starter_single",
+    id: "starter_bundle",
     category: "translytic",
-    titleKey: "wizard.step2.translytic.starter_single.title",
-    subtitleKey: "wizard.step2.translytic.starter_single.subtitle",
+    titleKey: "wizard.step2.translytic.starter_bundle.title",
+    subtitleKey: "wizard.step2.translytic.starter_bundle.subtitle",
     price: {
-      single: "299",
       display: "€299 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
   },
   {
-    id: "starter_couple",
-    category: "translytic", 
-    titleKey: "wizard.step2.translytic.starter_couple.title",
-    subtitleKey: "wizard.step2.translytic.starter_couple.subtitle",
-    price: {
-      couple: "575",
-      display: "€575 incl. VAT"
-    },
-    flags: { bundle: true },
-    role: "Base"
-  },
-  {
-    id: "full_single",
+    id: "full_service_bundle",
     category: "translytic",
-    titleKey: "wizard.step2.translytic.full_single.title", 
-    subtitleKey: "wizard.step2.translytic.full_single.subtitle",
+    titleKey: "wizard.step2.translytic.full_service_bundle.title", 
+    subtitleKey: "wizard.step2.translytic.full_service_bundle.subtitle",
     price: {
-      single: "475",
       display: "€475 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
   },
+
+  // Post-Purchase Add-ons (not shown in Step 2)
   {
-    id: "full_couple",
+    id: "additional_documents",
     category: "translytic",
-    titleKey: "wizard.step2.translytic.full_couple.title",
-    subtitleKey: "wizard.step2.translytic.full_couple.subtitle", 
+    titleKey: "wizard.postsale.additional_documents.title",
+    subtitleKey: "wizard.postsale.additional_documents.subtitle",
     price: {
-      couple: "925",
-      display: "€925 incl. VAT"
-    },
-    flags: { bundle: true },
-    role: "Base"
-  },
-  {
-    id: "addon_bank_single",
-    category: "translytic",
-    titleKey: "wizard.step2.translytic.addon_bank_single.title",
-    subtitleKey: "wizard.step2.translytic.addon_bank_single.subtitle",
-    price: {
-      single: "175",
-      couple: "325",
-      display: "€175 (Single) / €325 (Couple)"
+      display: "€24.90 per document"
     },
     flags: { addon: true },
     role: "Addon"
   },
   {
-    id: "addon_bank_couple", 
+    id: "govgr_concierge",
     category: "translytic",
-    titleKey: "wizard.step2.translytic.addon_bank_couple.title",
-    subtitleKey: "wizard.step2.translytic.addon_bank_couple.subtitle",
-    price: {
-      single: "175",
-      couple: "325",
-      display: "€175 (Single) / €325 (Couple)"
-    },
-    flags: { addon: true },
-    role: "Addon"
-  },
-  {
-    id: "addon_govgr_single",
-    category: "translytic",
-    titleKey: "wizard.step2.translytic.addon_govgr_single.title",
-    subtitleKey: "wizard.step2.translytic.addon_govgr_single.subtitle",
+    titleKey: "wizard.postsale.govgr_concierge.title",
+    subtitleKey: "wizard.postsale.govgr_concierge.subtitle",
     price: {
       single: "89",
       couple: "160",
@@ -140,45 +96,6 @@ export const products: Product[] = [
     },
     flags: { addon: true },
     role: "Upsell"
-  },
-  {
-    id: "addon_govgr_couple",
-    category: "translytic", 
-    titleKey: "wizard.step2.translytic.addon_govgr_couple.title",
-    subtitleKey: "wizard.step2.translytic.addon_govgr_couple.subtitle",
-    price: {
-      single: "89",
-      couple: "160",
-      display: "€89 (Single) / €160 (Couple)"
-    },
-    flags: { addon: true },
-    role: "Upsell"
-  },
-  {
-    id: "addon_translations_single",
-    category: "translytic",
-    titleKey: "wizard.step2.translytic.addon_translations_single.title", 
-    subtitleKey: "wizard.step2.translytic.addon_translations_single.subtitle",
-    price: {
-      single: "45",
-      couple: "85",
-      display: "€45 (Single) / €85 (Couple)"
-    },
-    flags: { addon: true },
-    role: "Addon"
-  },
-  {
-    id: "addon_translations_couple",
-    category: "translytic",
-    titleKey: "wizard.step2.translytic.addon_translations_couple.title",
-    subtitleKey: "wizard.step2.translytic.addon_translations_couple.subtitle", 
-    price: {
-      single: "45",
-      couple: "85",
-      display: "€45 (Single) / €85 (Couple)"
-    },
-    flags: { addon: true },
-    role: "Addon"
   },
 
   // Taxlytic Products

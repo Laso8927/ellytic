@@ -54,6 +54,7 @@ function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCa
       className={`
         relative p-6 rounded-xl border-2 transition-all duration-200 cursor-pointer
         hover:shadow-lg hover:scale-[1.02] focus-within:ring-2 focus-within:ring-blue-500 focus-within:ring-offset-2
+        min-h-[280px] flex flex-col justify-between
         ${isSelected 
           ? 'border-blue-500 bg-blue-50 shadow-md ring-2 ring-blue-200' 
           : 'border-gray-200 bg-white hover:border-gray-300'
@@ -70,14 +71,8 @@ function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCa
         </div>
       )}
 
-      {/* Role Badge */}
-      <div className="flex justify-between items-start mb-3">
-        <span className={`
-          px-2 py-1 text-xs font-medium rounded-full border
-          ${getRoleBadgeStyles(product.role)}
-        `}>
-          {product.role}
-        </span>
+      {/* Price Display */}
+      <div className="flex justify-end mb-3">
         <div className="text-right">
           <div className="text-lg font-bold text-gray-900">
             {product.price.display}
@@ -252,8 +247,10 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
     return <ProfessionalsGate />;
   }
 
-  // Get products for the current tab and sort with recommended first
-  const allTabProducts = getProductsByCategory(activeTab);
+  // Get only core bundles for Step 2 (no add-ons)
+  const allTabProducts = getProductsByCategory(activeTab).filter(product => 
+    product.flags.bundle && !product.flags.addon
+  );
   const tabProducts = allTabProducts.sort((a, b) => {
     const aRecommended = isProductRecommended(a.id, answers.audience);
     const bRecommended = isProductRecommended(b.id, answers.audience);
@@ -330,7 +327,7 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
         initial={{ opacity: 0, x: 20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.3 }}
-        className="grid gap-6 md:grid-cols-2 lg:grid-cols-3"
+        className="grid gap-6 grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto"
       >
         {tabProducts.map((product, index) => (
           <motion.div

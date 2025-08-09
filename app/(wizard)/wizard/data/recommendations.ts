@@ -10,82 +10,44 @@ import type { Audience, ProductId } from "@/store/wizardStore";
 // - "professionals" → Certified Translations (Standalone/Packs), B2B API License, B2B Transactions, Referral Program
 
 export const recommendations: Record<Audience, Set<ProductId>> = {
-  // Expats column: ✅ for Starter, Full-Service, Gov.gr & E1, Bank onboarding, Certified Trans (B2C), Certified Trans (Standalone/Packs), Self-service E9
+  // Expats: Recommend both core bundles for Step 2 selection
   expats: new Set([
-    "starter_single",
-    "starter_couple", 
-    "full_single",
-    "full_couple",
-    "addon_govgr_single",
-    "addon_govgr_couple",
-    "addon_bank_single",
-    "addon_bank_couple",
-    "addon_translations_single",
-    "addon_translations_couple",
-    // Self-service E9 would map to our annual E9 products
-    "annual_e9_single",
-    "annual_e9_couple"
+    "starter_bundle",
+    "full_service_bundle"
   ]),
 
-  // Interested Buyers column: ✅ for Starter, Full-Service, Gov.gr & E1, Bank onboarding, Certified Trans (B2C), Certified Trans (Standalone/Packs)
+  // Home Buyers: Recommend both bundles (they need AFM + setup)
   homeBuyers: new Set([
-    "starter_single",
-    "starter_couple",
-    "full_single", 
-    "full_couple",
-    "addon_govgr_single",
-    "addon_govgr_couple",
-    "addon_bank_single",
-    "addon_bank_couple",
-    "addon_translations_single",
-    "addon_translations_couple"
+    "starter_bundle",
+    "full_service_bundle"
   ]),
 
-  // Existing Owners column: ✅ for Annual E9 (B2C), Certified Trans (B2C), Certified Trans (Standalone/Packs), Self-service E9
+  // Home Owners: Only Annual E9 (they already have AFM)
   homeOwners: new Set([
     "annual_e9_single",
     "annual_e9_couple", 
-    "annual_e9_family",
-    "addon_translations_single",
-    "addon_translations_couple"
+    "annual_e9_family"
   ]),
 
-  // Investors column: ✅ for Starter, Full-Service, Gov.gr & E1, Bank onboarding, Annual E9 (B2C), Certified Trans (B2C), Certified Trans (Standalone/Packs), Self-service E9
+  // Investors: Recommend both bundles (comprehensive needs)
   investors: new Set([
-    "starter_single",
-    "starter_couple",
-    "full_single",
-    "full_couple", 
-    "addon_govgr_single",
-    "addon_govgr_couple",
-    "addon_bank_single",
-    "addon_bank_couple",
+    "starter_bundle",
+    "full_service_bundle",
     "annual_e9_single",
     "annual_e9_couple",
-    "annual_e9_family",
-    "addon_translations_single",
-    "addon_translations_couple"
+    "annual_e9_family"
   ]),
 
-  // Diaspora Heirs: mirror Existing Owners + Certified Translations (B2C) + Annual E9
-  // This matches homeOwners but we'll be explicit for clarity
+  // Diaspora Heirs: Similar to home owners
   diasporaHeirs: new Set([
     "annual_e9_single",
     "annual_e9_couple",
-    "annual_e9_family", 
-    "addon_translations_single",
-    "addon_translations_couple"
+    "annual_e9_family"
   ]),
 
-  // Professionals: Certified Translations (Standalone/Packs), B2B API License, B2B Transactions, Referral Program
-  // Note: B2B products don't exist in our current catalog, so we'll focus on translations
+  // Professionals: No core bundle recommendations (they use B2B gate)
   professionals: new Set([
-    "addon_translations_single",
-    "addon_translations_couple"
-    // Future B2B products would be added here:
-    // "b2b_api_license",
-    // "b2b_transactions", 
-    // "referral_program"
+    // Empty - they go through professionals gate
   ])
 };
 

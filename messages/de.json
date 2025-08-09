@@ -271,6 +271,14 @@
   "contactSales.success.message": "Unser Vertriebsteam wird sich innerhalb von 24 Stunden bei Ihnen melden.",
   "contactSales.success.backHome": "Zurück zur Startseite",
   "wizard.products.standalone_translation.title": "Beglaubigte Übersetzungsservice",
-  "wizard.products.standalone_translation.subtitle": "Professionelle Dokumentübersetzungen mit Mengenrabatten"
+  "wizard.products.standalone_translation.subtitle": "Professionelle Dokumentübersetzungen mit Mengenrabatten",
+  "wizard.step2.translytic.starter_bundle.title": "Starter-Paket",
+  "wizard.step2.translytic.starter_bundle.subtitle": "AFM + Mobilfunk + 3 beglaubigte Übersetzungen",
+  "wizard.step2.translytic.full_service_bundle.title": "Vollservice-Paket",
+  "wizard.step2.translytic.full_service_bundle.subtitle": "Starter-Paket + Bank-Kontoeröffnung",
+  "wizard.postsale.additional_documents.title": "Zusätzliche Dokumente",
+  "wizard.postsale.additional_documents.subtitle": "Zusätzliche Dokumentübersetzungen nach Bedarf",
+  "wizard.postsale.govgr_concierge.title": "Gov.gr & E1 Concierge",
+  "wizard.postsale.govgr_concierge.subtitle": "Video-unterstützte gov.gr-Einrichtung + KYC + E1-Unterstützung"
 }
 
