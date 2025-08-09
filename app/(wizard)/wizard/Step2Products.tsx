@@ -9,13 +9,15 @@ import {
   ProductCategory, 
   Product, 
   ProductId,
-  getProductsByCategory 
+  getProductsByCategory,
+  getProductById
 } from "./data/products";
 import { isProductRecommended } from "./data/recommendations";
 import { wizardAnalytics } from "@/lib/analytics";
 
 interface Step2ProductsProps {
   onContinue: () => void;
+  onBack?: () => void;
 }
 
 const getRoleBadgeStyles = (role: string) => {
@@ -227,7 +229,7 @@ function ProfessionalsGate() {
   );
 }
 
-export function Step2Products({ onContinue }: Step2ProductsProps) {
+export function Step2Products({ onContinue, onBack }: Step2ProductsProps) {
   const t = useTranslations();
   const router = useRouter();
   const { answers, toggleProduct, update } = useWizardStore();
@@ -262,20 +264,15 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
       return;
     }
 
-    // Check if user selected only Taxlytic or Homelytic products
-    const hasTranslyticProducts = answers.selectedProducts.some(id => 
-      id === "starter_bundle" || id === "full_service_bundle" || id === "standalone_translation"
-    );
-    const hasTaxlyticProducts = answers.selectedProducts.some(id => 
-      id === "annual_e9_single" || id === "due_diligence"
-    );
-    const hasHomelyticProducts = answers.selectedProducts.some(id => 
-      ["property_portfolio", "e2e_purchase", "investment_analysis", "contract_drafting"].includes(id)
-    );
+    // Check if user selected products that require contact sales
+    const contactSalesProducts = answers.selectedProducts.filter(productId => {
+      const product = getProductById(productId);
+      return product?.flags.contactSales;
+    });
 
-    // If only Taxlytic/Homelytic products selected, redirect to contact sales
-    if ((hasTaxlyticProducts || hasHomelyticProducts) && !hasTranslyticProducts) {
-      const selectedProductNames = answers.selectedProducts.join(",");
+    // If any contact sales products selected, redirect to contact sales
+    if (contactSalesProducts.length > 0) {
+      const selectedProductNames = contactSalesProducts.join(",");
       wizardAnalytics.stepCompleted(2, answers.audience);
       router.push(`/contact-sales?audience=${answers.audience}&products=${selectedProductNames}&source=wizard_step2`);
       return;
@@ -340,14 +337,9 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
 
         {/* Taxlytic Section */}
         <section className="rounded-3xl border border-green-200/30 p-8 bg-gradient-to-br from-green-50/50 to-emerald-50/30 backdrop-blur-sm shadow-xl">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center">
-              <div className="w-2 h-8 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full mr-4"></div>
-              <h3 className="text-2xl font-bold text-gray-900">{t("wizard.step2.tabs.taxlytic")}</h3>
-            </div>
-            <div className="text-xs bg-gradient-to-r from-blue-500 to-indigo-600 text-white px-3 py-1 rounded-full font-semibold shadow-md">
-              {t("wizard.step2.contactSalesFlow")}
-            </div>
+          <div className="flex items-center mb-6">
+            <div className="w-2 h-8 bg-gradient-to-b from-green-500 to-emerald-600 rounded-full mr-4"></div>
+            <h3 className="text-2xl font-bold text-gray-900">{t("wizard.step2.tabs.taxlytic")}</h3>
           </div>
           <div className="grid gap-8 grid-cols-1 md:grid-cols-2 max-w-5xl">
             {taxlyticProducts.map((product) => (
@@ -428,13 +420,26 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
         </motion.div>
       )}
 
-      {/* Continue Button */}
-      <div className="flex justify-center pt-8">
+      {/* Navigation Buttons */}
+      <div className="flex justify-between items-center pt-8">
+        {/* Back Button */}
+        {onBack && (
+          <motion.button
+            onClick={onBack}
+            whileHover={{ scale: 1.05, x: -2 }}
+            whileTap={{ scale: 0.95 }}
+            className="px-8 py-3 bg-gray-100 text-gray-700 font-semibold rounded-xl shadow-md hover:shadow-lg focus:outline-none focus:ring-4 focus:ring-gray-300/50 transition-all duration-300 backdrop-blur-sm border border-gray-200"
+          >
+            ← {t("wizard.back")}
+          </motion.button>
+        )}
+        
+        {/* Continue Button */}
         <motion.button
           onClick={handleContinue}
           whileHover={{ scale: 1.05, y: -2 }}
           whileTap={{ scale: 0.95 }}
-          className="px-12 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300/50 transition-all duration-300 backdrop-blur-sm border border-blue-400/30"
+          className="px-12 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-lg rounded-2xl shadow-xl hover:shadow-2xl focus:outline-none focus:ring-4 focus:ring-blue-300/50 transition-all duration-300 backdrop-blur-sm border border-blue-400/30 ml-auto"
         >
           {t("wizard.continue")} →
         </motion.button>

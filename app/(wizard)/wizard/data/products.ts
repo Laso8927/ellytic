@@ -29,6 +29,7 @@ export interface ProductFlags {
   addon?: boolean;
   recurring?: boolean;
   standalone?: boolean;
+  contactSales?: boolean;
 }
 
 export interface ProductPrice {
@@ -111,11 +112,11 @@ export const products: Product[] = [
     titleKey: "wizard.step2.taxlytic.annual_e9_single.title",
     subtitleKey: "wizard.step2.taxlytic.annual_e9_single.subtitle",
     price: {
-      single: "24.90",
+      single: "29.90",
       couple: "49.90",
       family: "59.90",
-      extraChild: "10",
-      display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
+      extraChild: "15",
+      display: "Starts at €29.90 incl. VAT"
     },
     flags: { recurring: true, standalone: true },
     role: "Recurring",
@@ -159,7 +160,7 @@ export const products: Product[] = [
     titleKey: "wizard.step2.taxlytic.due_diligence.title",
     subtitleKey: "wizard.step2.taxlytic.due_diligence.subtitle", 
     price: {
-      display: "€499"
+      display: "€499 incl. VAT"
     },
     flags: { standalone: true },
     role: "Standalone",
@@ -173,11 +174,10 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.property_portfolio.title",
     subtitleKey: "wizard.step2.homelytic.property_portfolio.subtitle",
     price: {
-      display: "€39/month or €399/year"
+      display: "€39/month or €399/year incl. VAT"
     },
     flags: { standalone: true },
-    role: "Standalone",
-    suitableAudiences: ["investors", "homeBuyers"]
+    role: "Standalone"
   },
   {
     id: "e2e_purchase",
@@ -185,9 +185,9 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.e2e_purchase.title",
     subtitleKey: "wizard.step2.homelytic.e2e_purchase.subtitle",
     price: {
-      display: "Price TBD"
+      display: "Contact Sales"
     },
-    flags: { standalone: true },
+    flags: { standalone: true, contactSales: true },
     role: "Standalone",
     suitableAudiences: ["homeBuyers", "investors"]
   },
@@ -197,7 +197,7 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.investment_analysis.title",
     subtitleKey: "wizard.step2.homelytic.investment_analysis.subtitle", 
     price: {
-      display: "€899"
+      display: "€899 incl. VAT"
     },
     flags: { standalone: true },
     role: "Standalone",
@@ -209,9 +209,9 @@ export const products: Product[] = [
     titleKey: "wizard.step2.homelytic.contract_drafting.title",
     subtitleKey: "wizard.step2.homelytic.contract_drafting.subtitle",
     price: {
-      display: "Price TBD"
+      display: "Contact Sales"
     },
-    flags: { standalone: true },
+    flags: { standalone: true, contactSales: true },
     role: "Standalone",
     suitableAudiences: ["homeBuyers", "investors"]
   },
@@ -223,7 +223,7 @@ export const products: Product[] = [
     titleKey: "wizard.products.standalone_translation.title",
     subtitleKey: "wizard.products.standalone_translation.subtitle",
     price: {
-      display: "€45 → €30 (1–10 docs volume)"
+      display: "Starts at €45 incl. VAT"
     },
     flags: { standalone: true },
     role: "Standalone",

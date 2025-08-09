@@ -44,11 +44,17 @@ export interface ProfessionalsInfo {
   interests: string[]; // api, bulk, referral
 }
 
+export interface TranslationInfo {
+  documentCount: number; // 1-10 documents
+  totalPrice: number; // calculated price
+}
+
 export interface WizardAnswers {
   audience?: Audience;
   bundleType: BundleType | null;
   selectedProducts: ProductId[]; // products selected in Step 2
   professionals: ProfessionalsInfo; // professional interests for B2B
+  translation: TranslationInfo; // translation service details
   isMarried: boolean;
   isCouple: boolean; // purchase couple variant
   idType: "passport" | "id" | "";
@@ -109,6 +115,10 @@ const initialAnswers: WizardAnswers = {
   professionals: {
     interests: [],
   },
+  translation: {
+    documentCount: 1,
+    totalPrice: 45,
+  },
   isMarried: false,
   isCouple: false,
   idType: "",
@@ -137,8 +147,14 @@ export const useWizardStore = create<WizardState>((set, get) => ({
   answers: initialAnswers,
   nextStep: () => set((state) => {
     const isStarter = state.answers.selectedProducts.includes("starter_bundle");
+    const hasTranslation = state.answers.selectedProducts.includes("standalone_translation");
     const currentStep = state.step;
     let nextStep = currentStep + 1;
+    
+    // Skip translation config if not selected
+    if (currentStep === 1 && !hasTranslation) {
+      nextStep = 3; // Skip translation_config step
+    }
     
     // Skip bank steps for starter bundle
     if (isStarter) {
@@ -149,8 +165,14 @@ export const useWizardStore = create<WizardState>((set, get) => ({
   }),
   prevStep: () => set((state) => {
     const isStarter = state.answers.selectedProducts.includes("starter_bundle");
+    const hasTranslation = state.answers.selectedProducts.includes("standalone_translation");
     const currentStep = state.step;
     let prevStep = Math.max(currentStep - 1, 0);
+    
+    // Skip translation config when going back if not selected
+    if (currentStep === 3 && !hasTranslation) {
+      prevStep = 1; // Skip back to products step
+    }
     
     // Skip bank steps for starter bundle when going back
     if (isStarter) {

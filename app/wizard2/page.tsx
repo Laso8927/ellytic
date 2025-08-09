@@ -10,6 +10,7 @@ import { PoAModal } from "./PoAModal";
 import { Select } from "@/components/ui/Select";
 import { FileUpload } from "@/components/ui/FileUpload";
 import { Step2Products } from "../(wizard)/wizard/Step2Products";
+import { calculateTranslationPrice, formatTranslationPrice, TRANSLATION_LIMITS } from "@/lib/translationCalculator";
 
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
@@ -21,7 +22,7 @@ async function uploadToServer(file: File, category: string) {
 type StepKey = 
   | "audience"
   | "products"
-  | "bundle"
+  | "translation_config"
   | "afm_requirements"
   | "personal"
   | "marriage"
@@ -37,7 +38,7 @@ interface StepDef { id: number; key: StepKey }
 const steps: StepDef[] = [
   { id: 0, key: "audience" },
   { id: 1, key: "products" },
-  { id: 2, key: "bundle" },
+  { id: 2, key: "translation_config" },
   { id: 3, key: "afm_requirements" },
   { id: 4, key: "personal" },
   { id: 5, key: "marriage" },
@@ -211,7 +212,11 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
                     role="radio"
                     aria-checked={isSelected}
                     data-audience={audience}
-                    onClick={() => a.update({ audience })}
+                    onClick={() => {
+                      a.update({ audience });
+                      // Auto-forward to step 2 after selection
+                      setTimeout(() => a.nextStep(), 300);
+                    }}
                     className={`
                       w-full text-left p-6 rounded-2xl border-2 transition-all duration-200
                       hover:shadow-lg hover:scale-[1.02] focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2
@@ -246,47 +251,70 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
             })}
           </div>
 
-          {/* Continue Button */}
-          <div className="mt-6 flex justify-end">
-            <button
-              disabled={!answers.audience}
-              onClick={a.nextStep}
-              className="px-6 py-3 bg-blue-600 text-white font-medium rounded-lg disabled:opacity-50 disabled:cursor-not-allowed hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors"
-            >
-              {t("wizard.continue")}
+          {/* Auto-forward on selection - no continue button needed */}
+        </div>
+      );
+    }
+    case "products": {
+      return <Step2Products onContinue={a.nextStep} onBack={a.prevStep} />;
+    }
+    case "translation_config": {
+      const handleDocumentCountChange = (count: number) => {
+        const totalPrice = calculateTranslationPrice(count);
+        a.update({ 
+          translation: { 
+            documentCount: count, 
+            totalPrice: totalPrice 
+          } 
+        });
+      };
+
+      return (
+        <div>
+          <SectionTitle>Document Translation Configuration</SectionTitle>
+          <div className="space-y-6">
+            <div>
+              <FieldLabel>Number of Documents (1-10)</FieldLabel>
+              <div className="grid grid-cols-5 gap-2">
+                {Array.from({ length: 10 }, (_, i) => i + 1).map((count) => (
+                  <button
+                    key={count}
+                    onClick={() => handleDocumentCountChange(count)}
+                    className={`
+                      p-3 rounded-lg border-2 font-semibold transition-all
+                      ${answers.translation.documentCount === count
+                        ? 'border-blue-500 bg-blue-50 text-blue-700'
+                        : 'border-gray-200 hover:border-gray-300 text-gray-700'
+                      }
+                    `}
+                  >
+                    {count}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+              <h4 className="font-semibold text-blue-900 mb-2">Price Calculation</h4>
+              <p className="text-blue-800">
+                {formatTranslationPrice(answers.translation.documentCount)}
+              </p>
+              <div className="text-sm text-blue-600 mt-2">
+                <p>• Maximum {TRANSLATION_LIMITS.RECOMMENDED_MAX_PAGES} pages per document (up to {TRANSLATION_LIMITS.MAX_PAGES_PER_DOCUMENT} technically possible)</p>
+                <p>• Maximum {TRANSLATION_LIMITS.MAX_CHARACTERS_PER_PAGE.toLocaleString()} characters per page</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-between">
+            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
+            <button className="rounded-md bg-blue-600 text-white px-4 py-2" onClick={a.nextStep}>
+              {t("wizard.next")}
             </button>
           </div>
         </div>
       );
     }
-    case "products": {
-      return <Step2Products onContinue={a.nextStep} />;
-    }
-    case "bundle":
-      return (
-        <div>
-          <SectionTitle>{t("wizard.bundle.title")}</SectionTitle>
-          <div className="grid gap-8 md:grid-cols-2">
-            {[{key:"starter", title:t("wizard.bundle.starter.title"), desc:t("wizard.bundle.starter.description")}, {key:"full", title:t("wizard.bundle.full.title"), desc:t("wizard.bundle.full.description")}].map((b)=> (
-              <motion.button
-                key={b.key}
-                onClick={() => { a.update({ bundleType: b.key as any }); a.nextStep(); }}
-                layout
-                transition={{ layout: {duration: 0.28, ease: [0.2, 0, 0.2, 1]}, duration: 0.2 }}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.98 }}
-                className={`relative z-0 origin-center will-change-transform text-left rounded-2xl glass p-4 transition-all hover:shadow-2xl hover:ring-2 hover:ring-blue-300/60 hover:z-10 ${answers.bundleType === b.key ? "ring-2 ring-blue-600" : ""}`}
-              >
-                <div className="font-medium text-gray-900">{b.title}</div>
-                <p className="text-sm text-gray-600 mt-1">{b.desc}</p>
-              </motion.button>
-            ))}
-          </div>
-          <div className="mt-6 flex justify-start">
-            <button className="text-gray-600" onClick={a.prevStep}>← {t("wizard.back")}</button>
-          </div>
-        </div>
-      );
     case "afm_requirements": {
       const canContinue = !!(
         answers.hasValidId &&
