@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { ProductId } from "@/app/(wizard)/wizard/data/products";
 
 export type BundleType = "starter" | "full";
 
@@ -42,6 +43,7 @@ export type Audience =
 export interface WizardAnswers {
   audience?: Audience;
   bundleType: BundleType | null;
+  selectedProducts: ProductId[]; // products selected in Step 2
   isMarried: boolean;
   isCouple: boolean; // purchase couple variant
   idType: "passport" | "id" | "";
@@ -68,6 +70,9 @@ interface WizardState {
   skipToStep: (stepIndex: number) => void;
   update: (partial: Partial<WizardAnswers>) => void;
   setFiles: (key: string, files: FileList | null) => void;
+  addProduct: (productId: ProductId) => void;
+  removeProduct: (productId: ProductId) => void;
+  toggleProduct: (productId: ProductId) => void;
   reset: () => void;
 }
 
@@ -95,6 +100,7 @@ const emptyPersonal: PersonalInfo = {
 const initialAnswers: WizardAnswers = {
   audience: undefined,
   bundleType: null,
+  selectedProducts: [],
   isMarried: false,
   isCouple: false,
   idType: "",
@@ -128,7 +134,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
     
     // Skip bank steps for starter bundle
     if (isStarter) {
-      if (currentStep === 6) nextStep = 10; // Skip bank_overview, bank_docs, bank_mobile (steps 7,8,9)
+      if (currentStep === 7) nextStep = 11; // Skip bank_overview, bank_docs, bank_mobile (steps 8,9,10)
     }
     
     return { step: nextStep };
@@ -140,7 +146,7 @@ export const useWizardStore = create<WizardState>((set, get) => ({
     
     // Skip bank steps for starter bundle when going back
     if (isStarter) {
-      if (currentStep === 10) prevStep = 6; // Skip bank steps when going back from review
+      if (currentStep === 11) prevStep = 7; // Skip bank steps when going back from review
     }
     
     return { step: prevStep };
@@ -152,6 +158,28 @@ export const useWizardStore = create<WizardState>((set, get) => ({
     set((state) => {
       const arr: File[] = files ? Array.from(files) : [];
       return { answers: { ...state.answers, files: { ...state.answers.files, [key]: arr } } };
+    }),
+  addProduct: (productId) =>
+    set((state) => {
+      const products = state.answers.selectedProducts;
+      if (!products.includes(productId)) {
+        return { answers: { ...state.answers, selectedProducts: [...products, productId] } };
+      }
+      return state;
+    }),
+  removeProduct: (productId) =>
+    set((state) => {
+      const products = state.answers.selectedProducts.filter(id => id !== productId);
+      return { answers: { ...state.answers, selectedProducts: products } };
+    }),
+  toggleProduct: (productId) =>
+    set((state) => {
+      const products = state.answers.selectedProducts;
+      const isSelected = products.includes(productId);
+      const newProducts = isSelected 
+        ? products.filter(id => id !== productId)
+        : [...products, productId];
+      return { answers: { ...state.answers, selectedProducts: newProducts } };
     }),
   reset: () => set({ step: 0, answers: initialAnswers }),
 }));

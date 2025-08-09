@@ -9,6 +9,7 @@ import { useTranslations } from "next-intl";
 import { PoAModal } from "./PoAModal";
 import { Select } from "@/components/ui/Select";
 import { FileUpload } from "@/components/ui/FileUpload";
+import { Step2Products } from "../(wizard)/wizard/Step2Products";
 
 async function uploadToServer(file: File, category: string) {
   const form = new FormData();
@@ -17,8 +18,9 @@ async function uploadToServer(file: File, category: string) {
   await fetch("/api/uploads", { method: "POST", body: form });
 }
 
-type StepKey =
+type StepKey = 
   | "audience"
+  | "products"
   | "bundle"
   | "afm_requirements"
   | "personal"
@@ -34,16 +36,17 @@ interface StepDef { id: number; key: StepKey }
 
 const steps: StepDef[] = [
   { id: 0, key: "audience" },
-  { id: 1, key: "bundle" },
-  { id: 2, key: "afm_requirements" },
-  { id: 3, key: "personal" },
-  { id: 4, key: "marriage" },
-  { id: 5, key: "consents" },
-  { id: 6, key: "uploads_afm" },
-  { id: 7, key: "bank_overview" },
-  { id: 8, key: "bank_docs" },
-  { id: 9, key: "bank_mobile" },
-  { id: 10, key: "review" },
+  { id: 1, key: "products" },
+  { id: 2, key: "bundle" },
+  { id: 3, key: "afm_requirements" },
+  { id: 4, key: "personal" },
+  { id: 5, key: "marriage" },
+  { id: 6, key: "consents" },
+  { id: 7, key: "uploads_afm" },
+  { id: 8, key: "bank_overview" },
+  { id: 9, key: "bank_docs" },
+  { id: 10, key: "bank_mobile" },
+  { id: 11, key: "review" },
 ];
 
 interface Actions {
@@ -255,6 +258,9 @@ function renderStep(key: StepKey, answers: WizardAnswers, a: Actions) {
           </div>
         </div>
       );
+    }
+    case "products": {
+      return <Step2Products onContinue={a.nextStep} />;
     }
     case "bundle":
       return (
