@@ -21,7 +21,9 @@ export type ProductId =
   | "property_portfolio"
   | "e2e_purchase"
   | "investment_analysis"
-  | "contract_drafting";
+  | "contract_drafting"
+  // Standalone
+  | "standalone_translation";
 
 export type ProductRole = "Base" | "Upsell" | "Addon" | "Recurring" | "Standalone";
 
@@ -59,7 +61,7 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.starter_single.subtitle",
     price: {
       single: "299",
-      display: "€299"
+      display: "€299 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
@@ -71,7 +73,7 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.starter_couple.subtitle",
     price: {
       couple: "575",
-      display: "€575"
+      display: "€575 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
@@ -83,7 +85,7 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.full_single.subtitle",
     price: {
       single: "475",
-      display: "€475"
+      display: "€475 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
@@ -95,7 +97,7 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.full_couple.subtitle", 
     price: {
       couple: "925",
-      display: "€925"
+      display: "€925 incl. VAT"
     },
     flags: { bundle: true },
     role: "Base"
@@ -107,7 +109,8 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.addon_bank_single.subtitle",
     price: {
       single: "175",
-      display: "€175"
+      couple: "325",
+      display: "€175 (Single) / €325 (Couple)"
     },
     flags: { addon: true },
     role: "Addon"
@@ -118,8 +121,9 @@ export const products: Product[] = [
     titleKey: "wizard.step2.translytic.addon_bank_couple.title",
     subtitleKey: "wizard.step2.translytic.addon_bank_couple.subtitle",
     price: {
-      couple: "325", 
-      display: "€325"
+      single: "175",
+      couple: "325",
+      display: "€175 (Single) / €325 (Couple)"
     },
     flags: { addon: true },
     role: "Addon"
@@ -131,7 +135,8 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.addon_govgr_single.subtitle",
     price: {
       single: "89",
-      display: "€89"
+      couple: "160",
+      display: "€89 (Single) / €160 (Couple)"
     },
     flags: { addon: true },
     role: "Upsell"
@@ -142,8 +147,9 @@ export const products: Product[] = [
     titleKey: "wizard.step2.translytic.addon_govgr_couple.title",
     subtitleKey: "wizard.step2.translytic.addon_govgr_couple.subtitle",
     price: {
+      single: "89",
       couple: "160",
-      display: "€160"
+      display: "€89 (Single) / €160 (Couple)"
     },
     flags: { addon: true },
     role: "Upsell"
@@ -155,7 +161,8 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.translytic.addon_translations_single.subtitle",
     price: {
       single: "45",
-      display: "€45"
+      couple: "85",
+      display: "€45 (Single) / €85 (Couple)"
     },
     flags: { addon: true },
     role: "Addon"
@@ -166,8 +173,9 @@ export const products: Product[] = [
     titleKey: "wizard.step2.translytic.addon_translations_couple.title",
     subtitleKey: "wizard.step2.translytic.addon_translations_couple.subtitle", 
     price: {
+      single: "45",
       couple: "85",
-      display: "€85"
+      display: "€45 (Single) / €85 (Couple)"
     },
     flags: { addon: true },
     role: "Addon"
@@ -181,7 +189,10 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.taxlytic.annual_e9_single.subtitle",
     price: {
       single: "24.90",
-      display: "€24.90"
+      couple: "49.90",
+      family: "59.90",
+      extraChild: "10",
+      display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
     role: "Recurring"
@@ -192,8 +203,11 @@ export const products: Product[] = [
     titleKey: "wizard.step2.taxlytic.annual_e9_couple.title", 
     subtitleKey: "wizard.step2.taxlytic.annual_e9_couple.subtitle",
     price: {
+      single: "24.90",
       couple: "49.90",
-      display: "€49.90"
+      family: "59.90",
+      extraChild: "10",
+      display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
     role: "Recurring"
@@ -204,9 +218,11 @@ export const products: Product[] = [
     titleKey: "wizard.step2.taxlytic.annual_e9_family.title",
     subtitleKey: "wizard.step2.taxlytic.annual_e9_family.subtitle",
     price: {
+      single: "24.90",
+      couple: "49.90",
       family: "59.90",
       extraChild: "10",
-      display: "€59.90 + €10/extra child"
+      display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
     role: "Recurring"
@@ -264,6 +280,19 @@ export const products: Product[] = [
     subtitleKey: "wizard.step2.homelytic.contract_drafting.subtitle",
     price: {
       display: "Price TBD"
+    },
+    flags: { standalone: true },
+    role: "Standalone"
+  },
+  
+  // Standalone Services
+  {
+    id: "standalone_translation",
+    category: "translytic",
+    titleKey: "wizard.products.standalone_translation.title",
+    subtitleKey: "wizard.products.standalone_translation.subtitle",
+    price: {
+      display: "€45 → €30 (1–10 docs volume)"
     },
     flags: { standalone: true },
     role: "Standalone"
