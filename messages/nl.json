@@ -76,6 +76,7 @@
   "wizard.step2.tabs.taxlytic": "Taxlytic",
   "wizard.step2.tabs.homelytic": "Homelytic",
   "wizard.step2.selected.title": "Geselecteerde Producten",
+  "wizard.step2.recommended": "Aanbevolen voor jou",
   "wizard.step2.translytic.starter_single.title": "Starter Pakket (Alleen)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobiel + 3 gecertificeerde vertalingen",
   "wizard.step2.translytic.starter_couple.title": "Starter Pakket (Koppel)",

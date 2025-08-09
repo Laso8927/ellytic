@@ -76,6 +76,7 @@
   "wizard.step2.tabs.taxlytic": "Taxlytic", 
   "wizard.step2.tabs.homelytic": "Homelytic",
   "wizard.step2.selected.title": "Selected Products",
+  "wizard.step2.recommended": "Recommended for you",
   "wizard.step2.translytic.starter_single.title": "Starter Bundle (Single)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobile + 3 certified translations",
   "wizard.step2.translytic.starter_couple.title": "Starter Bundle (Couple)",

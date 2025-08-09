@@ -11,6 +11,7 @@ import {
   categories, 
   getProductsByCategory 
 } from "./data/products";
+import { isProductRecommended } from "./data/recommendations";
 
 interface Step2ProductsProps {
   onContinue: () => void;
@@ -36,10 +37,11 @@ const getRoleBadgeStyles = (role: string) => {
 interface ProductCardProps {
   product: Product;
   isSelected: boolean;
+  isRecommended: boolean;
   onToggle: (productId: ProductId) => void;
 }
 
-function ProductCard({ product, isSelected, onToggle }: ProductCardProps) {
+function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCardProps) {
   const t = useTranslations();
 
   return (
@@ -57,6 +59,15 @@ function ProductCard({ product, isSelected, onToggle }: ProductCardProps) {
       `}
       onClick={() => onToggle(product.id)}
     >
+      {/* Recommendation Badge */}
+      {isRecommended && (
+        <div className="absolute -top-2 -right-2 z-10">
+          <span className="px-2 py-1 text-xs font-medium bg-green-500 text-white rounded-full shadow-md">
+            ⭐ {t("wizard.step2.recommended")}
+          </span>
+        </div>
+      )}
+
       {/* Role Badge */}
       <div className="flex justify-between items-start mb-3">
         <span className={`
@@ -142,7 +153,20 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
   const [activeTab, setActiveTab] = useState<ProductCategory>("translytic");
   const { answers, toggleProduct } = useWizardStore();
 
-  const tabProducts = getProductsByCategory(activeTab);
+  // Get products for the current tab and sort with recommended first
+  const allTabProducts = getProductsByCategory(activeTab);
+  const tabProducts = allTabProducts.sort((a, b) => {
+    const aRecommended = isProductRecommended(a.id, answers.audience);
+    const bRecommended = isProductRecommended(b.id, answers.audience);
+    
+    // Recommended products come first
+    if (aRecommended && !bRecommended) return -1;
+    if (!aRecommended && bRecommended) return 1;
+    
+    // Within same recommendation status, maintain original order
+    return 0;
+  });
+
   const hasSelectedProducts = answers.selectedProducts.length > 0;
 
   return (
@@ -193,6 +217,7 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
             <ProductCard
               product={product}
               isSelected={answers.selectedProducts.includes(product.id)}
+              isRecommended={isProductRecommended(product.id, answers.audience)}
               onToggle={toggleProduct}
             />
           </motion.div>

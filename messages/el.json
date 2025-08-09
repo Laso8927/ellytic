@@ -76,6 +76,7 @@
   "wizard.step2.tabs.taxlytic": "Taxlytic",
   "wizard.step2.tabs.homelytic": "Homelytic",
   "wizard.step2.selected.title": "Επιλεγμένα Προϊόντα",
+  "wizard.step2.recommended": "Προτείνεται για εσάς",
   "wizard.step2.translytic.starter_single.title": "Πακέτο Starter (Μόνος)",
   "wizard.step2.translytic.starter_single.subtitle": "ΑΦΜ + Κινητό + 3 επικυρωμένες μεταφράσεις",
   "wizard.step2.translytic.starter_couple.title": "Πακέτο Starter (Ζευγάρι)",

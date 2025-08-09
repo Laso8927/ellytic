@@ -76,6 +76,7 @@
   "wizard.step2.tabs.taxlytic": "Taxlytic", 
   "wizard.step2.tabs.homelytic": "Homelytic",
   "wizard.step2.selected.title": "Ausgewählte Produkte",
+  "wizard.step2.recommended": "Für Sie empfohlen",
   "wizard.step2.translytic.starter_single.title": "Starter-Paket (Einzelperson)",
   "wizard.step2.translytic.starter_single.subtitle": "AFM + Mobilfunk + 3 beglaubigte Übersetzungen",
   "wizard.step2.translytic.starter_couple.title": "Starter-Paket (Paar)",
