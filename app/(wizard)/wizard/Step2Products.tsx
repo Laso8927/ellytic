@@ -9,7 +9,6 @@ import {
   ProductCategory, 
   Product, 
   ProductId,
-  categories, 
   getProductsByCategory 
 } from "./data/products";
 import { isProductRecommended } from "./data/recommendations";
@@ -40,11 +39,14 @@ interface ProductCardProps {
   product: Product;
   isSelected: boolean;
   isRecommended: boolean;
+  selectable?: boolean;
+  audience?: import("@/store/wizardStore").Audience | undefined;
   onToggle: (productId: ProductId) => void;
 }
 
-function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCardProps) {
+function ProductCard({ product, isSelected, isRecommended, selectable = true, audience, onToggle }: ProductCardProps) {
   const t = useTranslations();
+  const notSuited = audience && product.suitableAudiences && !product.suitableAudiences.includes(audience);
 
   return (
     <motion.div
@@ -60,7 +62,7 @@ function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCa
           : 'border-gray-200 bg-white hover:border-gray-300'
         }
       `}
-      onClick={() => onToggle(product.id)}
+      onClick={() => selectable && onToggle(product.id)}
     >
       {/* Recommendation Badge */}
       {isRecommended && (
@@ -89,57 +91,33 @@ function ProductCard({ product, isSelected, isRecommended, onToggle }: ProductCa
           {t(product.subtitleKey)}
         </p>
 
-        {/* Flags */}
-        <div className="flex flex-wrap gap-2">
-          {product.flags.bundle && (
-            <span className="px-2 py-1 text-xs bg-blue-50 text-blue-700 rounded-md">
-              Bundle
-            </span>
-          )}
-          {product.flags.addon && (
-            <span className="px-2 py-1 text-xs bg-purple-50 text-purple-700 rounded-md">
-              Add-on
-            </span>
-          )}
-          {product.flags.recurring && (
-            <span className="px-2 py-1 text-xs bg-orange-50 text-orange-700 rounded-md">
-              Recurring
-            </span>
-          )}
-          {product.flags.standalone && (
-            <span className="px-2 py-1 text-xs bg-gray-50 text-gray-700 rounded-md">
-              Standalone
-            </span>
-          )}
-        </div>
+        {/* Suitability info */}
+        {notSuited && (
+          <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md p-2">
+            {t("wizard.step2.suitability.onlyFor")} {product.suitableAudiences?.map((aud) => t(`wizard.step1.cards.${aud}.title`)).join(", ")}
+          </div>
+        )}
 
         {/* Action Buttons */}
-        <div className="flex justify-end gap-2 pt-2">
-          <button 
-            className="px-3 py-1 text-xs text-gray-600 hover:text-gray-800 transition-colors"
-            onClick={(e) => {
-              e.stopPropagation();
-              // TODO: Open learn more modal/tooltip
-            }}
-          >
-            Learn more
-          </button>
-          <button 
-            className={`
-              px-4 py-2 text-sm font-medium rounded-lg transition-colors
-              ${isSelected
-                ? 'bg-red-100 text-red-700 hover:bg-red-200'
-                : 'bg-blue-600 text-white hover:bg-blue-700'
-              }
-            `}
-            onClick={(e) => {
-              e.stopPropagation();
-              onToggle(product.id);
-            }}
-          >
-            {isSelected ? 'Remove' : 'Add'}
-          </button>
-        </div>
+        {selectable && (
+          <div className="flex justify-end gap-2 pt-2">
+            <button 
+              className={`
+                px-4 py-2 text-sm font-medium rounded-lg transition-colors
+                ${isSelected
+                  ? 'bg-red-100 text-red-700 hover:bg-red-200'
+                  : 'bg-blue-600 text-white hover:bg-blue-700'
+                }
+              `}
+              onClick={(e) => {
+                e.stopPropagation();
+                onToggle(product.id);
+              }}
+            >
+              {isSelected ? 'Remove' : 'Add'}
+            </button>
+          </div>
+        )}
       </div>
     </motion.div>
   );
@@ -239,7 +217,6 @@ function ProfessionalsGate() {
 export function Step2Products({ onContinue }: Step2ProductsProps) {
   const t = useTranslations();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<ProductCategory>("translytic");
   const { answers, toggleProduct, update } = useWizardStore();
 
   // Check if audience is professionals - show gate instead of products
@@ -247,44 +224,70 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
     return <ProfessionalsGate />;
   }
 
-  // Get only core bundles for Step 2 (no add-ons)
-  const allTabProducts = getProductsByCategory(activeTab).filter(product => 
-    product.flags.bundle && !product.flags.addon
-  );
-  const tabProducts = allTabProducts.sort((a, b) => {
-    const aRecommended = isProductRecommended(a.id, answers.audience);
-    const bRecommended = isProductRecommended(b.id, answers.audience);
-    
-    // Recommended products come first
-    if (aRecommended && !bRecommended) return -1;
-    if (!aRecommended && bRecommended) return 1;
-    
-    // Within same recommendation status, maintain original order
-    return 0;
-  });
+  // Prepare category sections
+  const translyticProducts = getProductsByCategory("translytic").filter(p => (p.flags.bundle || p.id === "standalone_translation") && !p.flags.addon);
+  const taxlyticProducts = getProductsByCategory("taxlytic").filter(p => p.id === "annual_e9_single" || p.id === "due_diligence");
+  const homelyticProducts = getProductsByCategory("homelytic");
 
-  const hasSelectedProducts = answers.selectedProducts.length > 0;
+  const hasBundleSelected = answers.selectedProducts.includes("starter_bundle") || answers.selectedProducts.includes("full_service_bundle");
+  const hasStandaloneSelected = answers.selectedProducts.includes("standalone_translation");
+  const hasTaxlyticSelected = answers.selectedProducts.some(id => 
+    id === "annual_e9_single" || id === "due_diligence"
+  );
+  const hasHomelyticSelected = answers.selectedProducts.some(id => 
+    ["property_portfolio", "e2e_purchase", "investment_analysis", "contract_drafting"].includes(id)
+  );
+  const hasSelectedProducts = hasBundleSelected || hasStandaloneSelected || hasTaxlyticSelected || hasHomelyticSelected;
   const [showValidationHint, setShowValidationHint] = useState(false);
 
   const handleContinue = () => {
     if (!hasSelectedProducts) {
       setShowValidationHint(true);
-      wizardAnalytics.validationFailed(2, 'no_products_selected');
+      wizardAnalytics.validationFailed(2, 'no_choice_selected');
       // Hide hint after 3 seconds
       setTimeout(() => setShowValidationHint(false), 3000);
       return;
     }
+
+    // Check if user selected only Taxlytic or Homelytic products
+    const hasTranslyticProducts = answers.selectedProducts.some(id => 
+      id === "starter_bundle" || id === "full_service_bundle" || id === "standalone_translation"
+    );
+    const hasTaxlyticProducts = answers.selectedProducts.some(id => 
+      id === "annual_e9_single" || id === "due_diligence"
+    );
+    const hasHomelyticProducts = answers.selectedProducts.some(id => 
+      ["property_portfolio", "e2e_purchase", "investment_analysis", "contract_drafting"].includes(id)
+    );
+
+    // If only Taxlytic/Homelytic products selected, redirect to contact sales
+    if ((hasTaxlyticProducts || hasHomelyticProducts) && !hasTranslyticProducts) {
+      const selectedProductNames = answers.selectedProducts.join(",");
+      wizardAnalytics.stepCompleted(2, answers.audience);
+      router.push(`/contact-sales?audience=${answers.audience}&products=${selectedProductNames}&source=wizard_step2`);
+      return;
+    }
+
     wizardAnalytics.stepCompleted(2, answers.audience);
     onContinue();
   };
 
   const handleProductToggle = (productId: ProductId) => {
     const wasSelected = answers.selectedProducts.includes(productId);
+    // Enforce exclusivity between core bundles
+    const isBundle = productId === "starter_bundle" || productId === "full_service_bundle";
+    if (!wasSelected && isBundle) {
+      // remove the other bundle if selected
+      const other = productId === "starter_bundle" ? "full_service_bundle" : "starter_bundle";
+      if (answers.selectedProducts.includes(other as ProductId)) {
+        toggleProduct(other as ProductId); // remove other
+      }
+    }
     
     if (wasSelected) {
       wizardAnalytics.productRemoved(productId, answers.audience || 'unknown');
     } else {
-      const isRecommended = isProductRecommended(productId, answers.audience);
+      const isRecommended = productId === "full_service_bundle"; // Only full-service shows recommended badge
       wizardAnalytics.productAdded(productId, answers.audience || 'unknown', isRecommended);
     }
     
@@ -299,52 +302,72 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
         <p className="text-gray-600">{t("wizard.step2.subtitle")}</p>
       </div>
 
-      {/* Tabs */}
-      <div className="border-b border-gray-200">
-        <nav className="flex space-x-8" aria-label="Tabs">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveTab(category)}
-              className={`
-                py-4 px-1 border-b-2 font-medium text-sm transition-colors
-                ${activeTab === category
-                  ? 'border-blue-500 text-blue-600'
-                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                }
-              `}
-              aria-current={activeTab === category ? 'page' : undefined}
-            >
-              {t(`wizard.step2.tabs.${category}`)}
-            </button>
-          ))}
-        </nav>
-      </div>
+      {/* Category Sections */}
+      <div className="space-y-8">
+        {/* Translytic Section */}
+        <section className="rounded-2xl border border-gray-200 p-6">
+          <h3 className="text-xl font-semibold mb-4">{t("wizard.step2.tabs.translytic")}</h3>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 max-w-4xl">
+            {translyticProducts.map((product, index) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isSelected={answers.selectedProducts.includes(product.id)}
+                isRecommended={product.id === "full_service_bundle"}
+                audience={answers.audience}
+                selectable={true}
+                onToggle={handleProductToggle}
+              />
+            ))}
+          </div>
+        </section>
 
-      {/* Product Grid */}
-      <motion.div 
-        key={activeTab}
-        initial={{ opacity: 0, x: 20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.3 }}
-        className="grid gap-6 grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto"
-      >
-        {tabProducts.map((product, index) => (
-          <motion.div
-            key={product.id}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.1 }}
-          >
-            <ProductCard
-              product={product}
-              isSelected={answers.selectedProducts.includes(product.id)}
-              isRecommended={isProductRecommended(product.id, answers.audience)}
-              onToggle={handleProductToggle}
-            />
-          </motion.div>
-        ))}
-      </motion.div>
+        {/* Taxlytic Section */}
+        <section className="rounded-2xl border border-gray-200 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <h3 className="text-xl font-semibold">{t("wizard.step2.tabs.taxlytic")}</h3>
+            <div className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-md">
+              {t("wizard.step2.contactSalesFlow")}
+            </div>
+          </div>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 max-w-4xl">
+            {taxlyticProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isSelected={answers.selectedProducts.includes(product.id)}
+                isRecommended={false}
+                audience={answers.audience}
+                selectable={true}
+                onToggle={handleProductToggle}
+              />
+            ))}
+          </div>
+        </section>
+
+        {/* Homelytic Section */}
+        <section className="rounded-2xl border border-gray-200 p-6">
+          <div className="flex items-start justify-between mb-4">
+            <h3 className="text-xl font-semibold">{t("wizard.step2.tabs.homelytic")}</h3>
+            <div className="text-xs bg-blue-50 text-blue-700 px-2 py-1 rounded-md">
+              {t("wizard.step2.contactSalesFlow")}
+            </div>
+          </div>
+          <div className="grid gap-6 grid-cols-1 md:grid-cols-2 max-w-4xl">
+            {homelyticProducts.map((product) => (
+              <ProductCard
+                key={product.id}
+                product={product}
+                isSelected={answers.selectedProducts.includes(product.id)}
+                isRecommended={false}
+                audience={answers.audience}
+                selectable={true}
+                onToggle={handleProductToggle}
+              />
+            ))}
+          </div>
+        </section>
+      </div>
 
       {/* Selected Products Summary */}
       {hasSelectedProducts && (
@@ -378,7 +401,7 @@ export function Step2Products({ onContinue }: Step2ProductsProps) {
           className="bg-red-50 border border-red-200 rounded-lg p-4 text-center"
         >
           <p className="text-red-800 text-sm font-medium">
-            {t("wizard.validation.selectProduct")}
+            {t("wizard.validation.selectBundle")}
           </p>
         </motion.div>
       )}

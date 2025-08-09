@@ -1,5 +1,7 @@
 export type ProductCategory = "translytic" | "taxlytic" | "homelytic";
 
+import type { Audience } from "@/store/wizardStore";
+
 export type ProductId = 
   // Translytic - Core Bundles
   | "starter_bundle"
@@ -45,6 +47,7 @@ export interface Product {
   price: ProductPrice;
   flags: ProductFlags;
   role: ProductRole;
+  suitableAudiences?: Audience[]; // If set, indicates which audiences this product is suited for
 }
 
 export const products: Product[] = [
@@ -58,7 +61,8 @@ export const products: Product[] = [
       display: "€299 incl. VAT"
     },
     flags: { bundle: true },
-    role: "Base"
+    role: "Base",
+    suitableAudiences: ["expats", "homeBuyers", "investors", "diasporaHeirs"]
   },
   {
     id: "full_service_bundle",
@@ -69,7 +73,8 @@ export const products: Product[] = [
       display: "€475 incl. VAT"
     },
     flags: { bundle: true },
-    role: "Base"
+    role: "Base",
+    suitableAudiences: ["expats", "homeBuyers", "investors", "diasporaHeirs"]
   },
 
   // Post-Purchase Add-ons (not shown in Step 2)
@@ -82,7 +87,8 @@ export const products: Product[] = [
       display: "€24.90 per document"
     },
     flags: { addon: true },
-    role: "Addon"
+    role: "Addon",
+    suitableAudiences: ["expats", "homeBuyers", "investors", "diasporaHeirs", "homeOwners", "professionals"]
   },
   {
     id: "govgr_concierge",
@@ -112,7 +118,8 @@ export const products: Product[] = [
       display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
-    role: "Recurring"
+    role: "Recurring",
+    suitableAudiences: ["homeOwners", "diasporaHeirs"]
   },
   {
     id: "annual_e9_couple",
@@ -127,7 +134,8 @@ export const products: Product[] = [
       display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
-    role: "Recurring"
+    role: "Recurring",
+    suitableAudiences: ["homeOwners", "diasporaHeirs"]
   },
   {
     id: "annual_e9_family",
@@ -142,7 +150,8 @@ export const products: Product[] = [
       display: "€24.90 (Single) / €49.90 (Couple) / €59.90 (family incl. 2 kids) + €10/child"
     },
     flags: { recurring: true, standalone: true },
-    role: "Recurring"
+    role: "Recurring",
+    suitableAudiences: ["homeOwners", "diasporaHeirs"]
   },
   {
     id: "due_diligence",
@@ -153,7 +162,8 @@ export const products: Product[] = [
       display: "Price TBD"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["homeBuyers", "homeOwners", "investors"]
   },
 
   // Homelytic Products
@@ -166,7 +176,8 @@ export const products: Product[] = [
       display: "Price TBD"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["investors", "homeBuyers"]
   },
   {
     id: "e2e_purchase",
@@ -177,7 +188,8 @@ export const products: Product[] = [
       display: "Price TBD"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["homeBuyers", "investors"]
   },
   {
     id: "investment_analysis",
@@ -188,7 +200,8 @@ export const products: Product[] = [
       display: "Price TBD"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["investors"]
   },
   {
     id: "contract_drafting",
@@ -199,7 +212,8 @@ export const products: Product[] = [
       display: "Price TBD"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["homeBuyers", "investors"]
   },
   
   // Standalone Services
@@ -212,7 +226,8 @@ export const products: Product[] = [
       display: "€45 → €30 (1–10 docs volume)"
     },
     flags: { standalone: true },
-    role: "Standalone"
+    role: "Standalone",
+    suitableAudiences: ["expats", "homeBuyers", "investors", "diasporaHeirs", "homeOwners", "professionals"]
   }
 ];
 

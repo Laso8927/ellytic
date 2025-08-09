@@ -29,9 +29,11 @@ export default function ContactSalesPage() {
   const [isSubmitted, setIsSubmitted] = useState(false);
 
   useEffect(() => {
-    // Prefill message with interests from query params
+    // Prefill message with interests or products from query params
     const audience = searchParams.get("audience");
     const interests = searchParams.get("interests");
+    const products = searchParams.get("products");
+    const source = searchParams.get("source");
     
     if (audience === "professionals" && interests) {
       const interestList = interests.split(",").map(interest => {
@@ -46,6 +48,26 @@ export default function ContactSalesPage() {
       setFormData(prev => ({
         ...prev,
         message: `I'm interested in the following services: ${interestList}\n\nPlease get in touch to discuss how we can work together.`
+      }));
+    } else if (products && source === "wizard_step2") {
+      const productList = products.split(",").map(productId => {
+        // Convert product IDs to readable names
+        switch (productId) {
+          case "annual_e9_single": return "Annual E9 Declaration";
+          case "due_diligence": return "Due Diligence for Home Buyers/Investors";
+          case "property_portfolio": return "Property Portfolio Access";
+          case "e2e_purchase": return "E2E Purchase Support";
+          case "investment_analysis": return "Investment Analysis";
+          case "contract_drafting": return "Contract Drafting";
+          default: return productId.replace(/_/g, ' ');
+        }
+      }).join(", ");
+
+      const audienceName = audience ? audience.replace(/([A-Z])/g, ' $1').toLowerCase() : "customer";
+      
+      setFormData(prev => ({
+        ...prev,
+        message: `I'm interested in the following products/services: ${productList}\n\nAs a ${audienceName}, I'd like to discuss pricing, availability, and how we can work together.\n\nPlease get in touch to provide more details.`
       }));
     }
   }, [searchParams]);
@@ -75,6 +97,8 @@ export default function ContactSalesPage() {
       submitData.append("message", formData.message);
       submitData.append("audience", searchParams.get("audience") || "");
       submitData.append("interests", searchParams.get("interests") || "");
+      submitData.append("products", searchParams.get("products") || "");
+      submitData.append("source", searchParams.get("source") || "");
       
       if (formData.file) {
         submitData.append("file", formData.file);
